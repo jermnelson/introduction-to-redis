@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="row page-header">
+ <div class="col-md-12 well">
+  <h1>Introducing Redis, the instructor, and this course</h1>
+  {% include 'snippets/topic-nav.html' %}
+
+ </div>
+</div>
+<div class="row">
+ <div class="col-md-10 col-md-offset-1 well">
+  <h2>What is Redis?</h2>
+  <p class="lead">
+   Redis is ...
+  </p>
+
+  <div class="row">
+
+
+  </div>
+ </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-4">
+   <div class="panel panel-info">
+     <div class="panel-heading">
+      <h3 class="panel-title">About the Instructor</h3>
+     </div>
+     <div class="panel-body">
+      <p> 
+      Jeremy Nelson is the Metadata and Systems Librarian at 
+      <a href="https://www.coloradocollege.edu/">Colorado College</a>,
+      a private liberal arts college located in Colorado Springs.
+      </p>
+     </div>
+   </div>
+  </div>
+  {# START About Course #}
+  <div class="col-md-8 well">
+    <h2>Schedule</h2>
+    <h3>Day 1</h3>
+    <ul class="lead">
+    {% for key in ['introducing-redis', 'basic-setup-and-admin', 'redis-data-types', 'operating-a-redis-system'] %}
+     <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
+    {% endfor %}
+    </ul>
+    <h3>Day 2</h3>
+    <ul class="lead">
+     {% for key in ['programming-redis', 'commands-pipelining-and-pubsub', 'memory-expiration-and-key-eviction', 'transactions-and-locks'] %}
+     <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
+     {% endfor %}
+    </ul>
+    <h3>Day 3</h3>
+    <ul class="lead">
+     {% for key in ['mass-insertions-and-replication', 'clustering-and-ha', 'lua-scripting', 'security'] %}
+     <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
+     {% endfor %}
+    </ul>
+  {# END About Course #}
+  </div>
+</div>
+<hr>
+
+{% endblock %}
