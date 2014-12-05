@@ -2,7 +2,7 @@
  <nav>
   <ul class="nav nav-pills pull-right">
    <li role="presentation" {% if section=='home' %}class="active"{% endif %}><a href="{{ url_for('home') }}">Home</a></li>
-   <li role="presentation"><a href="#">About</a></li>
+   <li role="presentation"><a href="#about-dlg" data-toggle="modal">About</a></li>
    <li role="presentation" class="dropdown{% if section=='topic' %} active{% endif %}">
     <a href="#" class="dropdown-toggle" 
        data-toggle="dropdown" role="button" aria-expanded="false">

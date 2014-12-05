@@ -8,18 +8,20 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    {% block more_css %}
     <style>
      body {
          background-color:  #CCCCCC;
      }
     </style>
+
+    {% block more_css %}
     {% endblock %}
   </head>
   <body class="container">
     {% include "snippets/nav-bar.html" %}
     {% block body %}
     {% endblock %}
+    {% include "snippets/about.html" %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

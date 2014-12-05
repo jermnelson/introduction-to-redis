@@ -4,7 +4,51 @@
 <div class="row page-header">
  <div class="col-md-12 well">
   <h1>Redis data types</h1>
+  <p class="lead"><a href="#string">String</a>|<a href="#list">List</a>|<a href="#hash">Hash</a>|<a href="#set">Set</a></p>
   {% include 'snippets/topic-nav.html' %}
  </div>
 </div>
+<div class="row">
+  <div class="col-md-8">
+   <h1><small>it all begins with the</small> Key</h1>
+  </div>
+</div>
+<hr>
+<h1>String <small>the most basic data-type</strong></h1>
+<div class="row">
+ <div class="col-md-4">
+  <h3>Critical Commands for <em>String</em></h3>
+  <ul class="list-group">
+   <li class="list-group-item list-group-item-success">
+     <strong>SET <em>key</em> <em>string</em></strong>
+
+   </li>
+   <li class="list-group-item">
+     <strong>GET  <em>key</em></strong>
+
+   </li>
+   <li class="list-group-item list-group-item-success ">
+     <strong>INCR <em>key</em></strong>
+   </li>
+  </ul>
+ </div>
+ </div>
+<hr>
+<h1 style="alignment: right"><small>A collection of one or more values is a</small> List</h1> 
+<div class="row">
+ <div class="col-md-8">
+
+
+ </div>
+</div>
+<hr>
+<h1><small>A</small> Hash <small>is a "dictionary" of sub-keys and values</h1>
+<hr>
+<h1><small>A unique collection of values is a</small> Set</h1>
+<hr>
+<h1>Sorted Set <small>an ordered collection of unique values</h1>
+<hr>
+<h1><small>treating a string as sequence of bits is a </small>Bit array <small>or</small> Bitmap</h1>
+<hr>
+<h1>HyperLogLogs <small> special probabilistic data type similar to a</small> Sorted Set</h1> 
 {% endblock %}
