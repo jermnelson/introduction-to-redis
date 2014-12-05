@@ -61,6 +61,13 @@ TOPIC_ORDER = list(TOPICS.keys())
 
 app = Flask(__name__)
 
+@app.route("/contact")
+def contact():
+    return render_template(
+        'contact.html',
+        section='contact',
+        topics=TOPICS)
+
 @app.route("/<topic>")
 def topic_view(topic):
     if not topic in TOPICS:
