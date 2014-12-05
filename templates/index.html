@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block body %}
-  <div class="page-header well">
-    <h1>Introduction to Redis <small>December 2014 Training Sessions</small></h1>
+  <div class="page-header jumbotron">
+    <h1>Introduction to Redis<br><small>December 2014 Training Sessions</small></h1>
+    <p class="lead">taught by <a href="#">Jeremy Nelson</a></p>
+    <a href="{{ url_for('topic_view', topic='introducing-redis') }}" class="btn btn-lg btn-primary">
+      Begin
+    </a>
   </div>
 {% endblock %}
