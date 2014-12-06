@@ -48,19 +48,38 @@
     </ul>
     <h3>Day 2</h3>
     <ul class="lead">
-     {% for key in ['programming-redis', 'commands-pipelining-and-pubsub', 'memory-expiration-and-key-eviction', 'transactions-and-locks'] %}
+     {% for key in ['programming-redis', 'pipelining-and-mass-insertions', 'memory-expiration-and-key-eviction', 'transactions-and-locks'] %}
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
      {% endfor %}
     </ul>
     <h3>Day 3</h3>
     <ul class="lead">
-     {% for key in ['mass-insertions-and-replication', 'clustering-and-ha', 'lua-scripting', 'security'] %}
+     {% for key in ['replication-and-pubsub', 'clustering-and-ha', 'lua-scripting', 'security'] %}
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
      {% endfor %}
     </ul>
+    <h2>Exercises and Lab Assignments</h2>
+    <p class="lead">Each topic will have hands-on exercises using Redis as well as lab assignments that build upon 
+    previous lab work in a functioning application.
+    </p>  
   {# END About Course #}
   </div>
 </div>
 <hr>
-
+<h1>Lab Applications</h1>
+<p class="lead">To help provide context of the topics being covered through-out this course,
+participants will choose either an existing scenario for implementing an application or a project  
+of the own design. Some lab assignments will require collaboration with other particpants.
+</p>
+<div class="row">
+ <div class="col-md-4">
+  <h3>Digital Assets Catalog</h3>
+ </div>
+ <div class="col-md-4">
+  <h3>Santa's Gift Dashboard</h3>
+ </div>
+ <div class="col-md-4">
+  <h3>Your choice &hellip;</h3>
+ </div>
+</div>
 {% endblock %}

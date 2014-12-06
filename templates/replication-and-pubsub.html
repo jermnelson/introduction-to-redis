@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="row page-header">
+ <div class="col-md-12 well">
+  <h1>Replication and Pub/Sub</h1>
+  <p class="lead">
+    Redis supports two models of distributed data processing across
+    different machines. Redis's master-slave replication
+    is simple to use with horizontal scaling across multiple 
+    slaves connecting asynchronous with a master Redis instance. 
+    In addition, Redis is well suited to supporting the 
+    Publish/Subscribe model where publisher send messages to one 
+    or more channels that subscribes monitor and then react to the
+    messaging queue. 
+  </p>
+  {% include 'snippets/topic-nav.html' %}
+ </div>
+</div>
+{% endblock %}
+
+

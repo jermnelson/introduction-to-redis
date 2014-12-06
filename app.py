@@ -35,18 +35,18 @@ TOPICS = OrderedDict([
     ('programming-redis', {
         'location': '05-programming-redis',
         'title': 'Programming Redis'}),
-    ('commands-pipelining-and-pubsub', {
-        'location': '06-commands-pipelining-and-pubsub',
-        'title': 'Commands, Pipelining and Pub/Sub'}),
+    ('pipelining-and-mass-insertions', {
+        'location': '06-pipelining-and-mass-insertions',
+        'title': 'Pipelining and Mass Insertions of Data'}),
     ('memory-expiration-and-key-eviction', {
         'location': '07-memory-expiration-and-key-eviction',
         'title': 'Memory, expiration and key eviction'}),
     ('transactions-and-locks', {
         'location': '08-transactions-and-locks',
         'title': 'Transactions and Locks'}),
-    ('mass-insertions-and-replication', {
-        'location': '09-mass-insertions-and-replication',
-        'title': 'Mass Insertions and Replication'}),
+    ('replication-and-pubsub', {
+        'location': '09-replication-and-pubsub',
+        'title': 'Replication and Pub/Sub'}),
     ('clustering-and-ha', {
         'location': '10-clustering-and-ha',
         'title': 'Clustering and High Availablity'}),
