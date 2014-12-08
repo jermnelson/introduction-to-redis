@@ -5,17 +5,27 @@
  <div class="col-md-10 jumbotron">
   <h1>Operating a Redis System</h1>
   <p class="lead">
-    To effectively run Redis, understanding the two options for persistening
+    To effectively run Redis, understanding the two options for persisting
     data to disk is an important consideration that depends on your intended
     use of Redis.  
   </p>
   {% include 'snippets/topic-nav.html' %}
  </div>
+ <div class="col-md-2">
+  <div class="panel panel-danger">
+   <div class="panel-body">
+    <h4>In this topic &hellip;</h4>
+    <li><a href="#rdb">RDB Persistence</a></li>
+    <li><a href="#aof">AOF Persistence</a></li>
+    <li>Configure <a href="#redis-conf">redis.conf</a></li>
+   </div>
+  </div>
+ </div>
 </div>
 <div class="row">
  <div class="col-md-10 col-md-offset-1 well well-sm">
   <h1>Redis Persistence</h1>
-  <h2>RDB</h2>
+  <h2>RDB <a name="rdb"></a></h2>
   <div class="row">
    <div class="col-md-6">
      <h3>Advantages</h3>
@@ -24,7 +34,7 @@
      <h3>Disadvantages</h3>
    </div>
   </div>
-  <h2>AOF</h2>
+  <h2>AOF <a name="aof"></a></h2>
   <div class="row">
    <div class="col-md-6">
      <h3>Advantages</h3>
@@ -38,7 +48,7 @@
 <hr>
 <div class="row">
  <div class="col-md-6">
-   <h2>Configuring <em>redis.conf</em></h2>
+   <h2>Configuring <em>redis.conf</em> <a name="redis-conf"></a></h2>
 
  </div>
  <div class="col-md-6">

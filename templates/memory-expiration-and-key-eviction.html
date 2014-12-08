@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="row page-header">
- <div class="col-md-12 well">
+ <div class="col-md-10 jumbotron">
   <h1>Memory, expiration and key eviction</h1>
   <p class="lead">
    Being an in-memory datastore, Redis has both advantages
@@ -12,6 +12,13 @@
    memory footprint of Redis.
   </p>
   {% include 'snippets/topic-nav.html' %}
+ </div>
+ <div class="col-md-2">
+  <div class="panel panel-danger">
+   <div class="panel-body">
+    <h4>In this topic &hellip;</h4>
+   </div>
+  </div>
  </div>
 </div>
 {% endblock %}

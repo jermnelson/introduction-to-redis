@@ -1,13 +1,13 @@
 <div class="pull-right">
   <div class="btn-group" role="group">
     {% if previous %}
-    <a href="{{ url_for('topic_view', topic=previous.key) }}" class="btn btn-warning btn-large">
+    <a href="{{ url_for('topic_view', topic=previous.key) }}" class="btn btn-warning btn-lg">
       <span class="glyphicon glyphicon-chevron-left"></span>
       {{ previous.title }}
     </a>
     {% endif %}
     {% if next %}
-    <a href="{{ url_for('topic_view', topic=next.key) }}" class="btn btn-success btn-large">
+    <a href="{{ url_for('topic_view', topic=next.key) }}" class="btn btn-success btn-lg">
       {{ next.title }}
       <span class="glyphicon glyphicon-chevron-right"></span>
     </a>

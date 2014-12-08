@@ -10,5 +10,74 @@
   </p>
   {% include 'snippets/topic-nav.html' %}
  </div>
+ <div class="col-md-2">
+  <div class="panel panel-danger">
+   <div class="panel-body">
+    <h4>In this topic &hellip;</h4>
+    <li><a href="#pipelining">Pipelining</a></li>
+    <li><a href="#mass-insertion">Mass Insertion of Data</a></li>
+    <h4>Exercises</h4>
+    <li><a href="#E1">Pipelining with <em>netcat</em></a></li>
+    <li><a href="#E2">Pipelining with <em>redis.py</em></a></li>
+   </div>
+  </div>
+ </div>
+ </div>
+</div>
+<hr>
+<h1>Pipelining <a name="pipelining"></a></h1>
+<div class="row">
+ <div class="col-md-5">
+  <p class="lead well well-sm">
+   Redis commands has a small latency, called RTT (Round Trip Time) when communicating a 
+   between the client and the server. Often, an application will send a series 
+   of small Redis commands that do not necessarily need a round-trip confirmation
+   from the server. 
+  </p>
+ </div>
+ <div class="col-md-7">
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+     <h3 class="panel-title">Exercise: Pipelining with <em>netcat</em><a name="E1"></a> </h3>
+   </div>
+   <div class="panel-body">
+   <pre>
+$ (printf "PING\r\nPING\r\nPING\r\n"; sleep 1)|nc localhost 6379
++PONG
++PONG
++PONG
+   </div>
+  </div>
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+     <h3 class="panel-title">Exercise: Pipelining with <em>redis.py</em><a name="E2"></a></h3>
+   </div>
+   <div class="panel-body">
+   <pre>
+$ python
+Python 3.4.0 (v3.4.0:04f714765c13, Mar 15 2014, 23:02:41) 
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import redis
+>>> local_redis = redis.StrictRedis()
+>>> pipeline = local_redis.pipeline()
+>>> pipeline.ping()
+StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
+>>> pipeline.ping()
+StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
+>>> pipeline.ping()
+StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
+>>> pipe.execute()
+[True, True, True]
+   </pre>
+   </div>
+  </div>
+ 
+ </div>
+</div>
+<hr>
+<h1>Mass Insertion of Data <a name="mass-insertion"></a></h1>
+<div class="row">
+ 
 </div>
 {% endblock %}

@@ -4,6 +4,7 @@
 <div class="row page-header">
  <div class="col-md-10 jumbotron">
   <h1>Redis data types</h1>
+  <p class="lead">
   <ul class="list-inline lead">
    <li><a href="#string">String</a></li>
    <li><a href="#list">List</a></li>
@@ -12,14 +13,31 @@
   </ul>
   {% include 'snippets/topic-nav.html' %}
  </div>
+ <div class="col-md-2">
+  <div class="panel panel-danger">
+   <div class="panel-body">
+     <h4>In this topic &hellip;</h4>
+     <li><a href="#key">Redis Keys</a></li>
+     <li><a href="#string">String</a> data type</li>
+     <li><a href="#list">List</a> data type</li>
+     <li><a href="#hash">Hash</a> data type</li>
+     <li><a href="#set">Set</a> data type</li>
+   </div>
+  </div>
+ </div>
 </div>
 <div class="row">
   <div class="col-md-8">
-   <h1><small>it all begins with the</small> Key</h1>
+   <h1><small>it all begins with the</small> Key <a name="key"></a></h1>
+   <p class="lead well well-sm">
+    Redis keys are binary safe -any binary stream can be used as a key- although the most common
+    (and recommended) stream to use is a string key, like "Person", other file formats and binary 
+    streams like images, mp3, or other file formats, can be used.
+   </p>
   </div>
 </div>
 <hr>
-<h1>String <small>the most basic data-type</strong></h1>
+<h1>String <small>the most basic data-type</strong><a name="string"></a> </h1>
 <div class="row">
  <div class="col-md-4">
   <h3>Critical Commands for <em>String</em></h3>
@@ -36,10 +54,25 @@
      <strong>INCR <em>key</em></strong>
    </li>
   </ul>
- </div>
- </div>
+  {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+    <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Using <em>STRING</em> data type</a></h3>
+   </div>
+   <div class="panel-body">
+
+   </div>
+  {# END Exercise #}
+  </div> 
+  </div>
+  <div class="col-md-8 well well-sm">
+   <p>
+    
+   </p>
+  </div>
+</div>
 <hr>
-<h1 style="alignment: right"><small>A collection of one or more values is a</small> List</h1> 
+<h1 style="alignment: right"><small>A collection of one or more values is a</small> List <a name="list"></a></h1> 
 <div class="row">
  <div class="col-md-8">
 
@@ -47,9 +80,9 @@
  </div>
 </div>
 <hr>
-<h1><small>A</small> Hash <small>is a "dictionary" of sub-keys and values</h1>
+<h1><small>A</small> Hash <small>is a "dictionary" of sub-keys and values <a name="hash"></a></h1>
 <hr>
-<h1><small>A unique collection of values is a</small> Set</h1>
+<h1><small>A unique collection of values is a</small> Set <a name="set"></a></h1>
 <hr>
 <h1>Sorted Set <small>an ordered collection of unique values</h1>
 <hr>

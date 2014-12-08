@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="row page-header">
- <div class="col-md-12 well">
+ <div class="col-md-10 jumbotron">
   <h1>Transactions and Locks</h1>
   <p class="lead">
    While Redis is not a traditional relational database, Redis 
@@ -12,5 +12,21 @@
   </p>
   {% include 'snippets/topic-nav.html' %}
  </div>
+ <div class="col-md-2">
+  <div class="panel panel-danger">
+   <div class="panel-body">
+    <h4>In this topic &hellip;</h4>
+   </div>
+  </div>
+ </div>
+</div>
+<hr>
+<div class="row">
+ <h2>References and Resources</h2>
+  <ol>
+    <li>From the redis.io website: topic on
+     <a href="http://redis.io/topics/security">http://redis.io/topics/security</a>
+   </li>
+  </ol>
 </div>
 {% endblock %}

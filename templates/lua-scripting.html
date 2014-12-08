@@ -2,8 +2,8 @@
 
 {% block body %}
 <div class="row page-header">
- <div class="col-md-12 well">
-   <a href="http://www.lua.org/"><img class="pull-left" src="http://www.lua.org/images/lua.gif"></a>
+ <div class="col-md-10 jumbotron">
+   <a style="padding: 2em" href="http://www.lua.org/"><img class="pull-left" src="http://www.lua.org/images/lua.gif"></a>
   <h1>Lua Scripting</h1>
   <p class="lead">Since Redis version 2.6, a <a href="http://www.lua.org/">Lua</a>
   interpreter has been embedded into the Redis server. With Lua, a high-level programming
@@ -11,6 +11,21 @@
   application performance.</p>
   {% include 'snippets/topic-nav.html' %}
  </div>
+<div class="col-md-2">
+    <div class="panel panel-danger">
+     <div class="panel-body">
+      <h4>In this topic &hellip;</h4>
+     </div>
+    </div>
+ </div>
 </div>
-
+<hr>
+<div class="row">
+ <h2>References and Resources</h2>
+  <ol>
+    <li>From the redis.io website: topic on
+     <a href="http://redis.io/topics/security">http://redis.io/topics/security</a>
+   </li>
+  </ol>
+</div>
 {% endblock %}

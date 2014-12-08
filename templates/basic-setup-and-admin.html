@@ -8,15 +8,22 @@
   process but does require that the user compile the code if running
   on Linux or MacOS. </p>
   {% include 'snippets/topic-nav.html' %}
-  </div>
- <div class="col-md-2 bg-danger">
-  This topic &hellip;
-  <ul>
-   <li><a href="#downloading">Downloading</a></li>
-   <li><a href="#installing">Installing</a></li>
-  </ul>
  </div>
+ <div class="col-md-2"> 
+  <div class="panel panel-danger">
+   <div class="panel-body">
+    <h4>In this topic &hellip;</h4> 
+     <li><a href="#downloading">Downloading Redis</a></li>
+     <li><a href="#installing">Installing Redis</a></li>
+     <li><a href="#redis-cli">Redis Client</a></li>
+    <h4>Exercises</h4>
+     <li><a href="#E1">Starting and Stopping Redis</a></li>
+     <li><a href="#E2">Running <em>redis-cli</em></a></li>
+     <li><a href="#E3">First Redis Commands with <em>redis-cli</em></a></li>
 
+   </div>
+  </div>
+ </div>
 </div>
 <div class="row">
   <div class="col-md-4 well well-sm ">
@@ -29,7 +36,7 @@ $ wget http://download.redis.io/releases/redis-2.8.18.tar.gz
    <p>Save <a href="http://download.redis.io/releases/redis-2.8.18.tar.gz">
    http://download.redis.io/releases/redis-2.8.18.tar.gz</a> to your Downloads
    directory. Open a terminal and copy the file to 
-   <h3>Installing</h3>
+   <h3>Installing <a name="installing"></a></h3>
    <pre>
 $ tar xzf redis-2.8.18.tar.gz
 $ cd redis-2.8.18
@@ -47,7 +54,7 @@ $ make
    {# START cmd1 #}
    <div class="panel panel-warning">
      <div class="panel-heading">
-      <h3 class="panel-title"><strong>Exercise</strong>: Starting and Stopping Redis</h3>
+      <h3 class="panel-title"><a name="E1"></a><strong>Exercise</strong>: Starting and Stopping Redis</h3>
      </div>
      <div class="panel-body">
        <h4>Starting Redis</h4>
@@ -90,25 +97,64 @@ C:\RedisTraining\redis-server.exe
   </div>
 </div>
 <hr>
-<h1>Redis Command Line Client <em>redis-cli</em></h1>
+<h1><a name="redis-cli"></a> Redis Command Line Client <em>redis-cli</em></h1>
 <p class="lead">
  Redis comes with a command-line client that should be in the same directory as 
- the redis-server. We will use <strong>redis-cli</strong> to send command, load data, 
- and explore the functionality of Redis.
+ the redis-server. We will use <strong>redis-cli</strong> to send commands to the server, 
+ load data, and explore the functionality of Redis.
 </p>
 <div class="row">
  <div class="col-md-6">
   {# START exercise #}
   <div class="panel panel-warning">
     <div class="panel-heading">
-      <h3 class="panel-title"><strong>Exercise</strong>: Running <em>redis-cli</em></h3>
+      <h3 class="panel-title"><a name="E2"></a><strong>Exercise</strong>: Running <em>redis-cli</em></h3>
     </div>
    <div class="panel-body">
-
-
-   </div>
- {# EN exercise #}
+    <p>Restart <em>redis-server</em> in a terminal. Open a new command-line terminal and
+    enter the following commands:</p> 
+    <pre>
+$ cd redis-2.8.18/src
+$ ./redis-cli
+127.0.0.1:6379>
+    </pre>
+    <p>The <em>redis-cli</em> prompt first shows the IP address the client is connected to
+    (in this case localhost) and the port number of 6379. You can change the server hostname and
+    port number by appending <kbd>-h <em>{host-name}</em></kbd> to change the host name and 
+    <kbd>-p <em>{port-number}</em></kbd> 
+    to change the port number. 
+    </p>
+  </div>
+ {# END exercise #}
   </div>
  </div>
+ <div class="col-md-6">
+  {# START exercise #}
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title"><a name="E3"></a><strong>Exercise</strong>: First Redis Commands with <em>redis-cli</em></h3>
+    </div>
+   <div class="panel-body">
+   <p>With a running <em>redis-cli</em> instance, we will issue some basic informational commands to
+   Redis server.
+   </p>
+   <p>The <span class="label label-success">PING</span> command simple checks to see if the Redis server is live.
+   <pre>
+127.0.0.1:6379> PING
+PONG
+   </pre>
+   <p>To see the total number of keys in the Redis datastore, use the <span class="label label-success">DBSIZE</span> command</p>
+   <pre>
+127.0.0.1:6379> DBSIZE
+(integer) 0
+</pre>
+   </div>
+ {# END exercise #}
+  </div>
+
+ </div>
 </div>
+<hr>
+<h1>Lab Assignment</h1>
+
 {% endblock %}

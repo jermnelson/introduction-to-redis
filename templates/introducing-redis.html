@@ -2,22 +2,29 @@
 
 {% block body %}
 <div class="row page-header">
- <div class="col-md-12 well">
+ <div class="col-md-10 jumbotron">
   <h1>Introducing Redis, the instructor, and this course</h1>
+  
   {% include 'snippets/topic-nav.html' %}
  </div>
-</div>
-<div class="row">
- <div class="col-md-10 col-md-offset-1 well">
-  <h2>What is Redis?</h2>
-  <p class="lead">
-   Redis is an open-source NoSQL key-value datastore that
-  </p>
-
-  <div class="row">
-
-
+ <div class="col-md-2">
+  <div class="panel panel-danger">
+   <div class="panel-body">
+    <h4>In this topic &hellip;</h4>
+   </div>
   </div>
+ </div>
+</div>
+<hr>
+<div class="row">
+ <div class="col-md-10 col-md-offset-2">
+  <h2 style="color: rgb(255,0,0)">What is Redis?</h2>
+   <p class="lead">
+    Redis is an open-source NoSQL key-value datastore where instead of storing just one
+    type of value, such as a string, more complex types of values can be stored. Redis,
+    short for <strong>RE</strong>mote <strong>DI</strong>ctionary <strong>S</strong>erver, 
+    was created and is actively maintained and developed by Salvatore Sanfilippo.
+   </p>
  </div>
 </div>
 <hr>
@@ -35,6 +42,10 @@
       </p>
      </div>
    </div>
+   <h2>Exercises and Lab Assignments</h2>
+    <p class="lead">Each topic will have hands-on exercises using Redis as well as lab assignments that build upon 
+    previous lab work in a functioning application.
+    </p> 
    {# START Exercise #}
    <div class="panel panel-warning">
     <div class="panel-heading">
@@ -68,28 +79,54 @@
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
      {% endfor %}
     </ul>
-    <h2>Exercises and Lab Assignments</h2>
-    <p class="lead">Each topic will have hands-on exercises using Redis as well as lab assignments that build upon 
-    previous lab work in a functioning application.
-    </p>  
+ 
   {# END About Course #}
   </div>
 </div>
 <hr>
-<h1>Lab Applications</h1>
-<p class="lead">To help provide context of the topics being covered through-out this course,
-participants will choose either an existing scenario for implementing an application or a project  
-of the own design. Some lab assignments will require collaboration with other particpants.
-</p>
+<h1>Lab Applications</h1>  
 <div class="row">
- <div class="col-md-4">
-  <h3>Digital Assets Catalog</h3>
+ <div class="col-md-6">
+  <h2>Your choice &hellip;</h2>
  </div>
- <div class="col-md-4">
-  <h3>Santa's Gift Dashboard</h3>
+ <div class="col-md-6 panel panel-default">
+  <div class="panel-body">
+   <h2>Tutt Library Operational Dashboard</h2>
+   
+  </div>
  </div>
- <div class="col-md-4">
-  <h3>Your choice &hellip;</h3>
+ {#
+ <div class="col-md-6 panel panel-default">
+  <div class="panel-body">
+  <h2>Santa's Workshop</h1>
+  <img src="{{ url_for('static', filename='img/santa.png') }}" class="pull-right">
+  <p class="lead">To help contextualizing the Redis topics being covered through-out this course,
+   we're going to see how Redis can be put to work improving the operations of Santa Claus's 
+   workshop. At the beginning of the lab, examples   
+  </p>
+  <ul class="media-list">
+   <li class="media">
+    <a class="media-left" href="#">
+      <img src="{{ url_for('static', filename='img/toy64.png') }}" alt="Elf Toy Design Catalog">
+    </a>
+    <div class="media-body">
+      <h4 class="media-heading">Elf Toy Design Catalog</h4>
+      This application organizes all of the different toy designs used in the workshop. Designs
+      will be modeled as Redis datatypes using a key schema from 
+      <a href="http://schema.org/">schema.org</a>
+      Redis topics: <a href="{{ url_for('topic_view', topic='redis-data-types') }}">Redis Datatypes</a>,
+      <a href="{{ url_for('topic_view', topic='operating-a-redis-system') }}">Operating a Redis System</a>
+    </div>
+   </li>
+   <li class="media">
+    <a class="media-left" href="#">
+      <img src="{{ url_for('static', filename='img/sleigh64.png') }}" alt="Santa Sleigh's Dashboard">
+    </a>
+    <div class="media-body">
+      <h4 class="media-heading"> Santa Sleigh's Dashboard</h4>
+   </li> 
+  </ul>
  </div>
+ #}
 </div>
 {% endblock %}
