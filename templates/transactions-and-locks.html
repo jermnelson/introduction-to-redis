@@ -16,11 +16,60 @@
   <div class="panel panel-danger">
    <div class="panel-body">
     <h4>In this topic &hellip;</h4>
+    <li><a href="#transactions">Transactions</a></li>
+    <h4>Exercises</h4>
+    <li><a href="#E1">Transactions with <em>redis-cli</em></a></li>
    </div>
   </div>
  </div>
 </div>
 <hr>
+<div class="row">
+ <div class='col-md-7 well well-sm'>
+  <h1>Transactions <a name="transactions"></a></h1>
+  <p class="lead">Redis supports <em>transactions</em>, defined as a 
+  single unit of work made up of one or more commands that are not 
+  affected by other Redis commands. Redis transactions are atomic meaning 
+  of the transaction's commands are treated as a single unit of work. Redis
+  transactions are isolated, transactions and external commands do not affect each 
+  other. Finally, Redis transactions are durable in that once the transaction is 
+  completed, all of the changes persist in the datastore.
+  </p>
+ </div>
+ <div class="col-md-4">
+   {# START EXERCISE #}
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title">Exercise: Transaction with <em>redis-cli</em><a name="E1"></a></h3>
+    </div>
+    <div class="panel-body">
+    Create two keys with integer values
+    <pre>
+127.0.0.1:6379> SET bf:Work:23:ReadCount 10
+OK
+127.0.0.1:6379> SET bf:Work:45:ReadCount 100
+OK
+    </pre>
+    <p>
+    Use the <span class="label label-success">MULTI</span> command to start 
+    the transaction:
+    </p>
+    <pre>
+127.0.0.1:6379> MULTI
+OK
+127.0.0.1:6379> INCR bf:Work:23:ReadCount
+QUEUED
+127.0.0.1:6379> INCR bf:Work:45:ReadCount
+    </pre>
+     To 
+    </div>
+   {# END EXERCISE #}
+  </div> 
+ </div>
+ <div class="col-md-1">
+
+ </div>
+</div>
 <div class="row">
  <h2>References and Resources</h2>
   <ol>

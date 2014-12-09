@@ -7,7 +7,7 @@
   <p class="lead">
    Being an in-memory datastore, Redis has both advantages
    and disadvantages that need ways to manage the size of the
-   datastore. Two techniques, setting expiration timestamps to
+   datastore. Two techniques, setting expiration timestamps on
    keys as well as key eviction, can be used to manage the 
    memory footprint of Redis.
   </p>
@@ -17,8 +17,51 @@
   <div class="panel panel-danger">
    <div class="panel-body">
     <h4>In this topic &hellip;</h4>
+    <li><a href="#expiration">Key expiration</a></li>
+    <li><a href="#lru-eviction">LRU Eviction</a></li>
    </div>
   </div>
  </div>
+</div>
+<hr>
+<h1>EXPIRE <small>Redis command for setting a timeout on a key</small><a name="expiration"></a></h1>
+<p class="lead">
+  Keys in Redis can be set so that the key will be automatically deleted from the datastore 
+  after a timeout.
+
+</p>
+<div class="row"> 
+  <div class="col-md-5">
+   <div class="panel panel-warning">
+     <div class="panel-heading">
+      <h3 class="panel-title"><a name="E1"></a><strong>Exercise</strong>: Setting a Expiration on a Key</h3>
+     </div>
+     <div class="panel-body">
+     <pre>
+127.0.0.1:6379> SET Person:334:ReadAction "Website"
+OK
+127.0.0.1:6379> EXPIRE Person:334:ReadAction 10
+1
+127.0.0.1:6379> TTL Person:334:ReadAction
+10
+     </pre>
+    </div>
+   </div>
+  </div>
+  <div class="col-md-4">
+   
+
+  </div>
+</div>
+<hr>
+<h1>Setting LRU Eviction  <a name="lru-eviction"></a></h1>
+<hr>
+<div class="row">
+ <h2>References and Resources</h2>
+  <ol>
+    <li>From the redis.io website: topic on
+     <a href="http://redis.io/commands/expire">http://redis.io/commands/expire</a>
+   </li>
+  </ol>
 </div>
 {% endblock %}
