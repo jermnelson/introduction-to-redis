@@ -7,8 +7,7 @@
   <p class="lead">
    While Redis is not a traditional relational database, Redis 
    does offer two features, transactions and locks, that can 
-   help ensure the consistence of the data store when adding/
-   updating data. 
+   help meet the various application requirements. 
   </p>
   {% include 'snippets/topic-nav.html' %}
  </div>
@@ -25,7 +24,7 @@
 </div>
 <hr>
 <div class="row">
- <div class='col-md-7 well well-sm'>
+ <div class='col-md-5 well well-sm'>
   <h1>Transactions <a name="transactions"></a></h1>
   <p class="lead">Redis supports <em>transactions</em>, defined as a 
   single unit of work made up of one or more commands that are not 
@@ -36,19 +35,19 @@
   completed, all of the changes persist in the datastore.
   </p>
  </div>
- <div class="col-md-4">
+ <div class="col-md-6">
    {# START EXERCISE #}
    <div class="panel panel-warning">
     <div class="panel-heading">
      <h3 class="panel-title">Exercise: Transaction with <em>redis-cli</em><a name="E1"></a></h3>
     </div>
     <div class="panel-body">
-    Create two keys with integer values
+    Create two keys with initial values 
     <pre>
-127.0.0.1:6379> SET bf:Work:23:ReadCount 10
-OK
-127.0.0.1:6379> SET bf:Work:45:ReadCount 100
-OK
+127.0.0.1:6379> HSET Movie:345 name "Saving Mr. Banks"
+(integer) 1
+127.0.0.1:6379> SET Movie:345:Likes 200
+
     </pre>
     <p>
     Use the <span class="label label-success">MULTI</span> command to start 
@@ -57,17 +56,32 @@ OK
     <pre>
 127.0.0.1:6379> MULTI
 OK
-127.0.0.1:6379> INCR bf:Work:23:ReadCount
+127.0.0.1:6379> HSET Movie:345 copyrightYear 2013
 QUEUED
-127.0.0.1:6379> INCR bf:Work:45:ReadCount
+127.0.0.1:6379> INCR Move:345:Likes
+QUEUED
     </pre>
-     To 
+    <p>
+     The <span class="label label-success">EXEC</span> command processes the transaction.
+    </p>
+     <pre>
+127.0.0.1:6379> EXEC
+1) (integer) 1
+2) (integer) 201
+     </rep>
     </div>
-   {# END EXERCISE #}
-  </div> 
- </div>
- <div class="col-md-1">
+  {# END EXERCISE #}
+  </div>
+  {# START EXERCISE #}
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title">Exercise: Transactions with <em>redis.py</em><a name="E2"></a></h3>
+    </div>
+    <div class="panel-body">
 
+    </div>
+  {# END EXERCISE #}
+  </div>
  </div>
 </div>
 <div class="row">

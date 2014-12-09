@@ -19,6 +19,10 @@
     <h4>In this topic &hellip;</h4>
     <li><a href="#expiration">Key expiration</a></li>
     <li><a href="#lru-eviction">LRU Eviction</a></li>
+    <h4>Exercises</h4>
+    <li><a href="#E1">Setting a Timeout on a Key</a></li>
+    <li><a href="#E2">Setting Maxmemory at runtime</a></li>
+    <li><a href="#E2">Setting LRU Policies</a></li>
    </div>
   </div>
  </div>
@@ -34,7 +38,7 @@
   <div class="col-md-5">
    <div class="panel panel-warning">
      <div class="panel-heading">
-      <h3 class="panel-title"><a name="E1"></a><strong>Exercise</strong>: Setting a Expiration on a Key</h3>
+      <h3 class="panel-title"><a name="E1"></a><strong>Exercise</strong>: Setting a Timeout on a Key</h3>
      </div>
      <div class="panel-body">
      <pre>
@@ -54,13 +58,88 @@ OK
   </div>
 </div>
 <hr>
-<h1>Setting LRU Eviction  <a name="lru-eviction"></a></h1>
+<h1>Setting LRU Eviction <a name="lru-eviction"></a></h1>
+<p class="lead">Redis supports a variant of the less recently used (LRU) approach to 
+ removing old data as new data is added to a Redis datastore. When Redis is used as a
+ an application cache, LRU eviction prevents the datastore from exceeding the available
+ memory.
+</p>
+<div class="row">
+ <div class="col-md-5">
+  <h2>LRU Setup Options</h2>
+  <p class="lead">
+   Redis offers a number of LRU options that are set in <em>redis.config</em>. First,
+   the <code>maxmemory</code> configuration option must be set, if set to 0 (the default)
+   Redis does not limit memory itself, but is constrained by the operating system's 
+   available RAM in 64-bit and 3GB in 32-bit systems.
+  </p>
+  <h3>
+ </div>
+ <div class="col-md-6">
+   <div class="panel panel-warning">
+     <div class="panel-heading">
+      <h3 class="panel-title"><a name="E2"></a>Exercise: Setting Maxmemory at runtime</h3>
+     </div>
+     <div class="panel-body">
+     <pre>
+127.0.0.1:6379> CONFIG SET maxmemory 1mb
+OK
+     </pre>
+     </div>
+   </div>
+   <div class="panel panel-warning">
+     <div class="panel-heading">
+      <h3 class="panel-title"><a name="E3"></a>Exercise: Setting LRU Policies</h3>
+     </div>
+     <div class="panel-body">
+     <h4>noeviction</h4>
+     <p>The <strong>noeviction</strong> policy is the Redis default and will
+     only display error messages when Redis exceeds existing memory.</p>
+     <pre>
+127.0.0.1:6379> CONFIG SET maxmemory-policy noeviction
+OK
+     </pre>
+
+     <h4>all-keys</h4>
+     <p>The <strong>all-keys</strong>
+     <pre>
+127.0.0.1:6379> CONFIG SET maxmemory-policy all-keys
+OK
+     </pre>
+     <h4>volatile-lru</h4>
+     <pre>
+127.0.0.1:6379> CONFIG SET maxmemory-policy volatile-lru
+OK
+     </pre>
+     <h4>allkeys-random</h4>
+     <pre>
+127.0.0.1:6379> CONFIG SET maxmemory-policy allkeys-random
+OK
+     </pre>
+     <h4>volatile-random</h4>
+     <pre>
+127.0.0.1:6379> CONFIG SET maxmemory-policy volatile-random
+OK
+     </pre>
+     <h4>volatile-ttl</h4>
+     <pre>
+127.0.0.1:6379> CONFIG SET maxmemory-policy volatile-ttl
+     </div>
+   </div>
+
+  </div>
+ </div>
+{# END Setup #}
+</div>
 <hr>
 <div class="row">
  <h2>References and Resources</h2>
   <ol>
-    <li>From the redis.io website: topic on
+    <li>From the redis.io website: command on
      <a href="http://redis.io/commands/expire">http://redis.io/commands/expire</a>
+   </li>
+   <li>From the redis.io website: topic 
+     <a href="http://redis.io/topics/lru-cache">Using Redis as an LRU cache</a>
    </li>
   </ol>
 </div>
