@@ -22,6 +22,8 @@
      <li><a href="#list">List</a> data type</li>
      <li><a href="#hash">Hash</a> data type</li>
      <li><a href="#set">Set</a> data type</li>
+     <h4>Exercises</h4>
+     <li><a href="#E1">Using <em>STRING</em> data type</a></li>
    </div>
   </div>
  </div>
@@ -38,38 +40,85 @@
 </div>
 <hr>
 <h1>String <small>the most basic data-type</strong><a name="string"></a> </h1>
+<p class="lead">
+ 
+</p>
 <div class="row">
  <div class="col-md-4">
   <h3>Critical Commands for <em>String</em></h3>
   <ul class="list-group">
    <li class="list-group-item list-group-item-success">
-     <strong>SET <em>key</em> <em>string</em></strong>
+     <strong>SET <em>key</em> <em>string</em> <em>optional nx|xx</em></strong>
 
    </li>
    <li class="list-group-item">
-     <strong>GET  <em>key</em></strong>
-
+     <strong>GET <em>key</em></strong>
    </li>
    <li class="list-group-item list-group-item-success ">
-     <strong>INCR <em>key</em></strong>
+     <strong>INCR <em>key</em></em></strong>
+   </li>
+   <li class="list-group-item ">
+       <strong>INCRBY<em>key</em> <em>integer</em></strong>
+   </li>  
+   <li class="list-group-item list-group-item-success">
+     <strong>MSET <em>key1</em> <em>string</em> <em>key2</em> <em>string</em> <em>optional nx|xx</em></strong>
+   </li>
+
+   <li class="list-group-item">
+     <strong>MGET <em>key1</em> <em>key2</em> <em>key3</em></strong>
    </li>
   </ul>
+ </div>
+ <div class="col-md-5 well well-sm">
   {# START Exercise #}
   <div class="panel panel-warning">
    <div class="panel-heading">
-    <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Using <em>STRING</em> data type</a></h3>
+    <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Using <em>STRING</em> data type</h3>
    </div>
    <div class="panel-body">
-
+    <p>Setting a string value with a characters and an integer using the 
+     <span class="label label-success">SET</span> and 
+     <span class="label label-success">GET</span> commands.
+    </p>
+    <pre>
+127.0.0.1:6379> SET Book:1 "Infinite Jest"
+OK
+127.0.0.1:6379> GET Book:1
+"Infinite Jest"
+127.0.0.1:6379> SET Book:1:ReadAction 1
+OK
+127.0.0.1:6379> GET Book:1:ReadAction
+"1"
+   </pre>
+   <p>The <span class="label label-success">INCR</span> command will increase an 
+    string "integer" value by 1, the <span class="label label-success">INCRBY</span>  
+    command is similar but increase the value by a integer.
+   </p>
+   <div class="alert alert-warning">
+    <strong>NOTE:</strong> the 
+    <span class="label label-success">INCR</span> and 
+    <span class="label label-success">INCRBY</span> are atomic so other clients cannot
+    change the value when the command is run.
+   </div>
+   <pre>
+127.0.0.1:6379> INCR Book:1:ReadAction
+(integer) 2
+127.0.0.1:6379> GET Book:1:ReadAction
+"2"
+127.0.0.1:6379> INCRBY Book:1:ReadAction 20
+(integer) 22
+127.0.0.1:6379> GET Book:1:ReadAction
+"22"
+   </pre>
+   <p>What happens when <span class="label label-success">INCR</span> is used as follows?</p>
+   <pre>
+127.0.0.1:6379> INCR Book:1 "Infinite Jest"
+   </pre>
    </div>
   {# END Exercise #}
   </div> 
-  </div>
-  <div class="col-md-8 well well-sm">
-   <p>
-    
-   </p>
-  </div>
+ </div>
+ </div>
 </div>
 <hr>
 <h1 style="alignment: right"><small>A collection of one or more values is a</small> List <a name="list"></a></h1> 

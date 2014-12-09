@@ -15,16 +15,46 @@
     <div class="panel panel-danger">
      <div class="panel-body">
       <h4>In this topic &hellip;</h4>
+      <li><a href="#network">Network Security</a></li>
+      <h4>Exercises</h4>
+      <li><a href="#E1">Restricting access with a Firewall</a></li>
      </div>
     </div>
  </div>
+</div>
+<hr>
+<h2><a name="network"></a>Network Security</h2>
+<div class="row">
+  <div class="col-md-8"> 
+   <p>
+    With Redis general security model of only trusted clients accessing a Redis 
+    server within a protected environment, there are some general guidelines
+    to follow if the Redis is running on a computer with direct exposure to the 
+    Internet (a common use-case when using a cloud server).
+   </p>
+   <ul>
+    <li>Redis port (default is 6379) should be firewalled to prevent access from
+        the outside</li>
+    <li>Clients running should still be able to access Redis through the local 
+        loopback interface.</li>
+   </ul>
+  </div>
+  <div class="col-md-4">
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title">Exercise: Restricting access with a Firewall<a name="E1"></a></h3>
+    </div>
+    <div class="panel-body">
+     
+    </div>
+  </div>
 </div>
 <hr>
 <div class="row">
  <h2>References and Resources</h2>
   <ol>
     <li>From the redis.io website: topic on
-     <a href="http://redis.io/topics/security">http://redis.io/topics/security</a>
+     <a href="http://redis.io/topics/security">Redis Security</a>
    </li>
   </ol>
 </div>

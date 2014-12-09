@@ -68,6 +68,14 @@ def contact():
         section='contact',
         topics=TOPICS)
 
+@app.route("/redis-virtual-machine")
+@app.route("/redis-vm")
+def redis_course_vm():
+    return render_template(
+        'redis-training-vm.html',
+        section='topic',
+        topics=TOPICS)
+
 @app.route("/<topic>")
 def topic_view(topic):
     if not topic in TOPICS:
