@@ -25,22 +25,56 @@
 <div class="row">
  <div class="col-md-10 col-md-offset-1 well well-sm">
   <h1>Redis Persistence</h1>
+  <p class="lead">
+   Redis has four different persistence modes made up of:
+   <ul class="lead">
+    <li>RDB a periodical snap-shot in time</li>
+    <li>AOF data is saved on every write command<?li>
+    <li>No on-disk persistence</li>
+    <li>Both RDB and AOF</li>
+   </ul>
+  </p>
   <h2>RDB <a name="rdb"></a></h2>
   <div class="row">
    <div class="col-md-6">
      <h3>Advantages</h3>
+     <ul>
+       <li>Compact single-file snapshot of the Redis data</li>
+       <li>Restores easily from a single-file snapshot backup</li>
+       <li>Faster restart when loading large datasets</li>
+     </ul>
    </div>
    <div class="col-md-6">
      <h3>Disadvantages</h3>
+     <ul>
+      <li>Potential data loss between snapshots</li>
+      <li>Needs to fork child process to create snapshot, forking
+       may take a lot of time if large dataset and slow processor
+       preventing client access in the meantime.</li> 
+     </ul>
    </div>
   </div>
-  <h2>AOF <a name="aof"></a></h2>
+  <h2>AOF (Append Only File)<a name="aof"></a></h2>
   <div class="row">
    <div class="col-md-6">
      <h3>Advantages</h3>
+     <ul>
+      <li>More durable, setting <code>fsync</code> to 1 second means 
+       at most 1 second would be lost if a failure occurs</li>
+      <li>AOF log append-only, no seeks and if last write command fails,
+      easy to fix with the <code>redis-check-aof</code> utility</li>
+      <li>AOF is automatically written in background, allowing Redis to 
+      continue to serve clients</li>
+      <li>Contains a log of all operations of each write operation, easy
+      to export format</li>
+     </ul>
    </div>
    <div class="col-md-6">
      <h3>Disadvantages</h3>
+     <ul>
+      <li>AOF files are usually bigger than equivalent RDB files</li>
+      <li>Can be slower than RDB depending on <code>fsync</code> policy</li>
+     </ul>
    </div>
   </div>
  </div>
@@ -49,10 +83,17 @@
 <div class="row">
  <div class="col-md-6">
    <h2>Configuring <em>redis.conf</em> <a name="redis-conf"></a></h2>
-
+   {# START Exercise #}
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title">Exercise: <a name="E1"></a></h3>
+    </div>
+    <div class="body">
+    </div>
+   </div>
  </div>
  <div class="col-md-6">
-   <h2>Configuring a live Redis instance</h2>
+      <h2>Configuring a live Redis instance</h2>
 
  </div>
 </div>
