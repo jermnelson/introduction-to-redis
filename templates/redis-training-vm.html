@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="jumbotron">
+ <h1>Intro2Redis Virtual Machine</h1>
+ <p class="lead">A course Linux virtual machine is available to download and use  
+  <a href="#">here</a>
+
+</div>
+<hr>
+<div class="row">
+ <div class="col-md-6 well well-sm">
+  <h2>Linux Environment</h2>
+  <dl class="dl-horizontal">
+    <dt>Operating System</dt>
+    <dd><a href="http://www.ubuntu.com/download/server">Ubuntu Server 14.04.1 LTS</a></dd>
+    <dt>Source Control</dt>
+    <dd>
+     <p>
+      <a href="#">Git</a>: <kbd>sudo apt-get install git</kbd>
+     </p>
+    </dd>
+    <dt>Developer Tools</dt>
+    <dd>
+      GCC <kbd>sudo apt-get install gcc</kbd><br>
+      Make <kbd>sudo apt-get install make</kbd>
+    </dd>
+    <dt>Virtualenv</dt>
+    <dd>
+      Downloaded and installed <a href="https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz">virtualenv</a>
+      and created the <code>redis-py-env</code> located at <em>/Home/redis_user/redis-py-env</em>
+    </dd>
+  </dl>
+ </div>
+ <div class="col-md-6">
+
+
+ </div>
+</div>
+{% endblock %}

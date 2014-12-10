@@ -24,6 +24,7 @@
      <li><a href="#set">Set</a> data type</li>
      <h4>Exercises</h4>
      <li><a href="#E1">Using <em>STRING</em> data type</a></li>
+     <li><a href="#E2">Using <em>LIST</em> data type</a></li>
    </div>
   </div>
  </div>
@@ -60,6 +61,13 @@
    <li class="list-group-item ">
        <strong>INCRBY<em>key</em> <em>integer</em></strong>
    </li>  
+   <li class="list-group-item list-group-item-success ">
+     <strong>DECR <em>key</em></em></strong>
+   </li>
+   <li class="list-group-item ">
+       <strong>DECRBY<em>key</em> <em>integer</em></strong>
+   </li>  
+
    <li class="list-group-item list-group-item-success">
      <strong>MSET <em>key1</em> <em>string</em> <em>key2</em> <em>string</em> <em>optional nx|xx</em></strong>
    </li>
@@ -92,12 +100,18 @@ OK
    </pre>
    <p>The <span class="label label-success">INCR</span> command will increase an 
     string "integer" value by 1, the <span class="label label-success">INCRBY</span>  
-    command is similar but increase the value by a integer.
+    command is similar but increase the value by a integer. The 
+    <span class="label label-success">DECR</span> and 
+    <span class="label label-success">DECRBY</span> commands decrease an string 
+    "integer" value by 1 or more.
    </p>
    <div class="alert alert-warning">
     <strong>NOTE:</strong> the 
-    <span class="label label-success">INCR</span> and 
-    <span class="label label-success">INCRBY</span> are atomic so other clients cannot
+    <span class="label label-success">INCR</span>,  
+    <span class="label label-success">INCRBY</span>, 
+    <span class="label label-success">DECR</span>, and
+    <span class="label label-success">DECRBY</span>
+      are atomic so other clients cannot
     change the value when the command is run.
    </div>
    <pre>
@@ -109,10 +123,22 @@ OK
 (integer) 22
 127.0.0.1:6379> GET Book:1:ReadAction
 "22"
+127.0.0.1:6379> DECR Book:1:ReadAction
+(integer) 21
+127.0.0.1:6379> GET Book:1:ReadAction
+"21"
    </pre>
    <p>What happens when <span class="label label-success">INCR</span> is used as follows?</p>
    <pre>
 127.0.0.1:6379> INCR Book:1 "Infinite Jest"
+   </pre>
+   <p>You can set multiple key-string values using <span class="label label-success">MSET</span>
+    command. The <span class="label label-success">MGET</span> command retrieves multiple values
+    from one or more keys.
+   </p>
+   <pre>
+
+
    </pre>
    </div>
   {# END Exercise #}
@@ -124,7 +150,71 @@ OK
 <h1 style="alignment: right"><small>A collection of one or more values is a</small> List <a name="list"></a></h1> 
 <div class="row">
  <div class="col-md-8">
+  {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+    <h3 class="panel-title"><a name="E2"></a><strong>Exercise:</strong> Using <em>LIST</em> data type</h3>
+   </div>
+   <div class="panel-body">
+   <p>The <span class="label label-success">LPUSH</span> command adds one or more elements to the front of a list,
+   the <span class="label label-success">RPUSH</span> command adds one or more elements to the end of a list.
+   </p>
+   <pre>
+127.0.0.1:6379> LPUSH Book:1:comment "This was a fun read"
+(integer) 1
+127.0.0.1:6379> LRANGE Book:1:comment 0 -1
+1) "This was a fun read"
+127.0.0.1:6379> LPUSH Book:1:comment "Way too long!"
+(integer) 2
+127.0.0.1:6379> LRANGE Book:1:comment 0 -1
+1) "Way too long!"
+2) "This was a fun read"
+127.0.0.1:6379> RPUSH Book:1:comment "Tennis anyone?"
+(integer) 3
+127.0.0.1:6379> LRANGE Book:1:comment 0 -1
+1) "Way too long!"
+2) "This was a fun read"
+3) "Tennis anyone?"
+   </pre>
+   <p>The <span class="label label-success">LPOP</span> command remove the first element from the list and
+   returns it the calling client while the <span class="label label-success">RPOP</span> command removes
+   and returns the last element of the list.
+   </p>
+   <pre>
+127.0.0.1:6379> LPOP Book:1:comment
+"Way too long!"
+127.0.0.1:6379> LRANGE Book:1:comment 0 -1
+1) "This was a fun read"
+2) "Tennis anyone?"
+127.0.0.1:6379> RPOP Book:1:comment
+"Tennis anyone?"
+127.0.0.1:6379> LRANGE Book:1:comment 0 -1
+1) "This was a fun read"
+   </pre>
+   </div>
+  {# END Exercise #}
+  </div>
+ </div>
+ <div class="col-md-4">
+  <ul class="list-group">
+   <li class="list-group-item list-group-item-success">
+     <strong>LPUSH</strong> <em>key</em> <em>value</em>
+   </li>
+   <li class="list-group-item">
+    <strong>RPUSH</strong> <em>key</em> <em>value</em>
+   </li>
+   <li class="list-group-item list-group-item-success">
+     <strong>LRANGE</strong> <em>key</em> <em>start</em> <em>end</em>
+   </li>
+   <li class="list-group-item">
+    <strong>LPOP</strong> <em>key</em>
+   </li>
+   <li class="list-group-item list-group-item-success">
+    <strong>RPOP</strong> <em>key</em>
+   </li>
 
+ </div>
+ <div class="col-md-4">
 
  </div>
 </div>
