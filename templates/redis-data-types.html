@@ -23,6 +23,7 @@
      <li><a href="#hash">Hash</a> data type</li>
      <li><a href="#set">Set</a> data type</li>
      <li><a href="#sorted-set">Sorted Set</a> data type</li>
+     <li><a href="#bitmap">Bitmap</a> data type</li>
      <h4>Exercises</h4>
      <li><a href="#E1">Key Commands</a></li>
      <li><a href="#E2">Using <em>String</em> data type</a></li>
@@ -30,6 +31,7 @@
      <li><a href="#E4">Using <em>Hash</em> data type</a></li>
      <li><a href="#E5">Using <em>Set</em> data type</a></li>
      <li><a href="#E6">Using <em>Sorted Set</em> data type</a></li>
+    
    </div>
   </div>
  </div>
@@ -719,7 +721,61 @@ OK
  </div>
 </div>
 <hr>
-<h1><small>treating a string as sequence of bits is a </small>Bit array <small>or</small> Bitmap</h1>
+<h1><small>treating a string as sequence of bits is a </small>Bit array <small>or</small> Bitmap<a name="bitmap"></a></h1>
+<div class="row">
+ <div class="col-md-8">
+  <div class ="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title"><a name="E7"></a><strong>Exercise:</strong> <em>Bitmap</em> Commands</h3>
+    </div>
+    <div class="panel-body">
+     <p>
+      <span class="label label-success">SETBIT</span> and <span class="label label-success">GETBIT</span> commands
+      operate on a single bit offset in a Redis string. Bitmaps are highly efficient in storing boolean information
+      on a range of related 
+     </p>
+     <pre>
+127.0.0.1:6379> SET Movie:1 "Blade Runner"
+OK
+127.0.0.1:6379> HSET Movie:2 name "Star Wars"
+OK
+127.0.0.1:6379> SADD Movie:3 "2001 a Space Odyssey"
+(integer) 1
+127.0.0.1:6379> SETBIT Movie:UserPlays:2014-12-11 2 1
+(integer) 0
+127.0.0.1:6379> GETBIT Movie:UserPlays:2014-12-11 2
+(integer) 1
+     </pre>
+     <p>
+      The <span class="label label-success">BITCOUNT</span> command returns the total number of bits set to 1 in 
+      Redis bitmap string. The <span class="label label-success">BITPOS</span> command returns the first offset
+      that matches either 1 or 0. 
+     </p>
+     <pre>
+127.0.0.1:6379> BITCOUNT Movie:UserPlays:2014-12-11
+(integer) 1
+127.0.0.1:6379> BITPOS Movie:UserPlays:2014-12-11 1
+(integer) 2
+127.0.0.1:6379> BITPOS Movie:UserPlays:2014-12-11 0
+(integer) 0
+     </pre>
+    </div>
+  {# END Exercise #}
+  </div>
+
+ </div>
+ <div class="col-md-4">
+  <h3>Critical Commands for <em>Bitmap</em></h3>
+    <ul class="list-group">
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/setbit">SETBIT</a></strong> <em>key</em> <em>offset</em> <em>value</em> 
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/getbit">GETBIT</a></strong> <em>key</em> <em>offset</em>
+     </li>
+    </ul> 
+ </div>
+</div>
 <hr>
 <h1>HyperLogLogs <small> special probabilistic data type similar to a</small> Sorted Set</h1> 
 {% endblock %}
