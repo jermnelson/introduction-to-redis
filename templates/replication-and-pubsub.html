@@ -20,8 +20,49 @@
     <div class="panel panel-danger">
      <div class="panel-body">
       <h4>In this topic &hellip;</h4>
+      <li><a href="#ms-replication">Master-Slave Replication</a></li>
      </div>
    </div>
+ </div>
+</div>
+<hr>
+<div class="panel panel-default">
+ <div class="panel-body">
+  <h1>Master-Slave Replication<a name="ms-replication"></a></h1>
+  <p class="lead">Redis's Master-Slave replication starts with at least two Redis server instances;
+  a master and one or more slave instances. All Redis server instances store a copy of data.
+  The difference between the two is that the slaves are usually read-only while the master 
+  instance accepts reads and writes.</p>
+  <div class="row">
+    <div class="col-md-8">
+     {# START Exercise #}
+     <div class ="panel panel-warning">
+      <div class="panel-heading">
+       <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Setup Master and Slave instances</h3>
+      </div>
+      <div class="panel-body">
+       <p>Open three command-line windows to run a Redis master, slave, and redis-cli instances</p>
+       <p><strong>Redis Master</strong></p>
+       <pre>
+$ redis-     
+       </pre>
+      </div>
+     {# END Exercise #}
+     </div>
+    </div>
+    <div class="col-md-4">
+     <div class="alert alert-info">
+       <strong>Facts about Master-Slave Replication</strong>
+       <ul>
+        <li>Master and Slaves use asynchronous replication</li> 
+        <li>Master can multiple slaves</li>
+        <li>Slaves can accept connections from other slaves (i.e. a slave could have as it's master a Redis instance that is slave to a master instance)</li>  
+        <li>Replication is non-blocking on both master and slave instances; a master can continue to respond to queries while slaves are 
+        synchronizing, a slave can be configured to respond to queries with old data while synchronizing with the master</li>
+       </ul>
+     </div>
+    </div>
+  </div>  
  </div>
 </div>
 <hr>
@@ -29,7 +70,7 @@
  <h2>References and Resources</h2>
   <ol>
     <li>From the redis.io website: topic on
-     <a href="http://redis.io/topics/security">http://redis.io/topics/security</a>
+     <a href="http://redis.io/topics/replication">Replication</a>
    </li>
   </ol>
 </div>

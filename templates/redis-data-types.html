@@ -24,6 +24,7 @@
      <li><a href="#set">Set</a> data type</li>
      <li><a href="#sorted-set">Sorted Set</a> data type</li>
      <li><a href="#bitmap">Bitmap</a> data type</li>
+     <li><a href="#hll">HyperLogLogs</a> data type</li>
      <h4>Exercises</h4>
      <li><a href="#E1">Key Commands</a></li>
      <li><a href="#E2">Using <em>String</em> data type</a></li>
@@ -31,7 +32,8 @@
      <li><a href="#E4">Using <em>Hash</em> data type</a></li>
      <li><a href="#E5">Using <em>Set</em> data type</a></li>
      <li><a href="#E6">Using <em>Sorted Set</em> data type</a></li>
-    
+     <li><a href="#E7">Using <em>Bitmap</em> data type</a></li>
+     <li><a href="#E*">Using <em>HyperLogLogs</em> data type</a></li>
    </div>
   </div>
  </div>
@@ -57,6 +59,10 @@
     <li class="list-group-item list-group-item-success">
      <strong>DEL <em>key</em></strong>
     </li>
+     <li class="list-group-item">
+     <strong>KEYS <em>pattern</em></strong>
+    </li>
+
    </ul>
    <div class="panel panel-warning">
     <div class="panel-heading">
@@ -759,6 +765,53 @@ OK
 127.0.0.1:6379> BITPOS Movie:UserPlays:2014-12-11 0
 (integer) 0
      </pre>
+     <p>The <span class="label label-success">BITOP</span> command performs the following bit-wise operations on 
+     different strings: <strong>AND</strong>,  <strong>OR</strong>, <strong>XOR</strong>, and <strong>NOT</strong>.
+     </p>
+     <pre>
+127.0.0.1:6379> SETBIT Movie:UserPlays:2014-12-12 2 1
+(integer) 0
+127.0.0.1:6379> SETBIT Movie:UserPlays:2014-12-12 1 1
+(integer) 0
+127.0.0.1:6379> BITOP AND and_result Movie:UserPlays:2014-12-11 Movie:UserPlays:2014-12-12
+(integer) 1
+127.0.0.1:6379> GETBIT and_result 1
+(integer) 0
+127.0.0.1:6379> GETBIT and_result 2
+(integer) 1
+127.0.0.1:6379> GETBIT and_result 3
+(integer) 0
+127.0.0.1:6379> BITOP OR or_result Movie:UserPlays:2014-12-11 Movie:UserPlays:20
+(integer) 1
+127.0.0.1:6379> GETBIT or_result 1
+(integer) 1
+127.0.0.1:6379> GETBIT or_result 2
+(integer) 1
+127.0.0.1:6379> BITOP OR or_result Movie:UserPlays:2014-12-11 Movie:UserPlays:2014-12-12
+(integer) 1
+127.0.0.1:6379> GETBIT or_result 1
+(integer) 1
+127.0.0.1:6379> GETBIT or_result 2
+(integer) 1
+127.0.0.1:6379> GETBIT or_result 3
+(integer) 0
+127.0.0.1:6379> BITOP XOR xor_result Movie:UserPlays:2014-12-11 Movie:UserPlays:2014-12-12
+(integer) 1
+127.0.0.1:6379> GETBIT or_result 1
+(integer) 1
+127.0.0.1:6379> GETBIT or_result 2
+(integer) 1
+127.0.0.1:6379> GETBIT or_result 3
+(integer) 0
+127.0.0.1:6379> BITOP NOT not_result Movie:UserPlays:2014-12-11
+(integer) 1
+127.0.0.1:6379> GETBIT not_result 1
+(integer) 1
+127.0.0.1:6379> GETBIT not_result 2
+(integer) 0
+127.0.0.1:6379> GETBIT not_result 3
+(integer) 1
+     </pre>
     </div>
   {# END Exercise #}
   </div>
@@ -773,9 +826,76 @@ OK
      <li class="list-group-item">
       <strong><a href="http://redis.io/commands/getbit">GETBIT</a></strong> <em>key</em> <em>offset</em>
      </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/bitcount">BITCOUNT</a></strong> <em>key</em> <em>offset</em> <em>value</em> 
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/bitpos">BITPOS</a></strong> <em>key</em> <em>offset</em>
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/bitop">BITOP</a></strong> <em>operation</em> <em>destination_key</em> <em>key1</em> [<em>key2</em> &hellip;] 
+     </li>
     </ul> 
  </div>
 </div>
 <hr>
-<h1>HyperLogLogs <small> special probabilistic data type similar to a</small> Sorted Set</h1> 
+<h1>HyperLogLogs <small> special probabilistic data type similar to a</small> Sorted Set<a name="hll"></a></h1> 
+<p class="lead">HyperLogLogs offer a reduced 
+<div class="row">
+ <div class="col-md-4">
+  <h3>Critical Commands for <em>HyperLogLogs</em></h3>
+    <ul class="list-group">
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/pfadd">PFADD</a></strong> <em>key</em> <em>element</em> [<em>element</em> &hellip;] 
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/pfcount">PFCOUNT</a></strong> <em>key</em> [<em>key</em> &hellip;] 
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/pfmerge">PFMERGE</a></strong> <em>destination_key</em> <em>key1</em> [<em>key2</em> &hellip;]
+     </li>
+    </ul>
+ </div>
+ <div class="col-md-8">
+  {# START Exercise #}
+  <div class ="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title"><a name="E7"></a><strong>Exercise:</strong> <em>Bitmap</em> Commands</h3>
+    </div>
+    <div class="panel-body">
+     <p>
+      <span class="label label-success">PFADD</span> adds one or more elements to a HyperLogLogs. The 
+      <span class="label label-success">PFCOUNT</span> returns an approximation of the count in the HyperLogLogs 
+      with an standard error of .81%. With <span class="label label-success">PFMERGE</span> multiple HyperLogLogs
+      can be merged into a single HyperLogLogs. The advantage of the HyperLogLogs is that is very efficient in
+      memory (maximum size is 12k bytes) and does not require an proportional amount of memory (memory to items in
+      the set) to perform a population count. 
+     </p>
+     <pre>
+127.0.0.1:6379> PFADD EducationEvent:1:attendee Person:1 Person:2 Person:3 Person:44556
+(integer) 1
+127.0.0.1:6379> PFCOUNT EducationEvent:1:attendee
+(integer) 4
+127.0.0.1:6379> PFADD LiteraryEvent:1:attendee Person:4 Person:1
+(integer) 1
+127.0.0.1:6379> PFMERGE Event:attendee EducationEvent:1:attendee LiteraryEvent:1:attendee
+OK
+127.0.0.1:6379> PFCOUNT Event:attendee
+(integer) 5
+
+     </pre>
+   </div>
+  {# END Exercise #}
+  </div>
+ </div>
+</div>
+<hr>
+<div class="row">
+ <h2>References and Resources</h2>
+  <ol>
+    <li>From the redis.io website section on commands
+     <a href="http://redis.io/commands">http://redis.io/commands</a>
+   </li>
+  </ol>
+</div>
 {% endblock %}
