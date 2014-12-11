@@ -22,9 +22,14 @@
      <li><a href="#list">List</a> data type</li>
      <li><a href="#hash">Hash</a> data type</li>
      <li><a href="#set">Set</a> data type</li>
+     <li><a href="#sorted-set">Sorted Set</a> data type</li>
      <h4>Exercises</h4>
-     <li><a href="#E1">Using <em>STRING</em> data type</a></li>
-     <li><a href="#E2">Using <em>LIST</em> data type</a></li>
+     <li><a href="#E1">Key Commands</a></li>
+     <li><a href="#E2">Using <em>String</em> data type</a></li>
+     <li><a href="#E3">Using <em>List</em> data type</a></li>
+     <li><a href="#E4">Using <em>Hash</em> data type</a></li>
+     <li><a href="#E5">Using <em>Set</em> data type</a></li>
+     <li><a href="#E6">Using <em>Sorted Set</em> data type</a></li>
    </div>
   </div>
  </div>
@@ -38,6 +43,44 @@
     streams like images, mp3, or other file formats, can be used.
    </p>
   </div>
+  <div class="col-md-4">
+  <h3>Critical Commands for <em>Keys</em></h3>
+   <ul class="list-group">
+    <li class="list-group-item list-group-item-success">
+     <strong>EXISTS <em>key</em></strong>
+    </li>
+    <li class="list-group-item">
+     <strong>TYPE <em>key</em></strong>
+    </li>
+    <li class="list-group-item list-group-item-success">
+     <strong>DEL <em>key</em></strong>
+    </li>
+   </ul>
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Key Commands</h3>
+    </div>
+    <div class="panel-body">
+     <p>
+
+     </p>
+     <pre>
+127.0.0.1:6379> SET testkey hello
+OK
+127.0.0.1:6379> EXISTS testkey
+(integer) 1
+127.0.0.1:6379> TYPE testkey
+string
+127.0.0.1:6379> DEL testkey
+(integer) 1
+127.0.0.1:6379> EXISTS testkey
+(integer) 0
+127.0.0.1:6379> TYPE testkey
+none
+     </pre>
+    </div>
+   </div>
+  </div>
 </div>
 <hr>
 <h1>String <small>the most basic data-type</strong><a name="string"></a> </h1>
@@ -50,7 +93,6 @@
   <ul class="list-group">
    <li class="list-group-item list-group-item-success">
      <strong>SET <em>key</em> <em>string</em> <em>optional nx|xx</em></strong>
-
    </li>
    <li class="list-group-item">
      <strong>GET <em>key</em></strong>
@@ -69,7 +111,7 @@
    </li>  
 
    <li class="list-group-item list-group-item-success">
-     <strong>MSET <em>key1</em> <em>string</em> <em>key2</em> <em>string</em> <em>optional nx|xx</em></strong>
+     <strong>MSET <em>key1</em> <em>string</em> <em>key2</em> <em>string</em></strong>
    </li>
 
    <li class="list-group-item">
@@ -77,11 +119,11 @@
    </li>
   </ul>
  </div>
- <div class="col-md-5 well well-sm">
+ <div class="col-md-8 well well-sm">
   {# START Exercise #}
   <div class="panel panel-warning">
    <div class="panel-heading">
-    <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Using <em>STRING</em> data type</h3>
+    <h3 class="panel-title"><a name="E2"></a><strong>Exercise:</strong> Using <em>STRING</em> data type</h3>
    </div>
    <div class="panel-body">
     <p>Setting a string value with a characters and an integer using the 
@@ -137,8 +179,12 @@ OK
     from one or more keys.
    </p>
    <pre>
-
-
+127.0.0.1:6379> MSET Person:2 "Kurt Vonnegut" Person:3 "Jane Austen" Person:4 "Mark Twain"
+OK
+127.0.0.1:6379> MGET Person:2 Person:3 Person:4
+1) "Kurt Vonnegut"
+2) "Jane Austen"
+3) "Mark Twain"
    </pre>
    </div>
   {# END Exercise #}
@@ -153,7 +199,7 @@ OK
   {# START Exercise #}
   <div class="panel panel-warning">
    <div class="panel-heading">
-    <h3 class="panel-title"><a name="E2"></a><strong>Exercise:</strong> Using <em>LIST</em> data type</h3>
+    <h3 class="panel-title"><a name="E3"></a><strong>Exercise:</strong> Using <em>LIST</em> data type</h3>
    </div>
    <div class="panel-body">
    <p>The <span class="label label-success">LPUSH</span> command adds one or more elements to the front of a list,
@@ -191,11 +237,45 @@ OK
 127.0.0.1:6379> LRANGE Book:1:comment 0 -1
 1) "This was a fun read"
    </pre>
+   <p>The <span class="label label-success">LTRIM</span> command replaces a list with a 
+   range from an existing list. </p>
+   <pre>
+127.0.0.1:6379> RPUSH Organization:1:members Person:1 Person:2 Person:3 Person:4
+(integer) 4
+127.0.0.1:6379> LRANGE Organization:1:members 0 -1
+1) "Person:1"
+2) "Person:2"
+3) "Person:3"
+4) "Person:4"
+127.0.0.1:6379> LTRIM Organization:1:members 0 2
+OK
+127.0.0.1:6379> LRANGE Organization:1:members 0 -1
+1) "Person:1"
+2) "Person:2"
+3) "Person:3"
+   </pre>
+   <p>To add in implementing simple queues in Redis using the List data-type, 
+   the <span class="label label-success">BLPOP</span> and 
+    <span class="label label-success">BRPOP</span> commands are similar to 
+    <span class="label label-success">LPOP</span> and 
+    <span class="label label-success">RPOP</span> commands only they will block
+    sending a return back to client if the list is empty. These blocking commands
+    return two values, the key of the list and an element.  
+   </p>
+   <pre>
+127.0.0.1:6379> BRPOP Organization:1:members 5
+1) "Organization:1:members"
+2) "Person:3"
+127.0.0.1:6379> LRANGE Organization:1:members 0 -1
+1) "Person:1"
+2) "Person:2"
+   </pre>
    </div>
   {# END Exercise #}
   </div>
  </div>
  <div class="col-md-4">
+  <h3>Critical Commands for <em>List</em></h3>
   <ul class="list-group">
    <li class="list-group-item list-group-item-success">
      <strong>LPUSH</strong> <em>key</em> <em>value</em>
@@ -212,18 +292,432 @@ OK
    <li class="list-group-item list-group-item-success">
     <strong>RPOP</strong> <em>key</em>
    </li>
-
- </div>
- <div class="col-md-4">
-
+   <li class="list-group-item">
+    <strong>BLPOP</strong> <em>key</em> <em>second delay</em>
+   </li>
+   <li class="list-group-item list-group-item-success">
+    <strong>BRPOP</strong> <em>key</em> <em>second delay</em>
+   </li>
+  </ul>
  </div>
 </div>
 <hr>
-<h1><small>A</small> Hash <small>is a "dictionary" of sub-keys and values <a name="hash"></a></h1>
+<h1> Hash <small>is a "dictionary" of fields and values </small><a name="hash"></a></h1>
+<div class="row">
+ <div class="col-md-4">
+  <h3>Critical Commands for <em>Hash</em></h3>
+  <ul class="list-group">
+   <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/hset">HSET</a></strong> <em>key</em> <em>field</em> <em>value</em>
+   </li>
+   <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/hget">HGET</a></strong> <em>key</em> <em>field</em>
+   </li>
+   <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/hmset">HMSET</a></strong> <em>key</em> <em>field1</em> <em>value1</em> 
+     [<em>field2</em> <em>value2</em> &hellip;]
+   </li>
+   <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/hmget">HMGET</a></strong> <em>key</em> <em>field</em> [<em>field2</em> &hellip;]
+   </li>
+   <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/hgetall">HGETALL</a></strong> <em>key</em> 
+   </li>
+   <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/hexists">HEXISTS</a></strong> <em>key</em> <em>field</em> 
+   </li>
+   <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/hlen">HLEN</a></strong> <em>key</em> 
+   </li>
+   <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/hkeys">HKEYS</a></strong> <em>key</em>  
+   </li>
+   <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/hvals">HVALS</a></strong> <em>key</em> 
+   </li>
+   <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/hdel">HDEL</a></strong> <em>key</em> <em>field</em>
+   </li>
+   <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/hincrby">HINCRBY</a></strong> <em>key</em> <em>field</em> <em>increment</em>
+   </li>
+
+  </ul>
+ </div>
+ <div class="col-md-8">
+  {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+    <h3 class="panel-title"><a name="E3"></a><strong>Exercise:</strong> Using <em>Hash</em> data type</h3>
+   </div>
+   <div class="panel-body">
+   <p>To set the value of a single field, use the <span class="label label-success">HSET</span>, to 
+   retrieve a single field for a Hash key, use the <span class="label label-success">HGET</span>
+   command.
+   </p>
+   <pre>
+127.0.0.1:6379> HSET Book:3 name "Cats Cradle"
+(integer) 1
+127.0.0.1:6379> HGET Book:3 name
+"Cats Cradle"
+   </pre>
+   <p>You can set multiple field-values using the <span class="label label-success">HMSET</span> command
+   and retrieve multiple field-values with the <span class="label label-success">HMGET</span> command.
+   To retrieve all of the values of a Redis Hash, use the <span class="label label-success">HGETALL</span>
+   command.
+   </p>
+   <pre>
+127.0.0.1:6379> HMSET Book:4 name "Slaughterhouse-Five" author "Kurt Vonnegut" copyrightYear 1969 ISBN 29960763
+OK
+127.0.0.1:6379> HMGET Book:4 author ISBN
+1) "Kurt Vonnegut"
+2) "29960763"
+127.0.0.1:6379> HGETALL Book:4
+1) "name"
+2) "Slaughterhouse-Five"
+3) "author"
+4) "Kurt Vonnegut"
+5) "copyrightYear"
+6) "1969"
+7) "ISBN"
+8) "29960763"
+   </pre>
+   <p>The <span class="label label-success">HEXISTS</span> determine if a field exists in a Redis Hash. 
+   The <span class="label label-success">HLEN</span> returns the number fields in a Redis Hash.    </p>
+   <pre>
+127.0.0.1:6379> HEXISTS Book:4 copyrightYear
+(integer) 1
+127.0.0.1:6379> HEXISTS Book:4 barcode
+(integer) 0
+127.0.0.1:6379> HLEN Book:4
+(integer) 4
+   </pre>
+   <p>The <span class="label label-success">HKEYS</span> returns all of the field
+    names for a Redis Hash and the
+   <span class="label label-success">HVALS</span> returns all of the values in the Hash.
+   </p>
+   <pre>
+127.0.0.1:6379> HKEYS Book:4
+1) "name"
+2) "author"
+3) "copyrightYear"
+4) "ISBN"
+127.0.0.1:6379> HVALS Book:4
+1) "Slaughterhouse-Five"
+2) "Kurt Vonnegut"
+3) "1969"
+4) "29960763"
+   </pre>
+   <p><span class="label label-success">HDEL</span> deletes a field from a hash and the 
+   <span class="label label-success">HINCRBY</span> increases the integer value of a hash
+   field by a given number.
+   </p>
+   <pre>
+127.0.0.1:6379> HDEL Book:4 copyrightYear
+(integer) 1
+127.0.0.1:6379> HGETALL Book:4
+1) "name"
+2) "Slaughterhouse-Five"
+3) "author"
+4) "Kurt Vonnegut"
+5) "ISBN"
+6) "29960763"
+127.0.0.1:6379> HSET Book:4 copyrightYear 1968
+(integer) 1
+127.0.0.1:6379> HGET Book:4 copyrightYear
+"1968"
+127.0.0.1:6379> HINCRBY Book:4 copyrightYear 1
+(integer) 1969
+127.0.0.1:6379> HGET Book:4 copyrightYear
+"1969"
+   </pre>
+   </div>
+  {# START Exercise #}
+  </div> 
+ </div>
+</div>
 <hr>
-<h1><small>A unique collection of values is a</small> Set <a name="set"></a></h1>
+<h1><small>An unique and unordered collection of values is a</small> Set <a name="set"></a></h1>
+<div class="row">
+ <div class="col-md-8">
+  {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+    <h3 class="panel-title"><a name="E5"></a><strong>Exercise:</strong> Using <em>Set</em> data type</h3>
+   </div>
+   <div class="panel-body">
+   <p>The <span class="label label-success">SADD</span> command adds one or members to a set, to display all
+   of the members of a set use the <span class="label label-success">SMEMBERS</span> command.
+   </p>
+   <pre>
+127.0.0.1:6379> SET Organization:5 "Beatles"
+127.0.0.1:6379> SADD Organization:5:member Paul John George Ringo
+(integer) 4
+127.0.0.1:6379> SMEMBERS Organization:5:member
+1) "Ringo"
+2) "John"
+3) "Paul"
+4) "George"
+   </pre>
+   <p>The <span class="label label-success">SISMEMBER</span> command determines if a value is a member of a
+   set, the <span class="label label-success">SCARD</span> command returns the number of members in a set.
+   </p>
+   <pre>
+127.0.0.1:6379> SISMEMBER Organization:5:member "John"
+(integer) 1
+127.0.0.1:6379> SISMEMBER Organization:5:member "Ralph"
+(integer) 0
+127.0.0.1:6379> SCARD Organization:5:member
+(integer) 4
+   </pre>
+   <p>Set operations, union and intersection, are available with the 
+   <span class="label label-success">SUNION</span> and <span class="label label-success">SINTER</span> commands respectively.
+   The <span class="label label-success">SDIFF</span> command subtracts multiple sets.
+   </p>
+   <pre>
+127.0.0.1:6379> SET Organization:6 "Wings"
+OK
+127.0.0.1:6379> SET Organization:7 "Traveling Wilburys"
+OK
+127.0.0.1:6379> SADD Organization:6:member Paul Linda Denny
+(integer) 3
+127.0.0.1:6379> SADD Organization:7:member Bob George Jeff Roy Tom
+(integer) 5
+127.0.0.1:6379> SUNION Organization:5:member Organization:6:member
+1) "Ringo"
+2) "John"
+3) "Paul"
+4) "George"
+5) "Denny"
+6) "Linda"
+127.0.0.1:6379> SUNION Organization:6:member Organization:7:member
+1) "Paul"
+2) "George"
+3) "Roy"
+4) "Bob"
+5) "Denny"
+6) "Tom"
+7) "Linda"
+8) "Jeff"
+127.0.0.1:6379> SUNION Organization:5:member Organization:6:member Organization:8
+ 1) "Roy"
+ 2) "George"
+ 3) "Bob"
+ 4) "Denny"
+ 5) "Linda"
+ 6) "Ringo"
+ 7) "Paul"
+ 8) "John"
+ 9) "Tom"
+10) "Jeff"
+127.0.0.1:6379> SINTER Organization:5:member Organization:6:member
+1) "Paul"
+127.0.0.1:6379> SINTER Organization:5:member Organization:7:member
+1) "George"
+127.0.0.1:6379> SINTER Organization:6:member Organization:7:member
+(empty list or set)
+127.0.0.1:6379> SDIFF Organization:5:member Organization:6:member
+1) "John"
+2) "Ringo"
+3) "George"
+127.0.0.1:6379> SDIFF Organization:6:member Organization:5:member
+1) "Linda"
+2) "Denny"
+   </pre>
+  </div>
+ {# END Exercise #}
+  </div> 
+ </div>
+ <div class="col-md-4">
+   <h3>Critical Commands for <em>Set</em></h3>
+    <ul class="list-group">
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/sadd">SADD</a></strong> <em>key</em> <em>member</em> [<em>member</em> &hellip;]
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/smembers">SMEMBERS</a></strong> <em>key</em>
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/sismember">SISMEMBER</a></strong> <em>key</em> <em>member</em>
+     </li>
+      <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/scard">SCARD</a></strong> <em>key</em>
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/sunion">SUNION</a></strong> <em>key1</em> <em>key2</em> [<em>key3</em> &hellip;]
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/sinter">SINTER</a></strong> <em>key1</em> <em>key2</em> [<em>key3</em> &hellip;]
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/sunion">SDIFF</a></strong> <em>key1</em> <em>key2</em> [<em>key3</em> &hellip;]
+     </li>
+
+    </ul>
+ </div>
+</div>
 <hr>
-<h1>Sorted Set <small>an ordered collection of unique values</h1>
+<h1>Sorted Set <small>an ordered collection of unique values</small> <a name="sorted-set"></a></h1>
+<div class="row">
+ <div class="col-md-4">
+   <h3>Critical Commands for <em>Sorted Set</em></h3>
+    <ul class="list-group">
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/zadd">ZADD</a></strong> <em>key</em> <em>score</em> <em>member</em> [<em>score</em> <em>member</em> &hellip;]
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/zrange">ZRANGE</a></strong> <em>key</em> <em>start</em> <em>stop</em> [<em>WITHSCORES</em>]
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/zrevrange">ZREVRANGE</a></strong> <em>key</em> <em>start</em> <em>stop</em> [<em>WITHSCORES</em>]
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/zrank">ZRANK</a></strong> <em>key</em> <em>start</em> <em>stop</em> [<em>WITHSCORES</em>]
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/zscore">ZSCORE</a></strong> <em>key</em> <em>member</em> 
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/zrem">ZREM</a></strong> <em>key</em> <em>member</em> 
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/zcard">ZCARD</a></strong> <em>key</em> 
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/zcount">ZCOUNT</a></strong> <em>key</em> <em>min</em> <em>max</em> 
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/zrangebyscore">ZRANGEBYSCORE</a></strong> <em>key</em> <em>min</em> <em>max</em>  
+      [<em>WITHSCORES</em>] [<em>LIMIT</em> <em>offset</em> <em>count</em>]
+
+     </li>
+
+    </ul>
+ </div>
+ <div class="col-md-8">
+  {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+    <h3 class="panel-title"><a name="E6"></a><strong>Exercise:</strong> Using <em>Sorted Set</em> data type</h3>
+   </div>
+   <div class="panel-body">
+    <p>The <span class="label label-success">ZADD</span> command adds a member with a score to a sorted set. To 
+    retrieve a range of members by index, use the <span class="label label-success">ZRANGE</span> command. To 
+    retrieve a range of members from high score to low score, use the 
+    <span class="label label-success">ZREVRANGE</span> command.
+    </p>
+    <pre>
+127.0.0.1:6379> ZADD copyrightYear 1996 Book:1 2014 Book:2 1963 Book:3
+(integer) 3
+127.0.0.1:6379> ZADD copyrightYear 1969 Book:4
+(integer) 1
+127.0.0.1:6379> ZRANGE copyrightYear 0 -1
+1) "Book:3"
+2) "Book:4"
+3) "Book:1"
+4) "Book:2"
+127.0.0.1:6379> ZRANGE copyrightYear 0 -1 WITHSCORES
+1) "Book:3"
+2) "1963"
+3) "Book:4"
+4) "1969"
+5) "Book:1"
+6) "1996"
+7) "Book:2"
+8) "2014"
+127.0.0.1:6379> ZREVRANGE copyrightYear 0 -1
+1) "Book:2"
+2) "Book:1"
+3) "Book:4"
+4) "Book:3"
+127.0.0.1:6379> ZREVRANGE copyrightYear 0 -1 WITHSCORES
+1) "Book:2"
+2) "2014"
+3) "Book:1"
+4) "1996"
+5) "Book:4"
+6) "1969"
+7) "Book:3"
+8) "1963"
+    </pre>
+    <p>In Redis sorted sets, the order of members is first determined by the score. If two members have identical scores, the members
+    are then sorted lexicographically by value.</p>
+    <pre>
+127.0.0.1:6379> ZADD Book:names 0 "Into the Wild" 0 "Cat's Cradle" 
+(integer) 2
+127.0.0.1:6379> ZADD Book:names0 "Time Machine, The" 0 "Gravity's Rainbow"
+(integer) 2
+127.0.0.1:6379> ZRANGE Book:names 0 -1 WITHSCORES
+1) "Cat's Cradle"
+2) "0"
+3) "Gravity's Rainbow"
+4) "0"
+5) "Into the Wild"
+6) "0"
+7) "Time Machine, The"
+8) "0"
+    </pre>
+    <p>The <span class="label label-success">ZRANK</span> and <span class="label label-success">ZSCORE</span> commands retrieves
+    the index (rank) and score of a member in a sorted set. The <span class="label label-success">ZREM</span> command removes
+    the member from the sorted set.
+   </p>
+   <pre>
+127.0.0.1:6379> ZRANK copyrightYear Book:3
+(integer) 0
+127.0.0.1:6379> ZRANK copyrightYear Book:1
+(integer) 2
+127.0.0.1:6379> ZRANK copyrightYear Book:56
+(nil)
+127.0.0.1:6379> ZSCORE copyrightYear Book:3
+"1963"
+127.0.0.1:6379> ZSCORE copyrightYear Book:1
+"1996"
+127.0.0.1:6379> ZRANGE copyrightYear 0 -1 WITHSCORES
+ 1) "Book:3"
+ 2) "1963"
+ 3) "Book:1"
+ 4) "1996"
+ 5) "Book:5"
+ 6) "1996"
+ 7) "Book:6"
+ 8) "1996"
+ 9) "Book:2"
+10) "2014"
+   </pre>
+   <p>Other useful sorted set commands include: <span class="label label-success">ZCARD</span> which returns the total number of members in 
+   the sorted set.  <span class="label label-success">ZCOUNT</span> that returns the number of members that are in a range of scores. 
+   <span class="label label-success">ZRANGEBYSCORE</span> returns all members in a sorted set that have score between a minimum and maximum
+   score. Both <span class="label label-success">ZCOUNT</span> and <span class="label label-success">ZRANGEBYSCORE</span> use 
+   <code>-inf</code> for all scores from negative infinity and <code>+inf</code> for all score to infinity. 
+   </p>
+   <pre>
+127.0.0.1:6379> ZCOUNT copyrightYear 1900 1970
+(integer) 2
+127.0.0.1:6379> ZRANGEBYSCORE copyrightYear 1900 1970 WITHSCORES
+1) "Book:3"
+2) "1963"
+3) "Book:4"
+4) "1969"
+127.0.0.1:6379> ZRANGEBYSCORE copyrightYear -inf 2000 WITHSCORES
+ 1) "Book:3"
+ 2) "1963"
+ 3) "Book:4"
+ 4) "1969"
+ 5) "Book:1"
+ 6) "1996"
+ 7) "Book:5"
+ 8) "1996"
+ 9) "Book:6"
+10) "1996"
+127.0.0.1:6379> ZRANGEBYSCORE copyrightYear 1998 +inf WITHSCORES
+1) "Book:2"
+2) "2014"
+   </pre>
+   </div>
+  {# END Exercise #}
+  </div>
+ </div>
+</div>
 <hr>
 <h1><small>treating a string as sequence of bits is a </small>Bit array <small>or</small> Bitmap</h1>
 <hr>
