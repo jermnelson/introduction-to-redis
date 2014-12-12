@@ -8,8 +8,9 @@ __license__ = "GPLv3"
 import sys
 
 def encode(value):
-    if not type(value) == bytes:
-        value = value.encode()
+    "Return a bytestring representation of the value"
+    if not isinstance(value, bytes):
+        value.encode('utf-8', 'strict')
     return value
 
 def gen_redis_proto(*cmd):
