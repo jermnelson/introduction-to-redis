@@ -21,9 +21,11 @@
      <div class="panel-body">
       <h4>In this topic &hellip;</h4>
       <li><a href="#ms-replication">Master-Slave Replication</a></li>
+      <li><a href="#pubsub">Pub/Sub</a></li>
       <h4>Exercises</h4>
       <li><a href="#E1">Runtime set-up of Master-Slave Replication</a></li>
       <li><a href="#E2">Set-up of Master-Slave Replication with <em>redis.config</em></a></li>
+      <li><a href="#E3">Pub/Sub</a></li>
      </div>
    </div>
  </div>
@@ -60,19 +62,19 @@ $ ~/redis-2.8.18/src/redis-server --dbfilename slave.rdb --port 6380
 $ ~/redis-2.8.18/src/redis-cli -p 6379
 127.0.0.1:6379> DBSIZE
 (integer) 0
-127.0.0.1:6379> ^C
+127.0.0.1:6379> exit
 $
 $ ~/redis-2.8.18/src/redis-cli -p 6380
 127.0.0.1:6380> DBSIZE
 (integer) 0
 127.0.0.1:6380> SLAVEOF localhost 6379
 OK
-127.0.0.1:6380> ^C
+127.0.0.1:6380> exit
 $
 $ ~/redis-2.8.18/src/redis-cli -p 6379
 127.0.0.1:6379> HMSET Book:1 name "Infinite Jest" author "David Foster Wallace"
 OK
-127.0.0.1:6379> ^C
+127.0.0.1:6379> exit
 $
 $ ~/redis-2.8.18/src/redis-cli -p 6380
 127.0.0.1:6380> KEYS *
@@ -111,7 +113,7 @@ $ ~/redis-2.8.18/src/redis-cli -p 6380
         synchronizing, a slave can be configured to respond to queries with old data while synchronizing with the master</li>
        </ul>
      </div>
-     <h3>Critical Commands for <em>Keys</em></h3>
+     <h3>Critical Commands for Master-Slave Replication</h3>
      <ul class="list-group">
       <li class="list-group-item list-group-item-success">
        <strong><a href="http://redis.io/commands/slaveof">SLAVEOF</a> <em>server</em> <em>port</em></strong>
@@ -123,6 +125,73 @@ $ ~/redis-2.8.18/src/redis-cli -p 6380
     </div>
   </div>  
  </div>
+</div>
+<hr>
+<h1>Pub/Sub (Publication/Subscription)<a name="pubsub"></a></h1>
+<div class="row">
+ <div class="col-md-3">
+   <h3>Critical Commands for Pub/Sub</h3>
+    <ul class="list-group">
+     <li class="list-group-item list-group-item-success">
+       <strong><a href="http://redis.io/commands/subscribe">SUBSCRIBE</a> <em>channel</em> [<em>channel</em> &hellip;]</strong>
+     </li>
+     <li class="list-group-item">
+      <strong><a href="http://redis.io/commands/publish">PUBLISH</a> <em>channel</em> <em>message</em></strong>
+     </li>
+     <li class="list-group-item list-group-item-success">
+       <strong><a href="http://redis.io/commands/unsubscribe">UNSUBSCRIBE</a> [<em>channel</em> [<em>channel</em> &hellip;]]</strong>
+     </li>
+     <li class="list-group-item ">
+       <strong><a href="http://redis.io/commands/psubscribe">PSUBSCRIBE</a> <em>pattern</em> [<em>pattern</em> &hellip;]</strong>
+     </li>
+     <li class="list-group-item list-group-item-success">
+      <strong><a href="http://redis.io/commands/punsubscribe">PUNSUBSCRIBE</a>[<em>channel</em> [<em>channel</em> &hellip;]]
+      </strong>
+     </li>
+    </ul>
+ </div>
+ <div class="col-md-9">
+  {# START Exercise #}
+  <div class ="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title"><a name="E3"></a><strong>Exercise:</strong> Pub/Sub</h3>
+    </div>
+    <div class="panel-body">
+    <p>In this exercise, we will use <em>redis-cli</em> as a publisher and use the 
+     a Python command line to run a consumer application using <span class="label label-success">PUBLISH</span>
+     and <span class="label label-success">SUBSCRIBE</span> commands. The Python client 
+     <em>redis-py</em> has its own Publish/Subscribe class with its own method calls for responding 
+     to messages published to a channel.
+    </p>
+    <div class="row">
+      <div class="col-md-6">
+       <h4>Redis Python Subscription Client</h4>
+       <pre>
+>>> import redis
+>>> local_redis = redis.StrictRedis()
+>>> circ_consumer = local_redis.pubsub()
+>>> circ_consumer.subscribe("checkouts", "checkins")
+       </pre>
+    
+      </div>
+      <div class="col-md-6">
+       <h4>Redis <em>redis-cli</em> Publisher Client</h4>
+       <pre>
+127.0.0.1:6379> publish checkouts Book:3
+(integer) 1
+127.0.0.1:6379> publish checkouts Book:1
+(integer) 1
+127.0.0.1:6379> publish checkins Book:3
+(integer) 1
+127.0.0.1:6379> publish checkins Book:3
+(integer) 1
+       </pre>
+      </div>
+    </div>
+   {# END Exercise #}
+  </div>  
+ </div>
+
 </div>
 <hr>
 <div class="row">
