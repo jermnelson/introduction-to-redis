@@ -79,6 +79,7 @@ StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
 <h1>Mass Insertion of Data <a name="mass-insertion"></a></h1>
 <div class="row">
  <div class="col-md-8">
+  {# START Exercise #}
   <div class="panel panel-warning">
    <div class="panel-heading">
      <h3 class="panel-title">Exercise: Mass insertion with <em>netcat</em><a name="E2"></a></h3>
@@ -88,7 +89,8 @@ StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
     is empty.</p> 
     <pre>
 127.0.0.1:6379> DBSIZE
-(integer) 0 
+(integer) 0
+127.0.0.1:6379> exit 
     </pre>
     <pre>
 $ cd ~/introduction-to-redis/06-pipelining-and-mass-insertions
@@ -100,13 +102,60 @@ $ (cat books.txt; sleep 10) | nc localhost 6379
 .
 +OK
     </pre>
-    <p>Now launch <strong>redis-cli</strong> and check to see the number of keys in Redis</p>
+    <p>Now launch <strong>redis-cli</strong> and check to see the number of keys in Redis with
+     <span class="label label-success">DBSIZE</span> command and retrieve some sample keys 
+     with <span class="label label-success">GET</span>.
+    </p>
     <pre>
 127.0.0.1:6379> DBSIZE
 (integer) 9984
+127.0.0.1:6379> GET Book:1
+"Witchcraft in the Middle Ages."
+127.0.0.1:6379> GET Book:4567
+"Ephemeral vistas : the expositions universelles, great exhibitions, and world's fairs, 1851-1939 /"
+127.0.0.1:6379> GET Book:9000
+"Art since 1940 : strategies of being /"
     </pre>
    </div>
+ {# END Exercise #}
   </div>
+  {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+     <h3 class="panel-title">Exercise: Mass insertion with <em>Python</em><a name="E3"></a></h3>
+   </div>
+   <div class="panel-body">
+    <p>In <strong>redis-cli</strong>, flush the datastore with <span class="label label-success">FLUSHALL</span>
+    to start with an empty datastore.</a>     
+    <pre>
+127.0.0.1:6379> FLUSHALL
+OK
+127.0.0.1:6379> exit 
+    </pre>
+     <p>Launch a <code>virtualenv</code> environment and then run a python script that
+    inserts inserts 10,000 strings into Redis.</p>
+    <pre>
+$ source ~/redis-py-end/bin/activate
+$ cd ~/introduction-to-redis/06-pipelining-and-mass-insertions
+$ python protocol.py | ~/redis-2.8.18/src/redis-cli --pipe
+All data transferred. Waiting for the last reply...
+Last reply received from server.
+errors: 0, replies: 10000
+    </pre>
+    <p>Finally, using <strong>redis-cli</strong>, check the size with the 
+     <span class="label label-success">DBSIZE</span> command and retrieve some sample keys 
+     with <span class="label label-success">GET</span>.
+    <pre>
+~/redis-2.8.18/src/redis-cli
+127.0.0.1:6379> DBSIZE
+(integer) 10000
+127.0.0.1:6379> GET Key:1
+"Value=1"
+127.0.0.1:6379> GET Key:4567
+"Value=4567"
+127.0.0.1:6379> GET Key:9000
+"Value=9000"
+    </pre>
  </div>
 </div>
 {% endblock %}
