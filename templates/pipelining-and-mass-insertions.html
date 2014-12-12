@@ -84,7 +84,27 @@ StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
      <h3 class="panel-title">Exercise: Mass insertion with <em>netcat</em><a name="E2"></a></h3>
    </div>
    <div class="panel-body">
-
+    <p>Open a terminal window and launch <strong>redis-cli</strong></p> and check to see that Redis
+    is empty.</p> 
+    <pre>
+127.0.0.1:6379> DBSIZE
+(integer) 0 
+    </pre>
+    <pre>
+$ cd ~/introduction-to-redis/06-pipelining-and-mass-insertions
+$ (cat books.txt; sleep 10) | nc localhost 6379
++OK
++OK
+.
+.
+.
++OK
+    </pre>
+    <p>Now launch <strong>redis-cli</strong> and check to see the number of keys in Redis</p>
+    <pre>
+127.0.0.1:6379> DBSIZE
+(integer) 9984
+    </pre>
    </div>
   </div>
  </div>

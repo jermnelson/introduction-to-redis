@@ -49,7 +49,7 @@ TOPICS = OrderedDict([
         'title': 'Replication and Pub/Sub'}),
     ('clustering-and-ha', {
         'location': '10-clustering-and-ha',
-        'title': 'Clustering and High Availablity'}),
+        'title': 'Clustering and High Availability'}),
     ('lua-scripting', {
         'location': '11-lua-scripting',
         'title': 'Lua Scripting'}),
