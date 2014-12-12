@@ -21,6 +21,9 @@
      <div class="panel-body">
       <h4>In this topic &hellip;</h4>
       <li><a href="#ms-replication">Master-Slave Replication</a></li>
+      <h4>Exercises</h4>
+      <li><a href="#E1">Runtime set-up of Master-Slave Replication</a></li>
+      <li><a href="#E2">Set-up of Master-Slave Replication with <em>redis.config</em></a></li>
      </div>
    </div>
  </div>
@@ -38,17 +41,64 @@
      {# START Exercise #}
      <div class ="panel panel-warning">
       <div class="panel-heading">
-       <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Setup Master and Slave instances</h3>
+       <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Runtime Master and Slave instances</h3>
       </div>
       <div class="panel-body">
-       <p>Open three command-line windows to run a Redis master, slave, and redis-cli instances</p>
+       <p>Open four command-line windows to run a Redis master, slave, and redis-cli instances</p>
        <p><strong>Redis Master</strong></p>
        <pre>
-$ redis-     
+$ cd introduction-to-redis/09-replication-and-pub-sub/
+$ ~/redis-2.8.18/src/redis-server --dbfilename master.rdb --port 6379      
+       </pre>
+       <p><strong>Redis Slave</strong></p>
+       <pre>
+$ cd introduction-to-redis/09-replication-and-pub-sub/
+$ ~/redis-2.8.18/src/redis-server --dbfilename slave.rdb --port 6380
+       </pre>
+       <p><strong>Redis CLI</strong></p>
+       <pre>
+$ ~/redis-2.8.18/src/redis-cli -p 6379
+127.0.0.1:6379> DBSIZE
+(integer) 0
+127.0.0.1:6379> ^C
+$
+$ ~/redis-2.8.18/src/redis-cli -p 6380
+127.0.0.1:6380> DBSIZE
+(integer) 0
+127.0.0.1:6380> SLAVEOF localhost 6379
+OK
+127.0.0.1:6380> ^C
+$
+$ ~/redis-2.8.18/src/redis-cli -p 6379
+127.0.0.1:6379> HMSET Book:1 name "Infinite Jest" author "David Foster Wallace"
+OK
+127.0.0.1:6379> ^C
+$
+$ ~/redis-2.8.18/src/redis-cli -p 6380
+127.0.0.1:6380> KEYS *
+127.0.0.1:6380> KEYS *
+1) "Book:1"
+127.0.0.1:6380> HGETALL Book:1
+1) "name"
+2) "Infinite Jest"
+3) "author"
+4) "David Foster Wallace"
+127.0.0.1:6380> HSET Book:1 copyrightYear 1996
+(error) READONLY You can't write against a read only slave.
        </pre>
       </div>
      {# END Exercise #}
      </div>
+     {# START Exercise #}
+     <div class ="panel panel-warning">
+      <div class="panel-heading">
+       <h3 class="panel-title"><a name="E2"></a><strong>Exercise:</strong> Set-up of Master-Slave Replication with <em>redis.config</em></h3>
+      </div>
+      <div class="panel-body">
+      </div>
+     {# END Exercise #}
+     </div>
+
     </div>
     <div class="col-md-4">
      <div class="alert alert-info">
@@ -61,6 +111,15 @@ $ redis-
         synchronizing, a slave can be configured to respond to queries with old data while synchronizing with the master</li>
        </ul>
      </div>
+     <h3>Critical Commands for <em>Keys</em></h3>
+     <ul class="list-group">
+      <li class="list-group-item list-group-item-success">
+       <strong><a href="http://redis.io/commands/slaveof">SLAVEOF</a> <em>server</em> <em>port</em></strong>
+      </li>
+      <li class="list-group-item">
+       <strong>TYPE <em>key</em></strong>
+      </li>
+     </ul>
     </div>
   </div>  
  </div>
