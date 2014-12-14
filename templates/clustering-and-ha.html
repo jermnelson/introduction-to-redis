@@ -7,8 +7,10 @@
   <h1>Clustering and High Availability</h1>
   <p class="lead">
    Highlighting its role as an data-store in the enterprise, Redis 
-   offers two operational modes; clustering and high availability
-   for increased use and reliability as core IT infrastructure. 
+   offers two operational tools; clustering, available in Redis 3.0, 
+   and Redis Sentinel, for high availability management of Redis 
+   Instances. Both tools increased Redis use and reliability as 
+   a core IT infrastructure. 
   </p>
   {% include 'snippets/topic-nav.html' %}
  </div>
@@ -16,37 +18,83 @@
     <div class="panel panel-danger">
      <div class="panel-body">
       <h4>In this topic &hellip;</h4>
+      <li><a href="#redis-cluster">Redis Cluster</a></li>
+      <h4>Exercises</h4>
+      <li><a href="#E3">Configuring and Running Redis Sentinel</a></li>
      </div>
     </div>
  </div> 
 </div>
 <hr>
-<h2>
+<h1>Redis Cluster <a name="redis-cluster"></a></h1>
 <div class="row">
  <p>
  Start by downloading Redis 3.0 and installing by doing the following:
  </p>
  <div class="col-md-8">
-  <pre>
+   <pre>
 $ wget https://github.com/antirez/redis/archive/3.0.0-rc1.tar.gz
 $ tar xvf redis-3.0.0-rc1.tar.gz 
 $ cd redis-3.0.0-rc1
 $ make
-  </pre>
- <p>
+   </pre>
+   <p>
    
- </p>
-  <pre>
+   </p>
+   <pre>
 $ pip install redis-py-cluster
-  </pre>
+   </pre>
+  </div>
  </div>
 </row>
+<hr>
+<h1>Redis Sentinel <a name="sentinel"></a></h1>
+<p class="lead">
+ Redis Sentinel manages Redis instances through four main ways:
+</p>
+ <ul class="lead">
+  <li><strong>Monitors</strong> running Redis masters and slaves</li>
+  <li><strong>Notifies</strong> system administrators or monitoring software of problems with Redis instances</li>
+  <li><strong>Automatic failover</strong> by promoting running slaves to master if a master instance is 
+  experiencing problems</li>
+  <li><strong>Configuration provider</strong> for clients to connect and discover the address for a given
+   Redis master.</li> 
+ </ul>
+<div class="row">
+ <div class="col-md-8">
+  {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+    <h3 class="panel-title"><a name="E3"></a><strong>Exercise:</strong> Configuring and Running Redis Sentinel</h3>
+   </div>
+   <div class="panel-body">
+    <p>
+     Snippet from <code>sentinel.conf</code> 
+    </p>
+    <pre>
+# dir <working-directory>
+dir /tmp
+
+# sentinel monitor <master-name> <ip> <redis-port> <quorum>
+sentinel monitor mymaster 127.0.0.1 6379 2
+
+# Default is 30 seconds.
+sentinel down-after-milliseconds mymaster 30000
+    </pre>
+   </div>
+  {# END Exercise #}
+  </div>
+ </div>
+</div>
 <hr>
 <div class="row">
  <h2>References and Resources</h2>
   <ol>
-    <li>From the redis.io website: topic on
-     <a href="http://redis.io/topics/security">http://redis.io/topics/security</a>
+    <li>From the redis.io website:
+     <a href="http://redis.io/topics/cluster-tutorial">Redis cluster tutorial</a>
+   </li>
+   <li>
+     <a href="https://github.com/Grokzen/redis-py-cluster">redis-py-cluster</a>
    </li>
   </ol>
 </div>
