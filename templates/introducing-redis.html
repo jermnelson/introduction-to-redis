@@ -11,6 +11,9 @@
   <div class="panel panel-danger">
    <div class="panel-body">
     <h4>In this topic &hellip;</h4>
+    <li><a href="#what-is">What is Redis</a></li>
+    <li><a href="#instructor">About the Instructor</a></li>
+    <li><a href="#schedule">Course Schedule</a></li>
    </div>
   </div>
  </div>
@@ -18,7 +21,7 @@
 <hr>
 <div class="row">
  <div class="col-md-10 col-md-offset-2">
-  <h2 style="color: rgb(164,26,17)">What is Redis?</h2>
+  <h2 style="color: rgb(164,26,17)">What is Redis?<a name="what-is"></a></h2>
    <p class="lead">
     Redis is an open-source NoSQL key-value datastore where instead of storing just one
     type of value, such as a string, more complex types of values can be stored. Redis,
@@ -32,7 +35,7 @@
   <div class="col-md-4">
    <div class="panel panel-info">
      <div class="panel-heading">
-      <h3 class="panel-title">About the Instructor</h3>
+      <h3 class="panel-title">About the Instructor<a name="instructor"></a></h3>
      </div>
      <div class="panel-body">
       <p> 
@@ -44,7 +47,23 @@
       After receiving his Masters in Library and Information Science from 
       the University of Illinois in 2003; Nelson worked as a professional
       librarian at the University of Utah and Western State University of 
-      Colorado.
+      Colorado before joining Colorado College in 2010.
+      </p>
+      <p>
+       Nelson's experience with Redis started in 2011 when he started 
+       experimenting using Redis as a bibliographic datastore, representing
+       library's physical and digital material using both legacy formats 
+       like <a href="http://www.loc.gov/marc/bibliographic/">MARC21</a>, and newer, more 
+       linked-data based vocabularies like <a href="http://rdvocab.info/">Resource 
+       Description and Access (RDA)</a>, <a href="http://schema.org/">schema.org</a> and
+       <a href="http://bibframe.org/">BIBFRAME</a>. He has 
+       <a href="http://journal.code4lib.org/articles/7349">published</a> and presented at
+       <a href="http://tuttdemo.coloradocollege.edu/ala2013/">national library conferences</a> 
+       in <a href="http://discovery.coloradocollege.edu/code4lib/">2012</a>
+       and <a href="http://tuttdemo.coloradocollege.edu/code4lib/">2013</a>. Currently, Nelson
+       is working on a major project with the Library of Congress in implementing a new 
+       BIBFRAME catalog using <a href="http://fedorarepository.org/">Fedora Commons digital repository</a>,
+       <a href="http://www.elasticsearch.org/">Elastic search</a>, and of course, Redis.
       </p>
      </div>
    </div>
@@ -58,15 +77,17 @@
       <h3 class="panel-title">Exercise: Setup of Training Environment</h3>
     </div>
     <div class="panel-body">
-
-
+     <p>We will be using both an Ubuntu VM as well as the local workstation for the class exercises and labs. 
+      Specific directions for using the Introduction to Redis virtual machine are available 
+      <a href="{{ url_for('redis_course_vm') }}">here</a>.
+     </p>
     </div>
    {# END Exercise #}
    </div>
   </div>
   {# START About Course #}
   <div class="col-md-8 well">
-    <h2>Schedule</h2>
+    <h2>Schedule<a name="schedule"></a> </h2>
     <h3>Day 1</h3>
     <ul class="lead">
     {% for key in ['introducing-redis', 'basic-setup-and-admin', 'redis-data-types', 'operating-a-redis-system'] %}
