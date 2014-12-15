@@ -22,6 +22,8 @@
     <li><a href="#node-js">Node.js</a></li>
     <h4>Exercises</h4>
     <li><a href="#E1">Installing Python and <em>Redis.py</em></a></li>
+    <li><a href="#E2">Using <em>redis-py</em> from the command-line</a></li>
+    <li><a href="#E3">Installing and setup of node.js</a></li>    
    </div>
   </div>
  </div>
@@ -32,7 +34,7 @@
  with the focus not becoming an expert in Python, but how to use Redis in a programming
  context with simple scripting support. 
 <div class="row">
- <div class="col-md-4">
+ <div class="col-md-8">
   {# START Exercise #}
   <div class="panel panel-warning">
    <div class="panel-heading">
@@ -44,6 +46,25 @@
    </div>
   {# END Exercise #}
   </div>
+  {# START Exercise #}
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title">Exercise: Using <em>redis-py</em> from the command-line<a name="E2"></a></h3>
+    </div>
+    <div class="panel-body">
+    <pre>
+$ source redis-py-env/bin/activate
+(redis-py-env) $ python
+Python 3.4.0 (v3.4.0:04f714765c13, Mar 15 2014, 23:02:41) 
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import redis
+>>> local_redis = redis.StrictRedis()
+>>> local_redis.dbsize()
+    </pre>
+    </div>
+  {# END Exercise #}
+  </div>  
  </div>
 </div>
 <hr>
@@ -53,7 +74,38 @@
  (although there was recent major fork called <a href="https://github.com/iojs/io.js">io.js</a>)
 </p>
 <div class="row">
-  <div class="col-md-8">
+ <div class="col-md-8">
+  {# START Exercise #}
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title">Exercise: Installing and setup of node.js<a name="E3"></a></h3>
+    </div>
+    <div class="panel-body">
+   <p>The first steps running node.js, is to download and install node.js and then
+   install the recommended node.js client. We will also two other node modules,
+   <a href="#">express</a> and <a href="#">swig</a> to build a simple website using
+   Redis.
+   </p>
+   <pre>
+$ npm install hiredis redis
+$ npm install express
+$ npm install swig --save
+  </pre>
+  <p>Second, change directory to the <code>node</code> example directory and 
+     run the node.js application</p>
+  <pre>
+$ cd introduction-to-redis/05-programming-redis
+$ node server.js
+Application Started on http://localhost:1337/
+  </pre>
+    </div>
+   {# END Exercise #}
+   </div>
+  {# START Exercise #}
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title">Exercise:
+  <p>
 
   </div>
 </div>
