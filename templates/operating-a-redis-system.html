@@ -83,20 +83,143 @@
 </div>
 <hr>
 <div class="row">
- <div class="col-md-6">
+ <div class="col-md-8">
    <h2>Configuring <em>redis.conf</em> <a name="redis-conf"></a></h2>
    {# START Exercise #}
    <div class="panel panel-warning">
     <div class="panel-heading">
-     <h3 class="panel-title">Exercise: <a name="E1"></a></h3>
+     <h3 class="panel-title">Exercise: Saving RDB snapshot &amp; redis.conf parameters <name="E1"></a></h3>
     </div>
     <div class="body">
+    <p>
+     The <span class="label label-success">SAVE</span> will save a RDB snapshot 
+     of the running Redis instance to disk, the 
+     <span class="label label-success">BGSAVE</span> does a similar RDB snaphot
+     only running in the background while the active Redis instance still 
+     can respond to client commands. 
+    </p>
+    <pre>
+127.0.0.1:6379> SAVE
+OK
+127.0.0.1:6379> BGSAVE
+Background saving started
+127.0.0.1:6379>
+    </pre>
+    <p>Listed below is a snippet from a Redis 2.8 configuration file some of the 
+    important parameters and default values for setting both RDB and AOF persistence
+    in Redis.</p>
     </div>
-   </div>
- </div>
- <div class="col-md-6">
-      <h2>Configuring a live Redis instance</h2>
+    <pre>
+# Accept connections on the specified port, default is 6379.
+# If port 0 is specified Redis will not listen on a TCP socket.
+port 6379
 
+# Close the connection after a client is idle for N seconds (0 to disable)
+timeout 0
+
+# Specify the server verbosity level.
+loglevel notice
+
+# Specify the log file name. Also the empty string can be used to force
+# Redis to log on the standard output.
+logfile ""
+
+
+save 900 1
+save 300 10
+save 60 10000
+
+# RDB files created with checksum disabled have a checksum of zero that will
+# tell the loading code to skip the check.
+rdbchecksum yes
+
+# The filename where to dump the DB
+dbfilename dump.rdb
+
+# The working directory.
+dir /.
+
+appendonly no
+
+# The name of the append only file (default: "appendonly.aof")
+appendfilename "appendonly.aof"
+
+# Max execution time of a Lua script in milliseconds.
+lua-time-limit 5000
+    </pre>
+   {# END Exercise #}
+   </div>
+
+ </div>
+</div>
+<h2>Operating a live Redis instance <a name="live"></a></h2>
+<div class="row">
+ <div class="col-md-4">
+    <h3>Critical Commands for configuring a running Redis instance</h3>
+   <ul class="list-group">
+    <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/config-set">CONFIG SET</a> <em>parameter</em> <em>value</em></strong>
+    </li>
+    <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/config-get">CONFIG GET</a> <em>parameter</em> </strong>
+    </li>
+    <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/save">SAVE</a></strong>
+    </li>
+    <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/bgsave">BGSAVE</a></strong>
+    </li>
+    <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/bgrewriteoaf">BGREWRITEAOF</a></strong>
+    </li>
+   <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/monitor">MONITOR</a></strong>
+   </li>
+   </ul>
+  </div>
+  <div class="col-md-8">
+   {# START Exercise #}
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title">Exercise: Configuration &amp; other Commands <name="E2"></a></h3>
+    </div>
+    <div class="body">
+     <p>The <span class="label label-success">CONFIG SET</span> allows you to set a configuration
+     parameter at runtime while the <span class="label label-success">CONFIG GET</span> command
+     retrieves a parameter.
+     </p>
+     <pre>
+127.0.0.1:6379> CONFIG GET appendonly
+1) "appendonly"
+2) "no"
+127.0.0.1:6379> CONFIG GET asfdsf
+(empty list or set)
+127.0.0.1:6379> CONFIG GET port
+1) "port"
+2) "6379"
+127.0.0.1:6379> CONFIG SET appendonly yes
+OK
+     </pre>
+     <p>The <span class="label label-success">MONITOR</span> command will display all incoming
+     client commands to the monitored Redis instance</p>
+     <pre>
+127.0.0.1:6379> MONITOR
+OK
+1418623217.197721 [0 127.0.0.1:53288] "DBSIZE"
+1418623241.973480 [0 127.0.0.1:53288] "SET" "Book:3" "Pride and Prejudice"
+1418623264.670176 [0 127.0.0.1:53288] "GET" "Book:3"
+     </pre>
+     <p>The <span class="label label-success">BGREWRITEAOF</span> command will compact and rewrite
+     the AOF log file in the background while the instance can still accept client commands.
+     </p>
+     <pre>
+127.0.0.1:6379> BGREWRITEAOF 
+Background append only file rewriting started
+127.0.0.1:6379> 
+     </pre>
+    </div>
+   {# END Exercise #}
+   </div> 
  </div>
 </div>
 <hr>
