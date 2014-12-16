@@ -16,16 +16,18 @@
    <div class="panel-body">
     <h4>In this topic &hellip;</h4>
     <li><a href="#transactions">Transactions</a></li>
+    <li><a href="#locks">Locks and Distribued Lock Manager</a></li>
     <h4>Exercises</h4>
     <li><a href="#E1">Transactions with <em>redis-cli</em></a></li>
+    <li><a href="#E2">Transactions with <em>python.py</em></a></li>
    </div>
   </div>
  </div>
 </div>
 <hr>
+<h1>Transactions <a name="transactions"></a></h1>
 <div class="row">
- <div class='col-md-5 well well-sm'>
-  <h1>Transactions <a name="transactions"></a></h1>
+ <div class='col-md-4 well well-sm'>
   <p class="lead">Redis supports <em>transactions</em>, defined as a 
   single unit of work made up of one or more commands that are not 
   affected by other Redis commands. Redis transactions are atomic meaning 
@@ -34,8 +36,26 @@
   other. Finally, Redis transactions are durable in that once the transaction is 
   completed, all of the changes persist in the datastore.
   </p>
+   <h3>Commands for <em>Transactions</em></h3>
+   <ul class="list-group">
+    <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/multi">MULTI</a></strong>
+    </li>
+    <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/exec">EXEC</a></strong>
+    </li>
+    <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/discard">DISCARD</a></strong>
+    </li>
+    <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/exec">WATCH</a>
+     <em>key</em> [<em>key</em> &hellip;]
+     </strong>
+    </li>
+
+   </ul>
  </div>
- <div class="col-md-6">
+ <div class="col-md-8">
    {# START EXERCISE #}
    <div class="panel panel-warning">
     <div class="panel-heading">
@@ -78,18 +98,52 @@ QUEUED
      <h3 class="panel-title">Exercise: Transactions with <em>redis.py</em><a name="E2"></a></h3>
     </div>
     <div class="panel-body">
-
+    <p>The Redis python client wraps the <span class="label label-success">MULTI</span> and
+    <span class="label label-success">EXEC</span> commands into the <strong>pipeline</strong> 
+    Python method by setting the parameter transaction to True.</span>
+    <pre>
+>>> pipeline = local_redis.pipeline(transaction=True)
+>>> pipeline.sadd("book:4:author", "Person:2")
+StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
+>>> pipeline.sadd("book:4:author", "Person:1")
+StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
+>>> pipeline.command_stack
+[(('SADD', 'book:4:author', 'Person:2'), {}), (('SADD', 'book:4:author', 'Person:1'), {})]
+>>> pipeline.execute()
+[1, 1]
+    </pre> 
     </div>
   {# END EXERCISE #}
   </div>
  </div>
 </div>
+<hr>
+<h1>Locks <a name="locks"></a></h1>
+<p>Redis already supports locking variables for some commands, such as 
+ <span class="label label-success">INCR</span>, 
+ <span class="label label-success">INCRBY</span> that prevents multiple
+ commands from changing the value. Salvatore Sanfilippo describes one 
+ algorithm, called Redlock, for a distributed lock manager (dlm) on the 
+ <a href="http://redis.io/topics/distlock">Redis website</a>. 
+</p>
+<p>
+ The redis.py module also has a lock object but may not be as effective as the
+ Redlock. However there are a couple of Python modules that implement Redlock
+ for Python including <strong>Redlock-py</strong>. 
+</p>
+<hr>
 <div class="row">
  <h2>References and Resources</h2>
   <ol>
     <li>From the redis.io website: topic on
      <a href="http://redis.io/topics/security">http://redis.io/topics/security</a>
-   </li>
+    </li>
+    <li>
+
+    </li>
+    <li>
+      <a href="https://pypi.python.org/pypi/redlock-py/1.0.1">Redlock-py</a>
+    </li>
   </ol>
 </div>
 {% endblock %}

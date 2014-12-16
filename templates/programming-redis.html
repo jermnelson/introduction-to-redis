@@ -41,8 +41,13 @@
      <h3 class="panel-title">Exercise: Installing Python and Redis.py<a name="E1"></a></h3>  
    </div>
    <div class="panel-body">
-    
-
+    <pre>
+$ sudo apt-get install Python3.4
+$ wget https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz
+$ tar xvf virtualenv-1.11.6.tar.gz
+$ python3 virtualenv-1.11.6/virtualenv.py redis-test-env
+$ source redis-test-env/bin/activate
+(redis-test-env) $ pip install redis
    </div>
   {# END Exercise #}
   </div>
@@ -101,12 +106,6 @@ Application Started on http://localhost:1337/
     </div>
    {# END Exercise #}
    </div>
-  {# START Exercise #}
-   <div class="panel panel-warning">
-    <div class="panel-heading">
-      <h3 class="panel-title">Exercise:
-  <p>
-
   </div>
 </div>
 {% endblock %}
