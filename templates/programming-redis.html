@@ -34,7 +34,7 @@
  with the focus not becoming an expert in Python, but how to use Redis in a programming
  context with simple scripting support. 
 <div class="row">
- <div class="col-md-8">
+ <div class="col-md-12">
   {# START Exercise #}
   <div class="panel panel-warning">
    <div class="panel-heading">
@@ -67,9 +67,131 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> local_redis = redis.StrictRedis()
 >>> local_redis.dbsize()
     </pre>
+
     </div>
   {# END Exercise #}
   </div>  
+  {# START Exercise #}
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title">Exercise: Creating a Twitter Clone<a name="E3"></a></h3>
+    </div>
+    <div class="panel-body">
+     <p>We'll now use Python to create a small Twitter clone based upon the 
+     tutorial, <a href="http://redis.io/topics/twitter-clone">Tutorial: Design and 
+     implementation of a simple Twitter clone using PHP and the Redis key-value store</a>
+     </p>
+     <p>The Redis Key structure for this Twitter Clone</p>
+     <table class="table">
+       <tr>
+        <th>Key</th>
+        <th>Description</th>
+        <th>Redis Data Type</th>
+       </tr>
+       <tr>
+         <th>next_user_id</th>
+         <td>user id counter</td>
+         <td>String</td>
+       </tr>
+       <tr>
+         <th>User:{ user_id }</th>
+         <td>Each user key includes a user id based on the <em>next_user_id</em>
+          and stores information related to the user, including <strong>username</strong>
+          subkey.
+         </td>
+         <td>Hash</td>
+       </tr>
+       <tr>
+         <th>Users</th>
+         <td>Contains a mapping between each User's username and user_id</td>
+         <td>Hash</td>
+       </tr>
+       <tr>
+         <th>followers:{ user_id }</th>
+         <td>Stores user ids for all of the users that following a particular user along
+             with a timestamp score</td>
+         <td>Sorted set</td>
+       </tr>
+       <tr>
+         <th>following:{ user_id }</th>
+         <td>Stores user ids for all of the users that a particular user is following 
+             along with a timestamp score</td>
+         <td>Sorted set</td>
+       </tr>
+       <tr> 
+         <th>next_post_id</th>
+         <td>post id counter</td>
+         <td>String</td>
+       </tr>
+       <tr>
+         <th>post:{ post_id }</th>
+         <td>Message, timestamp, and creating User for a single post</td>
+         <td>Hash</td>
+       </tr>
+       <tr>
+         <th>posts:{ user_id }</th>
+         <td>Posts from users that the User is following</td>
+         <td>List</td>
+       </tr>
+     </table>
+     <h4>Create a User</h4>
+     <pre>
+>>> def add_user(username):
+	user_id = local_redis.incr("next_user_id")
+	user_key = "User:{}".format(user_id)
+	local_redis.hset(user_key, "username", username)
+	local_redis.hset("Users", username, user_id)
+	return user_key
+>>> first_user_key = add_user("dwallace")
+>>> second_user_key = add_user("bbarker")
+>>> print(first_user_key)
+     </pre>
+     <h4>Add followers to a User</h4>
+     <pre>
+>>> def add_follower(user, follower):
+	follower_key = "followers:{}".format(local_redis.hget('Users', user).decode())
+	local_redis.zadd(follower_key, time.time(), local_redis.hget('Users', follower))
+>>> add_follower('dwallace', 'bbarker')
+     </pre>
+     <h4>Add following</h4>
+     <pre>
+def add_following(user, following_user):
+	following_key = "following:{}".format(local_redis.hget('Users', user).decode())
+	local_redis.zadd(following_key, 
+                         time.time(), 
+                         local_redis.hget('Users', following_user))
+     </pre>
+     <h4>Add a Post</h4>
+     <pre>
+def create_post(username, body):
+	post_id = local_redis.incr("next_post_id")
+	post_key = "post:{}".format(post_id)
+	local_redis.hmset(post_key, {"user_id": local_redis.hget("Users", username),
+				     "time": time.time(), 
+                                     "body": body})
+	followers = local_redis.zrange("followers:{}".format(
+            local_redis.hget("Users", username).decode()),
+				       0,-1)
+	for follower_id in followers:
+		posts_key = "posts:{}".format(follower_id.decode())
+		local_redis.lpush(posts_key, post_id)
+	return post_key
+      </pre>
+      <h4>Retrieve all posts from users that a person is following</h4>
+      <pre>
+def get_my_posts(username):
+	user_id = local_redis.hget("Users", username)
+	posts_id = "posts:{}".format(user_id.decode())
+	posts = local_redis.lrange(posts_id, 0, -1)
+	for post_id in posts:
+		post_key = "post:{}".format(post_id.decode())
+		print("""{}:\n{}""".format(local_redis.hget(post_key, "user_id"),
+					   local_redis.hget(post_key, "body")))
+
+      </pre>
+    </div>
+   {# END Exercise #}
+  </div>    
  </div>
 </div>
 <hr>
@@ -92,6 +214,7 @@ Type "help", "copyright", "credits" or "license" for more information.
    Redis.
    </p>
    <pre>
+$ sudo apt-get install node.js
 $ npm install hiredis redis
 $ npm install express
 $ npm install swig --save
