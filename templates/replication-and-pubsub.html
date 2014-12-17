@@ -97,6 +97,12 @@ $ ~/redis-2.8.18/src/redis-cli -p 6380
        <h3 class="panel-title"><a name="E2"></a><strong>Exercise:</strong> Set-up of Master-Slave Replication with <em>redis.config</em></h3>
       </div>
       <div class="panel-body">
+       <p>Master-Slave replication can be set-up in the <strong>redis.conf</strong> file for each slave.</p>
+       <pre>
+# Master-Slave replication. Use slaveof to make a Redis instance a copy of
+# another Redis server.
+slaveof <masterip> <masterport>
+       </pre>
       </div>
      {# END Exercise #}
      </div>
