@@ -32,6 +32,13 @@
  Start by downloading Redis 3.0 and installing by doing the following:
  </p>
  <div class="col-md-8">
+ {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+    <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Configuring and Running Redis Cluster</h3>
+   </div>
+   <div class="panel-body">
+    <p>Downloading and installing Redis 3.0</p>
    <pre>
 $ wget https://github.com/antirez/redis/archive/3.0.0-rc1.tar.gz
 $ tar xvf redis-3.0.0-rc1.tar.gz 
@@ -39,11 +46,75 @@ $ cd redis-3.0.0-rc1
 $ make
    </pre>
    <p>
-   
+    Next, we'll manually create a minimal cluster with three master nodes and three
+    slaves.    
    </p>
    <pre>
-$ pip install redis-py-cluster
+$ cd introduction-to-redis/10-clustering-and-ha/
+$ mkdir cluster-test
+$ cd cluster-test
+$ mkdir 7000 7001 7002 7003 7004 7005
+$ touch 7000/redis.conf
+$ vi 7000/redis.conf
+$ cp 7000/redis.conf 7001/.
+$ vi 7001/redis.conf
+...
+$ cp ../../redis-3.0.0-rc1/src/redis-server .
+$ cd 7000
+$ ../redis-server redis.conf
+# New terminal tab
+$ cd ../7001
+$ ../redis-server redis.conf
+...
+$ ../redis-server redis.conf
+
    </pre>
+   <p>Install the Ruby Redis gem and run the <code>redis-trib.rb</code></p>
+   <pre>
+$ sudo gem install redis
+$ cd ../../
+$ ./redis-3.0.0-rc1/src/redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 \
+127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
+   </pre>
+   </div>
+  {# END example #}
+  </div>
+ </div>
+ </div>
+ {# START Exercise #}
+  <div class="panel panel-warning">
+   <div class="panel-heading">
+    <h3 class="panel-title"><a name="E2"></a><strong>Exercise:</strong> Using Redis Cluster</h3>
+   </div>
+   <div class="panel-body">
+ 
+   <p>After successfully running <code>redis-trib.rb</code>, you can interact with the cluster
+    using <strong>redis-cli</strong></p>
+   <pre>
+$ redis-3.0.0-rc1/src/redis-cli -c -p 7000
+127.0.0.1:7000> SET Book:1 "Gone with the Wind"
+-> Redirected to slot [14335] located at 127.0.0.1:7002
+OK
+127.0.0.1:7002> SET Book:2 "Infinite Jest"
+-> Redirected to slot [1948] located at 127.0.0.1:7000
+OK
+127.0.0.1:7000> GET Book:1
+-> Redirected to slot [14335] located at 127.0.0.1:7002
+"Gone with the Wind"
+127.0.0.1:7002> GET Book:2
+-> Redirected to slot [1948] located at 127.0.0.1:7000
+"Infinite Jest"
+127.0.0.1:7000> 
+   </pre>
+   <p>Redis commands that involve multiple keys, like <span class="label label-success">MSET</span> will
+    not work with redis cluster</p>
+   <pre>
+127.0.0.1:7000> MSET Book:3 "Moby Dick" Book:4 "Pride and Prejudice" Book:5 "Tom Sawyer"
+(error) CROSSSLOT Keys in request don't hash to the same slot
+   </pre>
+   </div>
+  {# End example #}
+  </div>
   </div>
  </div>
 </row>
