@@ -29,9 +29,39 @@
     </div>
     <div class="panel-body">
      <p>
-      
+      Lua scripts can be run using the <span class="label label-success">EVAL</span> and 
+      <span class="label label-success">EVALSHA</span> commands. Within the Lua script,
+      Redis commands can be run using the <code>redis.call</code> and <code>redis.pcall</code>
+      Lua functions. The difference between the two is that if an error occurs evaluating
+      the <code>redis.pcall</code>, Lua will capture and return the error while 
+      <code>redis.call</code> will raise a Lua error and the 
+      <span class="label label-success">EVAL</span> command will also return an error.
      </p>
+     <pre>
+127.0.0.1:6379> EVAL "return {KEYS[1],KEYS[2],ARGV[1],ARGV[2]}" 2 Book:1 Book:2 "War and Peace" "Critique of Pure Reason"
+1) "Book:1"
+2) "Book:2"
+3) "War and Peace"
+4) "Critique of Pure Reason"
+127.0.0.1:6379> EVAL "return redis.call('SET', 'Book:1', 'War and Peace')" 0
+OK
+127.0.0.1:6379> GET Book:1
+"War and Peace"
+     </pre>
+     <p>The <span class="label label-success">EVALSHA</span> command's first argument it is
+      the SHA1 digest script instead of the script itself. Use the  
+      <span class="label label-success">SCRIPT LOAD</span> command to load script first and then
+      use the resulting SHA1 to run script on the server 
     </div>
+    <pre>
+127.0.0.1:6379> SCRIPT LOAD "return {KEYS[1],KEYS[2],ARGV[1],ARGV[2]}"
+"a42059b356c875f0717db19a51f6aaca9ae659ea"
+127.0.0.1:6379> EVALSHA a42059b356c875f0717db19a51f6aaca9ae659ea 2 Book:1 Book:2 "War and Peace" "Critique of Pure Reason"
+1) "Book:1"
+2) "Book:2"
+3) "War and Peace"
+4) "Critique of Pure Reason"
+    </pre>
    {# END Exercise #}
    </div>
  </div>
@@ -45,6 +75,7 @@
     <li class="list-group-item">
      <strong>EVALSHA</a> <em>sha1</em> <em>numkeys</em> <em>key</em> [key &hellip;]</em> arg </em>[arg ...]</em></strong>
     </li>
+    
    </ul>
  </div>
 </div>

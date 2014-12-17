@@ -152,6 +152,23 @@ sentinel monitor mymaster 127.0.0.1 6379 2
 # Default is 30 seconds.
 sentinel down-after-milliseconds mymaster 30000
     </pre>
+    <p>Running Redis Sentinel can be accomplished either with the <code>redis-sentinel</code> binary or
+    by passing the <strong>--sentinel</strong> parameter when running <code>redis-server</code>. Both
+    options require a <code>sentinel.conf</code> file. 
+    </p>
+    <pre>
+$ redis-sentinel /path/to/sentinel.conf
+$ redis-server /path/to/sentinel.conf --sentinel
+    </pre>
+    <p>You can connect directly to the sentinel with <code>redis-cli</code> and query to find the status of
+    monitored Redis instances</p>
+    <pre>
+$ ../redis-2.8.18/src/redis-cli -p 26379 
+127.0.0.1:26379> PING
+PONG
+127.0.0.1:26379> SENTINEL masters
+127.0.0.1:26379> SENTINEL slaves mymaster
+    </pre>
    </div>
   {# END Exercise #}
   </div>
@@ -166,6 +183,9 @@ sentinel down-after-milliseconds mymaster 30000
    </li>
    <li>
      <a href="https://github.com/Grokzen/redis-py-cluster">redis-py-cluster</a>
+   </li>
+   <li>
+    <a href="http://redis.io/topics/sentinel">Redis Sentinel Documentation</a>
    </li>
   </ol>
 </div>
