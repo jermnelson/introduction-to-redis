@@ -1,22 +1,32 @@
 <div class="header">
  <nav>
   <ul class="nav nav-pills pull-right">
-   <li role="presentation" {% if section=='home' %}class="active"{% endif %}><a href="{{ url_for('home') }}">Home</a></li>
-   <li role="presentation"><a href="#about-dlg" data-toggle="modal">About</a></li>
+   <li role="presentation" {% if section=='home' %}class="active"{% endif %}><a href="{{ url_for('home') }}">
+      <i class="glyphicon glyphicon-home"></i> <span class="hidden-xs hidden-sm">Home</span></a>
+   </li>
+   <li role="presentation">
+      <a href="#about-dlg" data-toggle="modal">
+      <i class="glyphicon glyphicon-info-sign"></i> <span class="hidden-xs hidden-sm">About</span></a>
+   </li>
    <li role="presentation" class="dropdown{% if section=='topic' %} active{% endif %}">
     <a href="#" class="dropdown-toggle" 
        data-toggle="dropdown" role="button" aria-expanded="false">
-    Topics <span class="caret"></span></a>
+     <i class="glyphicon glyphicon-list"></i> <span class="hidden-xs hidden-sm">Topics</span> <span class="caret"></span></a>
      <ul class="dropdown-menu" role="menu">
      {% for name, info in topics.items() %}
      <li><a href="{{ url_for('topic_view', topic=name) }}">{{ info.get('title') }}</a></li>
      {% endfor %}
      </ul>
    </li>
-   <li role="presentation" {% if section=='contact'%}class="active"{% endif %}><a href="{{ url_for('topic_view', topic='contact') }}">Contact</a></li>
+   <li role="presentation" {% if section=='badge'%}class="active"{% endif %}>
+     <a href="{{ url_for('badge') }}"><i class="glyphicon glyphicon-bookmark"></i> <span class="hidden-xs hidden-sm">Open Badge</span></a>
+    </li>
+   <li role="presentation" {% if section=='contact'%}class="active"{% endif %}>
+    <a href="{{ url_for('topic_view', topic='contact') }}"><i class="glyphicon glyphicon-envelope"></i> <span class="hidden-xs hidden-sm">Contact</span></a>
+   </li>
   </ul>
  </nav>
- <h3 class="text-muted">
+ <h3 class="text-muted hidden-xs">
    Introduction to <img  src="http://redis.io/images/redis.png">
   </h3>
 </div>

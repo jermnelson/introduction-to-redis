@@ -61,6 +61,13 @@ TOPIC_ORDER = list(TOPICS.keys())
 
 app = Flask(__name__)
 
+@app.route("/badge")
+def badge():
+    return render_template(
+        'badge.html',
+        section='badge',
+        topics=TOPICS)
+
 @app.route("/contact")
 def contact():
     return render_template(

@@ -15,6 +15,10 @@
     <div class="panel panel-danger">
      <div class="panel-body">
       <h4>In this topic &hellip;</h4>
+      <ul>
+        <li><a href="#E1">Introducing Lua</a></li>
+        <li><a href="#E2">First Lua Script</a></li>
+      </ul>
      </div>
     </div>
  </div>
@@ -22,10 +26,76 @@
 <hr>
 <div class="row">
  <div class="col-md-8">
-   {# START Exercise #}
+   {# START Exercise  #}
    <div class="panel panel-warning">
     <div class="panel-heading">
-      <h3 class="panel-title">Exercise: First Lua Script</h3>
+      <h3 class="panel-title">Exercise: Introducing Lua</h3>
+    </div>
+    <div class="panel-body">
+     <p>
+       Lua stores data in variables, that are declared and initialized by 
+       specifying the variable name and using the assignment operator (<strong>=</strong>) to
+       assign a value. Lua core datatypes are nil (null), number (combines both int and float),
+       boolean, and strings.
+     </p>
+     <pre>
+> x = 5
+> x
+5
+> blank = nil
+> blank
+nil
+> is_true, is_false = true, false
+> is_true
+true
+> is_false
+false
+> message = "Redis with Lua is cool."
+> message
+Redis with Lua is cool.
+>
+    </pre>
+    <p>
+      A table in Lua is similar to the hash type in Redis, where a unique set of keys 
+      are mapped to a set of values. To retrieve a value from a table by key, either use
+      square brackets <strong>[]</strong> or use the  <strong>.</strong> operator if the 
+      key is a valid Lua identifier.
+    </p>
+    <pre>
+> table1 = {}
+> table1[1] = "The first value in table1"
+> table1["second"] = "The second value in table1"
+> table1
+table: 0000000000620900
+> table1[1]
+The first value in table1
+> table1.second
+The second value in table1
+>
+   </pre>
+   <p>The standard mathematical operations are <span class="label label-default">multiplication  *</span>,
+     <span class="label label-default">division  /</span>, <span class="label label-default">addition  +</span>,
+     <span class="label label-default">subtraction -</span>.
+   </p>
+   <pre>
+> 3*5
+15
+> 12/2
+6.0
+> 896-785
+111
+> 129+745
+874
+> (2+3) * 5
+25
+>
+   </pre>
+    </div>
+   </div>
+   {# START Exercise  #}
+   <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title"><a name="E1"></a>Exercise: First Lua Script</h3>
     </div>
     <div class="panel-body">
      <p>

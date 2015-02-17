@@ -96,13 +96,13 @@
     </ul>
     <h3>Day 2</h3>
     <ul class="lead">
-     {% for key in ['programming-redis', 'pipelining-and-mass-insertions', 'memory-expiration-and-key-eviction', 'transactions-and-locks'] %}
+     {% for key in ['memory-expiration-and-key-eviction', 'pipelining-and-mass-insertions', 'replication-and-pubsub', 'programming-redis'] %}
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
      {% endfor %}
     </ul>
     <h3>Day 3</h3>
     <ul class="lead">
-     {% for key in ['replication-and-pubsub', 'clustering-and-ha', 'lua-scripting', 'security'] %}
+     {% for key in ['transactions-and-locks', 'clustering-and-ha', 'lua-scripting', 'security'] %}
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
      {% endfor %}
     </ul>
