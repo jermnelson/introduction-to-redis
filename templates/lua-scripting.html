@@ -73,6 +73,7 @@ The first value in table1
 The second value in table1
 >
    </pre>
+     
    <p>The standard mathematical operations are <span class="label label-default">multiplication  *</span>,
      <span class="label label-default">division  /</span>, <span class="label label-default">addition  +</span>,
      <span class="label label-default">subtraction -</span>.
@@ -90,6 +91,86 @@ The second value in table1
 25
 >
    </pre>
+   <p>
+     Lua strings can concatenated using two periods;  <span class="label label-default">..</span>. To create a Lua
+     multi-line string without any character escaping, use double square brackets at the beginning  
+     <span class="label label-default">[[</span> and at the end <span class="label label-default">]]</span>.
+    </p>
+   <pre>
+> message = "Redis is SOOO fast"
+> message
+Redis is SOOO fast
+> readme = [[The way to a good a project is
+>> good documentation and plenty of coffee]]
+> readme
+The way to a good a project is
+good documentation and plenty of coffee
+>
+   </pre>
+    <p>Lua has the standard if/then conditional branching as well as various looping structures
+      for tables. The <span class="label label-default">do while</span> and 
+      <span class="label label-default">repeat until</span> are similar looping structures with
+     main difference being that the <span class="label label-default">repeat until</span> will
+     execute at least once per loop. Lua has two types of <span class="label label-default">for</span>
+     loops; the first takes a start value, end value, and increment while the second 
+     <span class="label label-default">for</span> type takes an iterator over a table and iterates
+     through each key-value pair in the table.
+    </p>
+    <pre>
+> x = 3.14
+> if x > 10 then
+>>    print("X is greater than 10")
+>> elseif x == 2 then
+>>    print("X is 2")
+>> else
+>>    print("X is "..x)
+>> end
+X is 3.14
+>
+> table2 = {20, 5, 60}
+> sum, counter = 0, 1
+> #table2
+3
+> while counter <= #table2 do
+>>     sum = sum + table2[counter]
+>>     counter = counter + 1
+>> end
+> print("The sum is ", sum)
+The sum is      85
+> sum, counter = 0, 1
+> repeat
+>>     sum = sum + table2[counter]
+>>     counter = counter + 1
+>> until counter > #table2
+> print("The sum is: ", sum)
+The sum is:     85
+> sum = 0
+> for counter = 1, #table2, 1 do
+>>     sum = sum + table2[counter]
+>> end
+> print("The sum is: ", sum)
+The sum is:     85
+> for counter, num in ipairs(table2) do
+>>     sum = sum + num
+>> end
+> print("The sum is: ", sum)
+The sum is:     170
+>
+    </pre> 
+    <p> 
+     To create a function in Lua, use the <span class="label label-default">function</span> keyword.
+    </p>
+    <pre>
+> crazy_eight = function(a_table)
+>>     sum = 0
+>>     for counter =1, #a_table, 1 do
+>>         sum = sum + a_table[counter]*8
+>>     end
+>>     return sum
+>> end
+> crazy_eight(table2)
+680
+    </pre>
     </div>
    </div>
    {# START Exercise  #}
