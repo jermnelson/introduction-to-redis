@@ -144,7 +144,7 @@
    </p> 
   </div>
  </div>
- {#
+ 
  <div class="col-md-6 panel panel-default">
   <div class="panel-body">
   <h2>Santa's Workshop</h1>
@@ -159,8 +159,9 @@
       <img src="{{ url_for('static', filename='img/toy64.png') }}" alt="Elf Toy Design Catalog">
     </a>
     <div class="media-body">
-      <h4 class="media-heading">Elf Toy Design Catalog</h4>
-      This application organizes all of the different toy designs used in the workshop. Designs
+      <h4 class="media-heading">Elf Kanban 4 Toys</h4>
+      This application models a simple three-bin Kanban system for 
+      toy manufacturing in Santa's workshop.  Designs
       will be modeled as Redis datatypes using a key schema from 
       <a href="http://schema.org/">schema.org</a>
       Redis topics: <a href="{{ url_for('topic_view', topic='redis-data-types') }}">Redis Datatypes</a>,
@@ -173,9 +174,12 @@
     </a>
     <div class="media-body">
       <h4 class="media-heading"> Santa Sleigh's Dashboard</h4>
+      <p>To assist Santa as he flies around the world on Christmas Eve, 
+      a new Sleigh dashboard will display in real-time the number of
+      toys to be delivered to each house on Santa's route. 
    </li> 
   </ul>
  </div>
- #}
+</div>
 </div>
 {% endblock %}
