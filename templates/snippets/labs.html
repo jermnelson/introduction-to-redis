@@ -1,0 +1,18 @@
+{% macro lab(title, toy_img, text) %}
+<div class="media">
+  <div class="media-left">
+    <a href="#">
+      <img src="{{ url_for('static', filename=toy_img) }}" alt="Elf Toy Design Catalog" class="media-object">
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">{{ title }}</h4>
+    <p>{{ text|safe }}</p>
+  </div>
+</div>
+{%- endmacro %}
+
+
+
+{% macro dashboard(text) %}
+{%- endmacro %}

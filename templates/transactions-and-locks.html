@@ -20,6 +20,10 @@
     <h4>Exercises</h4>
     <li><a href="#E1">Transactions with <em>redis-cli</em></a></li>
     <li><a href="#E2">Transactions with <em>python.py</em></a></li>
+    <h4>Labs</h3>
+    <li><a href="#lab1">Santa's Naughty-or-Nice Dashboard</a></li>
+    <li><a href="#lab2">Elf Kanban 4 Toys</a></li>
+    <h4><a href="#reference">References and Resources</a></h4>
    </div>
   </div>
  </div>
@@ -132,18 +136,30 @@ StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
  for Python including <strong>Redlock-py</strong>. 
 </p>
 <hr>
+{% import 'snippets/labs.html' as labs %}
+<h1>Lab Assignment</h1>
 <div class="row">
- <h2>References and Resources</h2>
-  <ol>
-    <li>From the redis.io website: topic on
-     <a href="http://redis.io/topics/transactions">Transactions</a>
-    </li>
-    <li>From the redis.io website:
-     <a href="http://redis.io/topics/distlock">Distributed locks with Redis</a>
-    </li>
-    <li>
-      <a href="https://pypi.python.org/pypi/redlock-py/1.0.1">Redlock-py</a>
-    </li>
-  </ol>
+  <div class="col-md-offset-3 col-md-8 well well-sm"><a name="lab1"></a>
+   {% set dashboard = 'For each entry in the nice or naughty list, expire each key for Dec. 26th' %}
+  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
+  </div>
 </div>
+<div class="row">
+  <div class="col-md-8 well well-sm"><a name="lab2"></a>
+   {% set kanban = 'How would you create a LRU all-keys cache for each toy line?' %}
+  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+</div>
+<hr>
+ <h2><a name="reference"></a>References and Resources</h2>
+  <dl>
+    <dt><a href="http://redis.io/topics/transactions">Transactions</a></dt>
+    <dd>From the official documentation on redis.io website, topic on Transactions</dd>
+    <dt><a href="http://redis.io/topics/distlock">Distributed locks with Redis</a></dt>
+    <dd>From the redis.io website official documentation on distributed locks with Redis</dd>
+    <dt><a href="https://pypi.python.org/pypi/redlock-py/1.0.1">Redlock-py</a></dt>
+    <dd>
+      Python project that implements the Distributed locks algorithm 
+    </dd>
+  </dl>
 {% endblock %}

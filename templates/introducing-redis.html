@@ -90,7 +90,7 @@
     <h2>Schedule<a name="schedule"></a> </h2>
     <h3>Day 1</h3>
     <ul class="lead">
-    {% for key in ['introducing-redis', 'basic-setup-and-admin', 'redis-data-types', 'operating-a-redis-system'] %}
+    {% for key in ['introducing-redis', 'basic-setup-and-admin', 'operating-a-redis-system', 'redis-data-types'] %}
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
     {% endfor %}
     </ul>
@@ -151,7 +151,7 @@
   <img src="{{ url_for('static', filename='img/santa.png') }}" class="pull-right">
   <p class="lead">To help contextualizing the Redis topics being covered through-out this course,
    we're going to see how Redis can be put to work improving the operations of Santa Claus's 
-   workshop. At the beginning of the lab, examples   
+   workshop.  
   </p>
   <ul class="media-list">
    <li class="media">
@@ -170,14 +170,15 @@
    </li>
    <li class="media">
     <a class="media-left" href="#">
-      <img src="{{ url_for('static', filename='img/sleigh64.png') }}" alt="Santa Sleigh's Dashboard">
+      <img src="{{ url_for('static', filename='img/list64.png') }}" alt="Santa Sleigh's Dashboard">
     </a>
     <div class="media-body">
-      <h4 class="media-heading"> Santa Sleigh's Dashboard</h4>
-      <p>To assist Santa as he flies around the world on Christmas Eve, 
-      a new Sleigh dashboard will display in real-time the number of
-      toys to be delivered to each house on Santa's route. 
-   </li> 
+      <h4 class="media-heading"> Santa Naughty or Nice List</h4>
+      <p>To assist Santa in picking toys for all the boys and girls in the world and as the primary
+      source of demand for the new Elves Kanban 4 toys manufacturing project, Santa's venerable 
+      "naught-or-nice" list will be updated to a new web-based dashboard app.</p>
+             
+    </li> 
   </ul>
  </div>
 </div>

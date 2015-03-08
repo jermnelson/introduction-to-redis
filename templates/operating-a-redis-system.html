@@ -20,6 +20,10 @@
     <li><a href="#aof">AOF Persistence</a></li>
     <li>Configure <a href="#redis-conf">redis.conf</a></li>
     <li><a href="#server-commands">Redis Server Commands</a></li>
+    <h4>Labs</h3>
+     <li><a href="#lab1">Santa Naughty-or-Nice Dashboard</a></li>
+     <li><a href="#lab2">Elf Kanban 4 Toys</a></li>
+    <h4><a href="#references"><strong>References</strong></a></h4>
    </div>
   </div>
  </div>
@@ -90,7 +94,7 @@
     <div class="panel-heading">
      <h3 class="panel-title">Exercise: Saving RDB snapshot &amp; redis.conf parameters <name="E1"></a></h3>
     </div>
-    <div class="body">
+    <div class="panel-body">
     <p>
      The <span class="label label-success">SAVE</span> will save a RDB snapshot 
      of the running Redis instance to disk, the 
@@ -108,7 +112,6 @@ Background saving started
     <p>Listed below is a snippet from a Redis 2.8 configuration file some of the 
     important parameters and default values for setting both RDB and AOF persistence
     in Redis.</p>
-    </div>
     <pre>
 # Accept connections on the specified port, default is 6379.
 # If port 0 is specified Redis will not listen on a TCP socket.
@@ -182,7 +185,7 @@ lua-time-limit 5000
     <div class="panel-heading">
      <h3 class="panel-title">Exercise: Configuration &amp; other Commands <name="E2"></a></h3>
     </div>
-    <div class="body">
+    <div class="panel-body">
      <p>The <span class="label label-success">CONFIG SET</span> allows you to set a configuration
      parameter at runtime while the <span class="label label-success">CONFIG GET</span> command
      retrieves a parameter.
@@ -222,12 +225,32 @@ Background append only file rewriting started
  </div>
 </div>
 <hr>
+{% import 'snippets/labs.html' as labs %}
+<h1>Lab Assignment</h1>
 <div class="row">
- <h2>References and Resources</h2>
+  <div class="col-md-6 well well-sm"><a name="lab1"></a>
+   {% set dashboard = '<p>Copy <code>redis.config</code> to the <em>redis</em> directory. Edit the config file, 
+and change the file name from appendonly.aof to dashboard.aof. <strong>Question</strong> Should this application use 
+AOF or RDB persistence? What other settings in the <code>redis.config</code> file should be changed for this project?</p>
+<p>After making your changes, run Redis with your modified <code>redis.config</code>.</p>' %}
+  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
+  </div>
+  <div class="col-md-6 well well-sm"><a name="lab2"></a>
+   {% set kanban = 'Copy <code>redis.config</code to <code>datastore</code> directory. Edit the config file, 
+and change the file name from dump.db to kanban.rdb. <strong>Question</strong> Should this application use 
+AOF or RDB persistence? What other settings in the <code>redis.config</code> file should be changed for this project?</p>
+<p>After making your changes, run Redis with your modified <code>redis.config</code>.</p>' %}
+  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+</div>
+<hr>
+<div class="row">
+ <h2><a name="references"></a> References and Resources</h2>
  <ol>
    <li>From the redis.io website, topic on 
     <a href="http://redis.io/topics/persistence">http://redis.io/topics/persistence</a>
    </li>
  </ol>
 </div>
+
 {% endblock %}

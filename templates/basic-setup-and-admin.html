@@ -20,34 +20,42 @@
      <li><a href="#E1">Starting and Stopping Redis</a></li>
      <li><a href="#E2">Running <em>redis-cli</em></a></li>
      <li><a href="#E3">First Redis Commands with <em>redis-cli</em></a></li>
+    <h4>Labs</h3>
+     <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
+     <li><a href="#lab2">Santa Naughty-or-Nice Dashboard</a></li>
 
    </div>
   </div>
  </div>
 </div>
 <div class="row">
+  {% set current_redis = " "|latest_redis %}
   <div class="col-md-4 well well-sm ">
    <h3>Downloading<a name="downloading"></a></h3> 
    <p class="lead">For Linux</p>
    <pre>
-$ wget http://download.redis.io/releases/redis-2.8.18.tar.gz
-   </pre>
+$ wget {{ current_redis.url }}
+  </pre>
    <p class="lead">For MacOS</p>
-   <p>Save <a href="http://download.redis.io/releases/redis-2.8.18.tar.gz">
-   http://download.redis.io/releases/redis-2.8.18.tar.gz</a> to your Downloads
+   <p>Save <a href="{{ current_redis.url }}">
+    {{ current_redis.url }}</a> to your Downloads
    directory. Open a terminal and copy the file to 
    <h3>Installing <a name="installing"></a></h3>
+   <p><strong>Note:</strong> if installing into a new Ubuntu virtual
+   machine, following the <span class="label label-default">tar xvf {{ current_redis.filename }}</span>
+   command, see <a href="#setupLinux"  data-toggle="modal">setup Linux</a> .
    <pre>
-$ tar xzf redis-2.8.18.tar.gz
-$ cd redis-2.8.18
+$ tar xzf {{ current_redis.filename }}
+$ cd {{ current_redis.name }}
 $ make
    </pre>
    <p class="lead">For Microsoft Windows</p>
    <p>Redis does not have an official version for Microsoft Windows.  
    Microsoft Open Tech group does provide a supported and actively developed
    port for Windows 64-bit systems.
-   Download <a href="https://github.com/MSOpenTech/redis/blob/2.8/bin/release/redis-2.8.17.zip">https://github.com/MSOpenTech/redis/blob/2.8/bin/release/redis-2.8.17.zip</a> 
-  and then extract the contents of the zip file to a local directory.
+   Download <a href="{{ current_redis.win.url }}">{{ current_redis.win.url }}</a>
+   and then extract the contents of the zip file, {{ current_redis.win.filename }}, 
+   to a local directory.
   </p>
   </div>
   <div class="col-md-8">
@@ -59,15 +67,15 @@ $ make
      <div class="panel-body">
        <h4>Starting Redis</h4>
        <pre>
-$ cd redis-2.8.18/src
+$ cd {{ current_redis.name }}/src
 $ ./redis-server
                 _._                                                  
            _.-``__ ''-._                                             
-      _.-``    `.  `_.  ''-._           Redis 2.8.18 (819b1ef2/1) 64 bit
+      _.-``    `.  `_.  ''-._           Redis 2.9.104 (00000000/0) 64 bit
   .-`` .-```.  ```\/    _.,_ ''-._                                   
  (    '      ,       .-`  | `,    )     Running in stand alone mode
  |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
- |    `-._   `._    /     _.-'    |     PID: 6148
+ |    `-._   `._    /     _.-'    |     PID: 20499
   `-._    `-._  `-./  _.-'    _.-'                                   
  |`-._`-._    `-.__.-'    _.-'_.-'|                                  
  |    `-._`-._        _.-'_.-'    |           http://redis.io        
@@ -79,7 +87,7 @@ $ ./redis-server
           `-._        _.-'                                           
               `-.__.-'                                               
 
-[6148] 06 Dec 14:40:48.980 # Server started, Redis version 2.8.18
+[6148] 06 Dec 14:40:48.980 # Server started, Redis version 2.9.104
 [6148] 06 Dec 14:40:48.980 * The server is now ready to accept connections on port 6379
        </pre>
 
@@ -88,6 +96,7 @@ $ ./redis-server
 C:\ cd C:\RedisTraining\
 C:\RedisTraining\redis-server.exe
       </pre>
+      <p>To run your Redis instance using a specific configuration
       <h3>Stopping Redis</h4>
       <p>To stop a running instance of Redis server, use the <kbd>ctrl-t</kbd> key combination
       to halt the process.</p>
@@ -114,7 +123,7 @@ C:\RedisTraining\redis-server.exe
     <p>Restart <em>redis-server</em> in a terminal. Open a new command-line terminal and
     enter the following commands:</p> 
     <pre>
-$ cd redis-2.8.18/src
+$ cd {{ current_redis.name }}/src
 $ ./redis-cli
 127.0.0.1:6379>
     </pre>
@@ -129,6 +138,15 @@ $ ./redis-cli
   </div>
  </div>
  <div class="col-md-6">
+   <h3>Critical Commands in this Topic</h3> 
+   <ul class="list-group">
+    <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/ping">PING</a></strong>
+    </li>
+    <li class="list-group-item">
+     <strong><a href="http://redis.io/commands/dbsize">DBSIZE</a></strong>
+    </li>
+   </ul>
   {# START exercise #}
   <div class="panel panel-warning">
     <div class="panel-heading">
@@ -151,10 +169,46 @@ PONG
    </div>
  {# END exercise #}
   </div>
-
  </div>
 </div>
 <hr>
+{% import 'snippets/labs.html' as labs %}
 <h1>Lab Assignment</h1>
+<div class="row">
+  <div class="col-md-6 well well-sm"><a name="lab1"></a>
+   {% set kanban = 'For this lab, create a new project directory for the Elf Kanban 4 Toys and copy the <span class="label label-danger">redis-server</span> executable to a new <code>datastore</code> directory.' %}
 
+   {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+  <div class="col-md-6 well well-sm"><a name="lab2"></a>
+  {% set dashboard = "In this lab, create a new project directory for Santa Naughty-or-Nice Dashboard, copy the <span class='label label-danger'>redis-server</span> executable to a new <code>redis</code> subdirectory" %} 
+  {{ labs.lab("Santa Naughty-or-Nice List", 'img/list64.png', dashboard) }}  
+
+  </div>
+</div>
 {% endblock %}
+
+{% block dialogs %}
+{% set current_redis = " "|latest_redis %}
+<div class="modal fade" id="setupLinux" tabindex="-1" role="dialog" aria-labelledby="Setup Linux" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Set-up Redis Linux Dependencies</h4>
+      </div>
+      <div class="modal-body">
+      <p>From a new Ubuntu Server installation, you'll need to install these dependencies:</p>
+      <pre>
+$ sudo apt-get install build-essentials libjemalloc-dev libjemalloc1
+      </pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock dialogs %}

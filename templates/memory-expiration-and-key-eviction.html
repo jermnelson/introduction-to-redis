@@ -23,6 +23,10 @@
     <li><a href="#E1">Setting a Timeout on a Key</a></li>
     <li><a href="#E2">Setting Maxmemory at runtime</a></li>
     <li><a href="#E2">Setting LRU Policies</a></li>
+    <h4>Labs</h3>
+    <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
+    <li><a href="#lab2">Santa Naughty-or-Nice Dashboard</a></li>
+    <h4><a href="#references"><strong>References</strong></a></h4>
    </div>
   </div>
  </div>
@@ -131,16 +135,26 @@ OK
  </div>
 {# END Setup #}
 </div>
-<hr>
+{% import 'snippets/labs.html' as labs %}
+<h1>Lab Assignment</h1>
 <div class="row">
- <h2>References and Resources</h2>
-  <ol>
-    <li>From the redis.io website: command on
-     <a href="http://redis.io/commands/expire">http://redis.io/commands/expire</a>
-   </li>
-   <li>From the redis.io website: topic 
-     <a href="http://redis.io/topics/lru-cache">Using Redis as an LRU cache</a>
-   </li>
-  </ol>
+  <div class="col-md-6 well well-sm"><a name="lab1"></a>
+   {% set kanban = 'How would you create a LRU all-keys cache for each toy line?' %}
+  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+  <div class="col-md-6 well well-sm"><a name="lab2"></a>
+   {% set dashboard = 'For each entry in the nice or naughty list, expire each key for Dec. 26th' %}
+  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
+  </div>
+
 </div>
+
+<hr>
+ <h2><a name="reference"></a>References and Resources</h2>
+  <dl>
+   <dt><a href="http://redis.io/commands/expire">http://redis.io/commands/expire</a></dt>
+   <dd>From the official documentation on the redis.io website on the <span class="label label-primary">expire</span> command. </dd>
+   <dt><a href="http://redis.io/topics/lru-cache">Using Redis as an LRU cache</a></dt>
+   <dd>From the official documentation on the redis.io website on this topic.</dd> 
+  </dl>
 {% endblock %}

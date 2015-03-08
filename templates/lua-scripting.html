@@ -3,22 +3,27 @@
 {% block body %}
 <div class="row page-header">
  <div class="col-md-10 jumbotron">
-   <a style="padding: 2em" href="http://www.lua.org/"><img class="pull-left" src="http://www.lua.org/images/lua.gif"></a>
-  <h1>Lua Scripting</h1>
+  <section class="row">
+   <div class="col-md-4"><a href="http://www.lua.org/"><img class="img-thumbnail" src="http://www.lua.org/images/lua.gif"></a></div>
+   <div class="col-md-8"><h1>Lua Scripting</h1>
   <p class="lead">Since Redis version 2.6, a <a href="http://www.lua.org/">Lua</a>
   interpreter has been embedded into the Redis server. With Lua, a high-level programming
   language, functions and business-logic can be run directly in Redis for improved 
-  application performance.</p>
+  application performance.</p></div>
+  </section>
   {% include 'snippets/topic-nav.html' %}
  </div>
 <div class="col-md-2">
     <div class="panel panel-danger">
      <div class="panel-body">
-      <h4>In this topic &hellip;</h4>
-      <ul>
-        <li><a href="#E1">Introducing Lua</a></li>
-        <li><a href="#E2">First Lua Script</a></li>
-      </ul>
+     <h4>In this topic &hellip;</h4>
+     <li><a href="#E1">Introducing Lua</a></li>
+     <li><a href="#E2">First Lua Script</a></li>
+     <h4>Labs</h3>
+     <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
+     <li><a href="#lab2">Santa Naughty-or-Nice Dashboard</a></li>
+     <h4><a href="#references"><strong>References</strong></a></h4>
+     </ul>
      </div>
     </div>
  </div>
@@ -171,8 +176,26 @@ The sum is:     170
 > crazy_eight(table2)
 680
     </pre>
-    </div>
    </div>
+  </div>
+ </div>
+ <div class="col-md-4">
+  <h3>Commands for <em>Lua</em> Scripting</h3>
+   <ul class="list-group">
+    <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/eval">EVAL</a> <em>numkeys</em> <em>key</em> <em>[key ...]</em> <em>arg</em> 
+      <em>[arg &hellip;]</em></strong>
+    </li>
+    <li class="list-group-item">
+     <strong> <a href="http://redis.io/commands/evalsha">EVALSHA</a> <em>sha1</em> <em>numkeys</em> <em>key</em> 
+      [key &hellip;]</em> arg </em>[arg ...]</em></strong>
+    </li>
+   </ul>
+  </div>
+</div>
+<hr>
+<div class="row">
+ <div class="col-md-12">
    {# START Exercise  #}
    <div class="panel panel-warning">
     <div class="panel-heading">
@@ -216,23 +239,26 @@ OK
    {# END Exercise #}
    </div>
  </div>
- <div class="col-md-4">
-  <h3>Commands for <em>Lua</em> Scripting</h3>
-   <ul class="list-group">
-    <li class="list-group-item list-group-item-success">
-     <strong><a href="http://redis.io/commands/eval">EVAL</a> <em>numkeys</em> <em>key</em> <em>[key ...]</em> <em>arg</em> 
-      <em>[arg &hellip;]</em></strong>
-    </li>
-    <li class="list-group-item">
-     <strong>EVALSHA</a> <em>sha1</em> <em>numkeys</em> <em>key</em> [key &hellip;]</em> arg </em>[arg ...]</em></strong>
-    </li>
-    
-   </ul>
- </div>
+</div>
+{% import 'snippets/labs.html' as labs %}
+<h1>Lab Assignment</h1>
+<div class="row">
+  <div class="col-md-6 well well-sm"><a name="lab1"></a>
+   {% set kanban = 'Implement one or more Lua scripts for the following functions in the Kanban workflow:' %}
+  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+  <div class="col-md-6 well well-sm"><a name="lab2"></a>
+   {% set dashboard = 'Implement one or more Lua scripts for the following functionality in the 
+Naughty-or-Nice Dashboard:<ul><li>Adding child to the naughty or nice lists</li>
+<li>Moving a child from one list to another</li></ul>' %}
+  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
+  </div>
 </div>
 <hr>
+
+<hr>
 <div class="row">
- <h2>References and Resources</h2>
+ <h2><a name="References and Resources</h2>
   <ol>
     <li>From the redis.io website: topic on
      <a href="http://redis.io/topics/"> </a>

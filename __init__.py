@@ -15,26 +15,27 @@ __license__ = ''
 __copyright__ = '(c) 2014 by Jeremy Nelson'
 
 import os
+import re
 import sys
 from flask import Flask, render_template, abort
 from collections import OrderedDict
 
 TOPICS = OrderedDict([
     ('introducing-redis', {
-        'location': '01-introducing-redis',
+        'location': 'introducing-redis',
         'title': 'Introducing Redis'}),
     ('basic-setup-and-admin', {
-        'location': '02-basic-setup-and-admin',
+        'location': 'basic-setup-and-admin',
         'title': 'Basic Setup and Admin'}),
-    ('redis-data-types', {
-        'location': '03-redis-data-types',
-        'title': 'Redis data types'}),
     ('operating-a-redis-system', {
-        'location': '04-operating-a-redis-system',
+        'location': 'operating-a-redis-system',
         'title': 'Operating a Redis System'}),
-    ('programming-redis', {
-        'location': '05-programming-redis',
-        'title': 'Programming Redis'}),
+    ('redis-data-types', {
+        'location': 'redis-data-types',
+        'title': 'Redis data types'}),
+    ('replication-and-pubsub', {
+        'location': 'replication-and-pubsub',
+        'title': 'Replication and Pub/Sub'}),
     ('pipelining-and-mass-insertions', {
         'location': '06-pipelining-and-mass-insertions',
         'title': 'Pipelining and Mass Insertions of Data'}),
@@ -44,15 +45,15 @@ TOPICS = OrderedDict([
     ('transactions-and-locks', {
         'location': '08-transactions-and-locks',
         'title': 'Transactions and Locks'}),
-    ('replication-and-pubsub', {
-        'location': '09-replication-and-pubsub',
-        'title': 'Replication and Pub/Sub'}),
-    ('clustering-and-ha', {
-        'location': '10-clustering-and-ha',
-        'title': 'Clustering and High Availability'}),
+    ('programming-redis', {
+       'location': '05-programming-redis',
+        'title': 'Programming Redis'}),
     ('lua-scripting', {
         'location': '11-lua-scripting',
         'title': 'Lua Scripting'}),
+    ('clustering-and-ha', {
+        'location': '10-clustering-and-ha',
+        'title': 'Clustering and High Availability'}),
     ('security', {
         'location': '12-security',
         'title': 'Security'})])
@@ -60,6 +61,22 @@ TOPICS = OrderedDict([
 TOPIC_ORDER = list(TOPICS.keys())
 
 app = Flask(__name__)
+
+
+name_re = re.compile(r"(.*).(tar.gz|zip)") 
+@app.template_filter('latest_redis')
+def latest_redis(s):
+    """Template filter returns active download url and name of 
+    Redis version being used in the course with Windows download
+    as well."""
+    info = {}
+    info['url'] = "https://github.com/antirez/redis/archive/3.0.0-rc4.tar.gz"
+    info['filename'] = "3.0.0-rc4.tar.gz"
+    info['name'] = "redis-3.0.0-rc4"  
+    info['win'] = {"url": "https://github.com/MSOpenTech/redis/releases/download/win-2.8.19/redis-2.8.19.zip",
+                   "filename": "redis-2.8.19.zip"}
+    info['win']['name'] = name_re.search(info['win']['filename']).groups()[0]
+    return info
 
 @app.route("/badge")
 def badge():

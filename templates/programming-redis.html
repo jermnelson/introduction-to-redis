@@ -24,6 +24,10 @@
     <li><a href="#E1">Installing Python and <em>Redis.py</em></a></li>
     <li><a href="#E2">Using <em>redis-py</em> from the command-line</a></li>
     <li><a href="#E3">Installing and setup of node.js</a></li>    
+    <h4>Labs</h3>
+    <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
+    <li><a href="#lab2">Santa Naughty-or-Nice Dashboard</a></li>
+    <h4><a href="#reference">Reference and Resources</a></h4>  
    </div>
   </div>
  </div>
@@ -231,4 +235,35 @@ Application Started on http://localhost:1337/
    </div>
   </div>
 </div>
+<hr>
+{% import 'snippets/labs.html' as labs %}
+<h1>Lab Assignment</h1>
+<div class="row">
+  <div class="col-md-6 well well-sm"><a name="lab1"></a>
+   {% set kanban = 'Create a node.js application by following this steps:<ol>
+<li>Install the Express and SWIG node.js modules using <code>npm</code></li>
+<li>Create new <code>server.js</code> file in the root directory.</li></ol>
+' %}
+  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+
+  <div class="col-md-6 well well-sm"><a name="lab2"></a>
+   {% set dashboard = 'Create a Python Flask web application by following these steps:<ol>
+ <li>Install Flask using pip</li>
+ <li>Create a <code>app.py</code> file in the root directory</li></ol>' %}
+  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
+  </div>
+</div>
+<hr>
+ <h2><a name="reference"></a>References and Resources</h2>
+  <dl>
+    <dt><a href="http://nodejs.org/">Node.js</a></dt>
+    <dd>A Javascript server environment for creating web applications</dd>
+    <dt><a href="https://github.com/mranney/node_redis">Node Redis</a></dt>
+    <dd>The recommended redis client for Node.js</dd>
+    <dt><a href="http://www.python.org/">Python</a></dt>
+    <dd>A popular dynamic programming language with a rich set of external modules</dd>
+    <dt><a href="https://github.com/andymccurdy/redis-py">redis-py</a></dt>
+    <dd>Mature and supported Python client for Redis.</dd> 
+  </dl>
 {% endblock %}

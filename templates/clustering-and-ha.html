@@ -21,6 +21,10 @@
       <li><a href="#redis-cluster">Redis Cluster</a></li>
       <h4>Exercises</h4>
       <li><a href="#E3">Configuring and Running Redis Sentinel</a></li>
+      <h4>Labs</h3>
+      <li><a href="#lab1">Santa's Naughty-or-Nice Dashboard</a></li>
+      <li><a href="#lab2">Elf Kanban 4 Toys</a></li>
+      <h4><a href="#reference">References and Resources</a></h4>
      </div>
     </div>
  </div> 
@@ -162,8 +166,9 @@ $ redis-server /path/to/sentinel.conf --sentinel
     </pre>
     <p>You can connect directly to the sentinel with <code>redis-cli</code> and query to find the status of
     monitored Redis instances</p>
+{% set current_redis = " "|latest_redis %}
     <pre>
-$ ../redis-2.8.18/src/redis-cli -p 26379 
+$ ../{{ current_redis.name }}/src/redis-cli -p 26379 
 127.0.0.1:26379> PING
 PONG
 127.0.0.1:26379> SENTINEL masters
@@ -175,8 +180,21 @@ PONG
  </div>
 </div>
 <hr>
+{% import 'snippets/labs.html' as labs %}
+<h1>Lab Assignment</h1>
 <div class="row">
- <h2>References and Resources</h2>
+  <div class="col-md-6 well well-sm"><a name="lab1"></a>
+   {% set dashboard = 'Create a Redis sentinel instance that monitors all Redis master/slaves for the dashboard' %}
+  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
+  </div>
+  <div class="col-md-6 well well-sm"><a name="lab2"></a>
+   {% set kanban = 'Create a Redis Cluster for the Kanban 4 Toys process' %}
+  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+</div>
+<hr>
+<div class="row">
+ <h2><a name="reference"></a>References and Resources</h2>
   <ol>
     <li>From the redis.io website:
      <a href="http://redis.io/topics/cluster-tutorial">Redis cluster tutorial</a>

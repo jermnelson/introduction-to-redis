@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="row page-header">
- <div class="col-md-10 jumbotron">
+ <div class="col-md-9 jumbotron">
   <h1>Redis data types</h1>
   <p class="lead">
    A real strength of Redis is its powerful data structures that can be used
@@ -19,7 +19,7 @@
   </p> 
   {% include 'snippets/topic-nav.html' %}
  </div>
- <div class="col-md-2">
+ <div class="col-md-3">
   <div class="panel panel-danger">
    <div class="panel-body">
      <h4>In this topic &hellip;</h4>
@@ -40,6 +40,10 @@
      <li><a href="#E6">Using <em>Sorted Set</em> data type</a></li>
      <li><a href="#E7">Using <em>Bitmap</em> data type</a></li>
      <li><a href="#E*">Using <em>HyperLogLogs</em> data type</a></li>
+     <h4>Labs</h3>
+      <li><a href="#lab1">Santa's Naughty-or-Nice Dashboard</a></li>
+      <li><a href="#lab2">Elf Kanban 4 Toys</a></li>
+     <h4><a href="#reference">References and Resources</a></h4>
    </div>
   </div>
  </div>
@@ -310,7 +314,7 @@ OK
     <strong><a href="http://redis.io/commands/lindex">LINDEX</a></strong> <em>key</em> <em>index</em>
    </li>
    <li class="list-group-item list-group-item-success">
-    <strong><a href="http://redis.io/commands/linsert"></a>LINSERT</strong> <em>key</em> <em>BEFORE|AFTER</em> <em>pivot</em> <em>value</emd> 
+    <strong><a href="http://redis.io/commands/linsert"></a>LINSERT</strong> <em>key</em> <em>BEFORE|AFTER</em> <em>pivot</em> <em>value</em> 
    </li>
 
    <li class="list-group-item">
@@ -904,12 +908,26 @@ OK
  </div>
 </div>
 <hr>
+{% import 'snippets/labs.html' as labs %}
+<h1>Lab Assignment</h1>
 <div class="row">
- <h2>References and Resources</h2>
+  <div class="col-md-6 well well-sm"><a name="lab1"></a>
+   {% set dashboard = 'What data structures may be useful for the Santa Sleigh Dashboard?' %}
+  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
+  </div>
+  <div class="col-md-6 well well-sm"><a name="lab2"></a>
+   {% set kanban = 'What data structures my be useful for the Elf Kanban 4 Toys?' %}
+  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+</div>
+<hr>
+<div class="row">
+ <h2><a name="reference"></a>References and Resources</h2>
   <ol>
     <li>From the redis.io website section on commands
      <a href="http://redis.io/commands">http://redis.io/commands</a>
    </li>
   </ol>
 </div>
+
 {% endblock %}

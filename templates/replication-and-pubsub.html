@@ -26,6 +26,10 @@
       <li><a href="#E1">Runtime set-up of Master-Slave Replication</a></li>
       <li><a href="#E2">Set-up of Master-Slave Replication with <em>redis.config</em></a></li>
       <li><a href="#E3">Pub/Sub</a></li>
+      <h4>Labs</h3>
+      <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
+      <li><a href="#lab2">Santa's Naughty-or-Nice Dashboard</a></li>
+      <h4><a href="#reference">References and Resources</a></h4>
      </div>
    </div>
  </div>
@@ -197,11 +201,27 @@ slaveof <masterip> <masterport>
    {# END Exercise #}
   </div>  
  </div>
+</div>
+<hr>
+{% import 'snippets/labs.html' as labs %}
+<h1>Lab Assignment</h1>
+<div class="row">
+  <div class="col-md-8 well well-sm"><a name="lab1"></a>
+   {% set kanban = 'For this lab, implement a master/slave set-up for this project' %}
+  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-offset-3 col-md-8 well well-sm"><a name="lab2"></a>
+   {% set dashboard = 'Create two subscription channels, a naughty channel where the child is given a piece of coal and a nice channel where the child 
+gets a toy of her or his choice' %}
+  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
+  </div>
 
 </div>
 <hr>
 <div class="row">
- <h2>References and Resources</h2>
+ <h2><a name="reference"></a>References and Resources</h2>
   <ol>
     <li>From the redis.io website: topic on
      <a href="http://redis.io/topics/replication">Replication</a>
