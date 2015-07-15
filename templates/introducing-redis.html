@@ -110,6 +110,61 @@
   {# END About Course #}
   </div>
 </div>
+<h1>History of Redis</h1>
+<section class="row">
+  <div class="col-md-9 col-md-offset-1">
+	<p>
+	In the mid-2000s, Salvatore Sanfilippo - Redis's principle developer and 
+	maintainer - together with a partner started a free web service called LLOOGG. LLOOGG 
+	displayed, in near real-time, visitors access and usage patterns on a website
+	for viewing by administrators and other interested individuals. 
+	![LLOOGG Screenshot of Redis.io traffic](8181_01_02.png) Sanfilippo and his startup
+	developed and released LLOOGG as a PHP application that parsed web server log 
+	files into a MySQL database back-end with a dynamically generated HTML view of the 
+	web server's activity. 
+	</p>
+	<p>
+	Prior to developing LLOOGG, Sanfilippo worked as a system administrator in Italy 
+	where he began focusing on the computer security as part of his work.  Sanfilippo 
+	initially gained notice by inventing the *idle scan* network attack in 1998 along 
+	with developing the popular open-source TCP/IP packet assembler and analyzer tool called hping. 
+	In an *idle scan* attack, spoofed packets are sent to a target computer to find out 
+	what TCP ports are open through a third, "zombie" computer intermediary. 
+	</p>
+	<p>
+	In working on LLOOGG, Sanfilippo increasingly ran into scalability issues with 
+	MySQL as the database was being swamped by writes although performing fine with reading
+	tabular data, As Sanfilippo says in a 2013 interview, "I started to realize that what I needed 
+	was an in-memory database with support for complex data structures"[1][1]. As he explored how 
+	to achieve better performance, the first inklings of a new type of key-value data storage that
+	would eventually would become the open-source project Redis officially started on April 
+	10th, 2009. 
+	</p>
+	<p>
+	Early in the development of Redis, Sanfilippo refactored LLOOGG by replacing its relational-data
+	model in MySQL for Redis. His intention for swapping out the data storage was to test the
+	capabilities of Redis with the traffic generated from a running instance of LLOOGG. 
+	LLOOGG's sizable web traffic helped in the testing of early, unstable versions of Redis. 
+	Although Sanfilippo claims that switching to Redis for the LLOOGG project did not result in the 
+	discovery of new bugs, this switch did allowed Sanfilippo to design and architect Redis, 
+	while other individuals started using and testing Redis with much larger 
+	datasets and at larger scales. This work was the beginnings of the lean, small, and fast code-base 
+	that is today's version of Redis.  
+	</p>
+	<p>
+	The first stable Redis 3.0.0 version was released for production use on April 1st, 2015, 
+	almost six years after the initial start of the Redis project. 
+	While the size, types of commands, and data-structures have increased in number over those
+	six years, the overall goals and performance expectations of Redis have not changed that
+	much from Sanfilippo initial ideas about replacing MySQL with Redis for the LLOOGG project. Redis
+	is still an in-memory database, although it now has more options for persisting that data
+	to disk, in addition to a number of powerful and sophisticated commands for the different data
+	structures that are now possible to store and manipulate data in Redis. The biggest change in 
+	Redis 3.0 is the inclusion of Redis Cluster, a mode of operating Redis with multiple 
+	instances where data is automatically sharded across those nodes.  
+	</p>
+  </div>
+</section>
 <hr>
 <h1>Lab Applications</h1>  
 <div class="row">
