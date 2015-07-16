@@ -8,7 +8,7 @@ Created:     2014/22/08
 Copyright:   (c) Jeremy Nelson 2014
 Licence:
 """
-__version_info__ = ('0', '0', '1')
+__version_info__ = ('0', '1', '1')
 __version__ = '.'.join(__version_info__)
 __author__ = "Jeremy Nelson"
 __license__ = ''
@@ -21,41 +21,42 @@ from collections import OrderedDict
 
 TOPICS = OrderedDict([
     ('introducing-redis', {
-        'location': '01-introducing-redis',
+        'location': 'introducing-redis',
         'title': 'Introducing Redis'}),
     ('basic-setup-and-admin', {
-        'location': '02-basic-setup-and-admin',
+        'location': 'basic-setup-and-admin',
         'title': 'Basic Setup and Admin'}),
     ('redis-data-types', {
-        'location': '03-redis-data-types',
+        'location': 'redis-data-types',
         'title': 'Redis data types'}),
     ('operating-a-redis-system', {
-        'location': '04-operating-a-redis-system',
+        'location': 'operating-a-redis-system',
         'title': 'Operating a Redis System'}),
-    ('programming-redis', {
-        'location': '05-programming-redis',
-        'title': 'Programming Redis'}),
+    ('replication-and-pubsub', {
+        'location': 'replication-and-pubsub',
+        'title': 'Replication and Pub/Sub'}),
     ('pipelining-and-mass-insertions', {
-        'location': '06-pipelining-and-mass-insertions',
+        'location': 'pipelining-and-mass-insertions',
         'title': 'Pipelining and Mass Insertions of Data'}),
     ('memory-expiration-and-key-eviction', {
-        'location': '07-memory-expiration-and-key-eviction',
+        'location': 'memory-expiration-and-key-eviction',
         'title': 'Memory, expiration and key eviction'}),
     ('transactions-and-locks', {
-        'location': '08-transactions-and-locks',
+        'location': 'transactions-and-locks',
         'title': 'Transactions and Locks'}),
-    ('replication-and-pubsub', {
-        'location': '09-replication-and-pubsub',
-        'title': 'Replication and Pub/Sub'}),
-    ('clustering-and-ha', {
-        'location': '10-clustering-and-ha',
-        'title': 'Clustering and High Availability'}),
+    ('programming-redis', {
+        'location': 'programming-redis',
+        'title': 'Programming Redis'}),
     ('lua-scripting', {
-        'location': '11-lua-scripting',
+        'location': 'lua-scripting',
         'title': 'Lua Scripting'}),
+    ('clustering-and-ha', {
+        'location': 'clustering-and-ha',
+        'title': 'Clustering and High Availability'}),
+
     ('security', {
-        'location': '12-security',
-        'title': 'Security'})])
+        'location': 'security',
+        'title': 'Security and Coming Features'})])
 
 TOPIC_ORDER = list(TOPICS.keys())
 

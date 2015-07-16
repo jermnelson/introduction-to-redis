@@ -115,7 +115,8 @@
    </div>
   </div>
   {# START About Course #}
-  <div class="col-md-8 well">
+  <div class="col-md-8">
+   <section class="well">
     <h2>Schedule<a name="schedule"></a> </h2>
     <h3>Day 1</h3>
     <ul class="lead">
@@ -135,36 +136,43 @@
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
      {% endfor %}
     </ul>
- 
+   </section>
+   <article>
+    <p class="lead">To keep track of your questions, comments, and notes; this
+     site uses <a href="https://hypothes.is/">https://hypothes.is/</a>. 
+    </p>
+   </article> 
   {# END About Course #}
   </div>
 </div>
 <h1>History of Redis</h1>
 <section class="row">
-  <div class="col-md-9 col-md-offset-1">
+  <article class="col-md-9 col-md-offset-1" id="history-of-redis">
 	<p>
 	In the mid-2000s, Salvatore Sanfilippo - Redis's principle developer and 
 	maintainer - together with a partner started a free web service called LLOOGG. LLOOGG 
 	displayed, in near real-time, visitors access and usage patterns on a website
 	for viewing by administrators and other interested individuals. 
-	![LLOOGG Screenshot of Redis.io traffic](8181_01_02.png) Sanfilippo and his startup
+	 Sanfilippo and his startup
 	developed and released LLOOGG as a PHP application that parsed web server log 
 	files into a MySQL database back-end with a dynamically generated HTML view of the 
 	web server's activity. 
 	</p>
-	<p>
+        <img src="{{ url_for("static", filename="img/lloogg.png") }}" 
+          alt="LLOOGG Screenshot of Redis.io traffic" class="thumbnail pull-left">
+	{#<p>
 	Prior to developing LLOOGG, Sanfilippo worked as a system administrator in Italy 
 	where he began focusing on the computer security as part of his work.  Sanfilippo 
 	initially gained notice by inventing the *idle scan* network attack in 1998 along 
 	with developing the popular open-source TCP/IP packet assembler and analyzer tool called hping. 
 	In an *idle scan* attack, spoofed packets are sent to a target computer to find out 
 	what TCP ports are open through a third, "zombie" computer intermediary. 
-	</p>
+	</p>#}
 	<p>
 	In working on LLOOGG, Sanfilippo increasingly ran into scalability issues with 
 	MySQL as the database was being swamped by writes although performing fine with reading
-	tabular data, As Sanfilippo says in a 2013 interview, "I started to realize that what I needed 
-	was an in-memory database with support for complex data structures"[1][1]. As he explored how 
+	tabular data, As Sanfilippo says in a 2013 interview, <blockquote>I started to realize that what I needed 
+	was an in-memory database with support for complex data structures</blockquote>. As he explored how 
 	to achieve better performance, the first inklings of a new type of key-value data storage that
 	would eventually would become the open-source project Redis officially started on April 
 	10th, 2009. 
@@ -192,23 +200,33 @@
 	Redis 3.0 is the inclusion of Redis Cluster, a mode of operating Redis with multiple 
 	instances where data is automatically sharded across those nodes.  
 	</p>
-  </div>
+  </article>
 </section>
 <hr>
-<h1>Lab Applications</h1>  
-<div class="row">
- <div class="col-md-6 col-md-offset-4">
-  <h2>Your choice &hellip;</h2>
-  <p class="lead">To make this Redis training more relevant, we will create a number of
-  user cases of how you might use Redis to address a professional or personal problem or issue. 
-  During each topic's lab session, you can either decide which of the use cases to explore or 
-  we can divide into small teams for exploring Redis in the context of the problem you're attempt
-  to solve. 
-  </p>
+<h1>Lab Applications &amp; Use Cases</h1>  
+<div class="row"> 
+ <section class="col-md-8 well well-sm">
+   <h2>About</h2>
+   <p class="lead">
+     After each topic, we will have a short break and then come back 
+     for a lab section where we'll either meet as a group or in smaller
+     groups to discuss and experiment with the topics from our Redis
+     training.  
+   </p>
+ </section>
+ <div class="col-md-4">
+  <h3>Your choice &hellip;</h3>
+  <p class="lead">To make this Redis training more relevant, 
+    we can focus on your own problem or use case that 
+   interested in solving with Redis during the lab application time.
+   At least for the first three-to-four topics, it may be easier to use
+   my own use cases but we'll just see how the course flows over
+   the three days.</p> 
  </div>
 </div>
-<h2>Current Use Case</h2
+<h2>Current Use Case</h2>
 {% include 'snippets/ldfs-about.html' %}
+<hr>
 <h2>Past Use Cases</h2>
 {% include 'snippets/lib-consortium-catalog.html' %}
  {#
