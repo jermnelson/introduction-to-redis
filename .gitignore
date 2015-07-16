@@ -2,3 +2,8 @@
 *.pyc
 *.vmdk
 *.DS*
+*.rdb
+redis-server
+*.aof
+cluster-test*
+instance/*

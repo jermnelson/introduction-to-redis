@@ -1,0 +1,7 @@
+*3
+$3
+SET
+$6
+Book:0
+$15
+Go down, Moses.
