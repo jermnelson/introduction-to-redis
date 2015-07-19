@@ -15,7 +15,6 @@
   strings but have Redis commands for special uses. These are the 
   <a href="#bitmap">Bitmap</a> data type and the
   <a href="#hll">HyperLogLogs</a> data type.
- 
   </p> 
   {% include 'snippets/topic-nav.html' %}
  </div>
@@ -49,13 +48,35 @@
  </div>
 </div>
 <div class="row">
+  <section class="col-md-8 col-md-offset-1">
+     <img src="{{ url_for("static", filename="img/redis-data-structure-server.svg") }}"
+    class="img-thumbnail">
+  </section>
+  <article class="col-md-3">
+    <p class="lead">
+
+    </p>
+  </article>
+</div>
+<hr>
+<div class="row">
   <div class="col-md-8">
    <h1><small>it all begins with the</small> Key <a name="key"></a></h1>
-   <p class="lead well well-sm">
+   <article class="lead well well-sm">
+   <p>
     Redis keys are binary safe -any binary stream can be used as a key- although the most common
     (and recommended) stream to use is a string key, like "Person", other file formats and binary 
     streams like images, mp3, or other file formats, can be used.
    </p>
+   <p>The flexibility of Redis allows for a wide diversity in how keys are structured 
+   and stored. Performance and maintainability of the Redis instance can be either 
+   positively or negatively impacted by the choices made in designing and constructing 
+   the Redis keys using in your database.</p>
+   <p> A good general practice when designing your Redis keys is to construct at least a 
+   rough outline of what information you are trying to store in Redis, which 
+   Redis data structure to use, and finally how your data structures relates to 
+    other information stored at different keys in your Redis database. 
+   </p> 
   </div>
   <div class="col-md-4">
   <h3>Critical Commands for <em>Keys</em></h3>
@@ -73,7 +94,9 @@
      <strong><a href="http://redis.io/commands/keys">KEYS</a> <em>pattern</em></strong>
     </li>
     <li class="list-group-item list-group-item-success">
-     <strong><a href="http://redis.io/commands/scan">SCAN</a> <em>pattern</em> </strong>
+     <strong><a href="http://redis.io/commands/scan">SCAN</a> <em>pattern</em> 
+      <em>cursor</em>
+     </strong>
     </li> 
    </ul>
    <div class="panel panel-warning">
@@ -88,12 +111,15 @@ OK
 (integer) 1
 127.0.0.1:6379> TYPE testkey
 string
+127.0.0.1:6379> KEYS *
+1) "testkey"
 127.0.0.1:6379> DEL testkey
 (integer) 1
 127.0.0.1:6379> EXISTS testkey
 (integer) 0
 127.0.0.1:6379> TYPE testkey
 none
+127.0.0.1:6379> SCAN "test*"
      </pre>
     </div>
    </div>
@@ -102,37 +128,53 @@ none
 <hr>
 <h1>String <small>the most basic data-type</strong><a name="string"></a> </h1>
 <p class="lead">
- 
+ In Redis, a string is not merely alphanumeric characters as strings are 
+ normally understood to be in higher-level programming languages, but are 
+ serialized characters in C.
+ Integers are stored in Redis as a string. 
 </p>
 <div class="row">
  <div class="col-md-4">
   <h3>Critical Commands for <em>String</em></h3>
   <ul class="list-group">
    <li class="list-group-item list-group-item-success">
-     <strong>SET <em>key</em> <em>string</em> <em>optional nx|xx</em></strong>
+     <strong><a href="http://redis.io/commands/set">SET</a>
+     <em>key</em> <em>string</em> <em>optional nx|xx</em></strong>
    </li>
    <li class="list-group-item">
-     <strong>GET <em>key</em></strong>
+     <strong>
+      <a href="http://redis.io/commands/get">GET</a> <em>key</em></strong>
    </li>
    <li class="list-group-item list-group-item-success ">
-     <strong>INCR <em>key</em></em></strong>
+     <strong><a href="http://redis.io/commands/incr">INCR</a> 
+     <em>key</em></em></strong>
    </li>
    <li class="list-group-item ">
-       <strong>INCRBY<em>key</em> <em>integer</em></strong>
+       <strong>
+        <a href="http://redis.io/commands/incrby">INCRBY</a> 
+        <em>key</em> <em>integer</em></strong>
    </li>  
    <li class="list-group-item list-group-item-success ">
-     <strong>DECR <em>key</em></em></strong>
+     <strong>
+     <a href="http://redis.io/commands/decr">DECR</a>
+     <em>key</em></em></strong>
    </li>
    <li class="list-group-item ">
-       <strong>DECRBY<em>key</em> <em>integer</em></strong>
+       <strong>
+       <a href="http://redis.io/commands/decrby">DECRBY</a> 
+       <em>key</em> <em>integer</em></strong>
    </li>  
 
    <li class="list-group-item list-group-item-success">
-     <strong>MSET <em>key1</em> <em>string</em> <em>key2</em> <em>string</em></strong>
+     <strong>
+     <a href="http://redis.io/commands/mset">MSET</a>
+     <em>key1</em> <em>string</em> <em>key2</em> <em>string</em></strong>
    </li>
 
    <li class="list-group-item">
-     <strong>MGET <em>key1</em> <em>key2</em> <em>key3</em></strong>
+     <strong>
+      <a href="http://redis.io/commands/mget">MGET</a>
+      <em>key1</em> <em>key2</em> <em>key3</em></strong>
    </li>
   </ul>
  </div>
@@ -186,6 +228,10 @@ OK
 (integer) 21
 127.0.0.1:6379> GET Book:1:ReadAction
 "21"
+127.0.0.1:6379> DECRBY Book:1:ReadAction 5
+(integer) 16
+127.0.0.1:6379> GET Book:1:ReadAction
+"16"
    </pre>
    <p>What happens when <span class="label label-success">INCR</span> is used as follows?</p>
    <pre>
@@ -211,6 +257,11 @@ OK
 </div>
 <hr>
 <h1 style="alignment: right"><small>A collection of one or more values is a</small> List <a name="list"></a></h1> 
+<p class="lead">
+Lists in Redis are ordered collections of Redis strings that allows for duplicates values.
+Because Redis lists are implemented as linked-lists, adding an item to the front of the list with 
+<span class="label label-success">LPUSH</span> or to the end of the list with 
+<span class="label label-success">RPUSH</span> are relatively inexpensive operations that are performed in constant time of O(1). 
 <div class="row">
  <div class="col-md-8">
   {# START Exercise #}
@@ -295,32 +346,46 @@ OK
   <h3>Critical Commands for <em>List</em></h3>
   <ul class="list-group">
    <li class="list-group-item list-group-item-success">
-     <strong>LPUSH</strong> <em>key</em> <em>value</em>
+     <strong>
+      <a href="http://redis.io/commands/lpush">LPUSH</a></strong> 
+      <em>key</em> <em>value</em>
    </li>
    <li class="list-group-item">
-    <strong>RPUSH</strong> <em>key</em> <em>value</em>
+    <strong>
+    <a href="http://redis.io/commands/rpush">RPUSH</a></strong> 
+    <em>key</em> <em>value</em>
    </li>
    <li class="list-group-item list-group-item-success">
-     <strong>LRANGE</strong> <em>key</em> <em>start</em> <em>end</em>
+     <strong>
+     <a href="http://redis.io/commands/lrange">LRANGE</a></strong> 
+     <em>key</em> <em>start</em> <em>end</em>
    </li>
    <li class="list-group-item">
-    <strong>LPOP</strong> <em>key</em>
+    <strong>
+      <a href="http://redis.io/commands/lpop">LPOP</a></strong> 
+      <em>key</em>
    </li>
    <li class="list-group-item list-group-item-success">
-    <strong>RPOP</strong> <em>key</em>
+    <strong>
+      <a href="http://redis.io/commands/rpop">RPOP</a></strong> <em>key</em>
    </li>
    <li class="list-group-item">
     <strong><a href="http://redis.io/commands/lindex">LINDEX</a></strong> <em>key</em> <em>index</em>
    </li>
    <li class="list-group-item list-group-item-success">
-    <strong><a href="http://redis.io/commands/linsert"></a>LINSERT</strong> <em>key</em> <em>BEFORE|AFTER</em> <em>pivot</em> <em>value</em> 
+    <strong><a href="http://redis.io/commands/linsert"></a>
+     <a href="http://redis.io/commands/linsert">LINSERT</a></strong> 
+     <em>key</em> <em>BEFORE|AFTER</em> <em>pivot</em> <em>value</em> 
    </li>
 
    <li class="list-group-item">
-    <strong>BLPOP</strong> <em>key</em> <em>second delay</em>
+    <strong>
+      <a href="http://redis.io/commands/blpop">BLPOP</a></strong> 
+      <em>key</em> <em>second delay</em>
    </li>
    <li class="list-group-item list-group-item-success">
-    <strong>BRPOP</strong> <em>key</em> <em>second delay</em>
+    <strong><a href="http://redis.io/commands/bfpop">BRPOP</a></strong> 
+    <em>key</em> <em>second delay</em>
    </li>
    
   </ul>
@@ -328,6 +393,10 @@ OK
 </div>
 <hr>
 <h1> Hash <small>is a "dictionary" of fields and values </small><a name="hash"></a></h1>
+<p class="lead">
+Hash data structure maps one or more fields to corresponding value pairs. 
+In Redis, all hash values must be Redis strings with unique field names. 
+</p>
 <div class="row">
  <div class="col-md-4">
   <h3>Critical Commands for <em>Hash</em></h3>
@@ -463,6 +532,12 @@ OK
 </div>
 <hr>
 <h1><small>An unique and unordered collection of values is a</small> Set <a name="set"></a></h1>
+<p class="lead">
+A set is a collection of string values where uniqueness of each member is guaranteed 
+but does not offer ordering of members. Redis sets also implement union, intersection, and 
+difference set semantics along with the ability to store the results of those set operations 
+as a new Redis. 
+</p>
 <div class="row">
  <div class="col-md-8">
   {# START Exercise #}
@@ -583,6 +658,12 @@ OK
 </div>
 <hr>
 <h1>Sorted Set <small>an ordered collection of unique values</small> <a name="sorted-set"></a></h1>
+<p class="lead">
+A sorted set combines characteristics of both Redis lists and sets. Like a Redis 
+list, a sorted set's values are ordered and like a set, each value is assured 
+to be unique. The flexibility of a sorted set allows for multiple types of access 
+patterns depending on the needs of the application.  
+</p>
 <div class="row">
  <div class="col-md-4">
    <h3>Critical Commands for <em>Sorted Set</em></h3>
@@ -745,6 +826,11 @@ OK
 </div>
 <hr>
 <h1><small>treating a string as sequence of bits is a </small>Bit array <small>or</small> Bitmap<a name="bitmap"></a></h1>
+<p class="lead">
+Redis bitstrings is a very memory efficient data structures in Redis. In a bitstring, 8 bits are 
+stored per byte, with the first bit at position 0 being the significant one that is either set 
+to either 0 or 1. The maximum size for Redis bitstrings is 512 MB.
+</p>
 <div class="row">
  <div class="col-md-8">
   <div class ="panel panel-warning">
@@ -857,6 +943,10 @@ OK
 </div>
 <hr>
 <h1>HyperLogLogs <small> special probabilistic data type similar to a</small> Sorted Set<a name="hll"></a></h1> 
+<p class="lead">
+Redis data type is a probabilistic data structure that provides an estimated 
+count of unique items in a collection.
+</p>
 <p class="lead">HyperLogLogs offer a reduced 
 <div class="row">
  <div class="col-md-4">
@@ -907,6 +997,7 @@ OK
  </div>
 </div>
 <hr>
+{#
 {% import 'snippets/labs.html' as labs %}
 <h1>Lab Assignment</h1>
 <div class="row">
@@ -919,6 +1010,7 @@ OK
   {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
   </div>
 </div>
+#}
 <hr>
 <div class="row">
  <h2><a name="reference"></a>References and Resources</h2>

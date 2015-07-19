@@ -26,9 +26,9 @@
       <li><a href="#E1">Runtime set-up of Master-Slave Replication</a></li>
       <li><a href="#E2">Set-up of Master-Slave Replication with <em>redis.config</em></a></li>
       <li><a href="#E3">Pub/Sub</a></li>
-      <h4>Labs</h3>
+     {# <h4>Labs</h3>
       <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
-      <li><a href="#lab2">Santa's Naughty-or-Nice Dashboard</a></li>
+      <li><a href="#lab2">Santa's Naughty-or-Nice Dashboard</a></li>#}
       <h4><a href="#reference">References and Resources</a></h4>
      </div>
    </div>
@@ -53,34 +53,34 @@
        <p>Open four command-line windows to run a Redis master, slave, and redis-cli instances</p>
        <p><strong>Redis Master</strong></p>
        <pre>
-$ cd introduction-to-redis/09-replication-and-pub-sub/
-$ ~/redis-2.8.18/src/redis-server --dbfilename master.rdb --port 6379      
+$ cd introduction-to-redis/replication-and-pub-sub/
+$ ~/redis-3.0.2/src/redis-server --dbfilename master.rdb --port 6379      
        </pre>
        <p><strong>Redis Slave</strong></p>
        <pre>
-$ cd introduction-to-redis/09-replication-and-pub-sub/
-$ ~/redis-2.8.18/src/redis-server --dbfilename slave.rdb --port 6380
+$ cd introduction-to-redis/replication-and-pub-sub/
+$ ~/redis-3.0.2/src/redis-server --dbfilename slave.rdb --port 6380
        </pre>
        <p><strong>Redis CLI</strong></p>
        <pre>
-$ ~/redis-2.8.18/src/redis-cli -p 6379
+$ ~/redis-3.0.2/src/redis-cli -p 6379
 127.0.0.1:6379> DBSIZE
 (integer) 0
 127.0.0.1:6379> exit
 $
-$ ~/redis-2.8.18/src/redis-cli -p 6380
+$ ~/redis-3.0.2/src/redis-cli -p 6380
 127.0.0.1:6380> DBSIZE
 (integer) 0
 127.0.0.1:6380> SLAVEOF localhost 6379
 OK
 127.0.0.1:6380> exit
 $
-$ ~/redis-2.8.18/src/redis-cli -p 6379
+$ ~/redis-3.0.3/src/redis-cli -p 6379
 127.0.0.1:6379> HMSET Book:1 name "Infinite Jest" author "David Foster Wallace"
 OK
 127.0.0.1:6379> exit
 $
-$ ~/redis-2.8.18/src/redis-cli -p 6380
+$ ~/redis-3.0.2/src/redis-cli -p 6380
 127.0.0.1:6380> KEYS *
 127.0.0.1:6380> KEYS *
 1) "Book:1"
@@ -204,6 +204,7 @@ slaveof <masterip> <masterport>
 </div>
 <hr>
 {% import 'snippets/labs.html' as labs %}
+{#
 <h1>Lab Assignment</h1>
 <div class="row">
   <div class="col-md-8 well well-sm"><a name="lab1"></a>
@@ -219,7 +220,7 @@ gets a toy of her or his choice' %}
   </div>
 
 </div>
-<hr>
+<hr>#}
 <div class="row">
  <h2><a name="reference"></a>References and Resources</h2>
   <ol>

@@ -20,9 +20,9 @@
     <li><a href="#aof">AOF Persistence</a></li>
     <li>Configure <a href="#redis-conf">redis.conf</a></li>
     <li><a href="#server-commands">Redis Server Commands</a></li>
-    <h4>Labs</h3>
+{#    <h4>Labs</h3>
      <li><a href="#lab1">Santa Naughty-or-Nice Dashboard</a></li>
-     <li><a href="#lab2">Elf Kanban 4 Toys</a></li>
+     <li><a href="#lab2">Elf Kanban 4 Toys</a></li>#}
     <h4><a href="#references"><strong>References</strong></a></h4>
    </div>
   </div>
@@ -109,13 +109,14 @@ OK
 Background saving started
 127.0.0.1:6379>
     </pre>
-    <p>Listed below is a snippet from a Redis 2.8 configuration file some of the 
+    <p>Listed below is a snippet from a Redis 3.0 configuration file some of the 
     important parameters and default values for setting both RDB and AOF persistence
     in Redis.</p>
     <pre>
 # Accept connections on the specified port, default is 6379.
 # If port 0 is specified Redis will not listen on a TCP socket.
 port 6379
+
 
 # Close the connection after a client is idle for N seconds (0 to disable)
 timeout 0
@@ -126,7 +127,6 @@ loglevel notice
 # Specify the log file name. Also the empty string can be used to force
 # Redis to log on the standard output.
 logfile ""
-
 
 save 900 1
 save 300 10
@@ -226,6 +226,7 @@ Background append only file rewriting started
 </div>
 <hr>
 {% import 'snippets/labs.html' as labs %}
+{#
 <h1>Lab Assignment</h1>
 <div class="row">
   <div class="col-md-6 well well-sm"><a name="lab1"></a>
@@ -243,7 +244,7 @@ AOF or RDB persistence? What other settings in the <code>redis.config</code> fil
   {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
   </div>
 </div>
-<hr>
+<hr>#}
 <div class="row">
  <h2><a name="references"></a> References and Resources</h2>
  <ol>
