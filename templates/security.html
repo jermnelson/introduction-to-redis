@@ -18,13 +18,6 @@
       <li><a href="#network">Network Security</a></li>
       <h4>Exercises</h4>
       <li><a href="#E1">Restricting access with a Firewall</a></li>
-      <li><a href="#E2">Restricting access with a Password</a></li>
-      <h4>Labs</h3>
-       <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
-      <h4>Labs</h3>
-      <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
-      <li><a href="#lab2">Santa's Naughty-or-Nice Dashboard</a></li>
-      <h4><a href="#reference">References and Resources</a></h4>
      </div>
     </div>
  </div>
@@ -32,7 +25,7 @@
 <hr>
 <h2><a name="network"></a>Network Security</h2>
 <div class="row">
-  <div class="col-md-6"> 
+  <div class="col-md-4"> 
    <p>
     With Redis general security model of only trusted clients accessing a Redis 
     server within a protected environment, there are some general guidelines
@@ -46,66 +39,31 @@
         loopback interface.</li>
    </ul>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-8">
    <div class="panel panel-warning">
     <div class="panel-heading">
-     <h3 class="panel-title">Exercise: Restricting access with a Firewall<a name="E1"></a></h3>
+     <h3 class="panel-title">Exercise: Connect to Redis Master<a name="E1"></a></h3>
     </div>
     <div class="panel-body">
-      <p>In Ubuntu, the standard firewall is <a href="https://help.ubuntu.com/community/UFW">Uncomplicated Firewall</a>.
-       To enable and check the status of UFW, run the following:
-      </p>
-      <pre>
-$ sudo ufw enable
-$ sudo ufw status verbose
-      </pre> 
-      <p>To allow connections on port 22 (ssh) and 80 (www)</p>
-      <pre>
-$ sudo ufw allow 22
-$ sudo ufw allow 80
-      </pre>
-      <p>To deny all packets on the default Redis port 6379</p> 
-      <pre>
-$ sudo ufw deny 6379  
-      </pre>
-     <p>To remove the port 80 rule and disable UFW</p>
+     <p>If the master has <strong>requirepass</strong> parameter set in the 
+      redis.conf, any clients will need to send the password to the Redis
+      instance using the <span class='label label-success'>AUTH</span>
+     </p>
      <pre>
-$ sudo ufw delete allow 80
-$ sudo ufw disable
-     </pre> 
+127.0.0.1:6379> KEYS *
+(error) NOAUTH Authentication required.
+127.0.0.1:6379> AUTH badpassword
+(error) ERR invalid password
+127.0.0.1:6379> AUTH foobared
+OK
+     </pre>
     </div>
+   </div>
   </div>
-</div>
-<div class="row">
-  <section class="col-md-6">
-   <div class="panel panel-warning">
-    <div class="panel-heading">
-     <h3 class="panel-title">Exercise: Restricting access with a Password<a name="E1"></a></h3>
-    </div>
-    <div class="panel-body">
-     <p>Redis does support limited restrictions to a running Redis instance by setting a 
-     password in a <code>redis.conf</code> file or by sending the 
-     <span class="label label-success">CONFIG SET</span> command.</p>
-    </div>
-  </section>
 </div>
 <hr>
-{% import 'snippets/labs.html' as labs %}
-<h1>Lab Assignment</h1>
 <div class="row">
-  <div class="col-md-6 well well-sm"><a name="lab1"></a>
-   {% set kanban = 'For this lab, implement a master/slave set-up for this project' %}
-  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
-  </div>
-  <div class="col-md-6 well well-sm"><a name="lab2"></a>
-   {% set dashboard = 'Create two subscription channels, a naughty channel where the child is given a piece of coal and a nice channel where the child 
-gets a toy of her or his choice' %}
-</div>
-</div>
-
-</hr>
-<div class="row">
- <h2><a name="reference"></a>References and Resources</h2>
+ <h2>References and Resources</h2>
   <ol>
     <li>From the redis.io website: topic on
      <a href="http://redis.io/topics/security">Redis Security</a>
