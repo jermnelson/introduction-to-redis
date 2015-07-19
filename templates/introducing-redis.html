@@ -20,7 +20,36 @@
 </div>
 <hr>
 <div class="row">
- <div class="col-md-10 col-md-offset-2">
+ <section class="col-md-3">
+   <button class="btn btn-lg btn-danger" data-toggle="modal" data-target="#mastering-redis-book-dlg">
+      <span class="glyphicon glyphicon-book"></span>
+      Warning, Book Plug!
+   </button>
+<div class="modal fade" id="mastering-redis-book-dlg">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><span class="glyphicon glyphicon-book"></span> Book Plug!</h4>
+      </div>
+      <div class="modal-body">
+       <h3><em>Mastering Redis</em> coming in 2016</h3>
+       <img src="{{ url_for('static', filename='img/redis.png') }}" class="thumbnail pull-left">
+       <p>I am writing 
+          <em>Mastering Redis</em>, for Packt Publishing 
+            with a projected publication date of early 2016. 
+       </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+ </section>
+ <div class="col-md-9 ">
+
   <h2 style="color: rgb(164,26,17)">What is Redis?<a name="what-is"></a></h2>
    <p class="lead">
     Redis is an open-source NoSQL key-value datastore where instead of storing just one
@@ -49,7 +78,7 @@
       librarian at the University of Utah and Western State University of 
       Colorado before joining Colorado College in 2010.
       </p>
-      <p>
+        <p>
        Nelson's experience with Redis started in 2011 when he started 
        experimenting using Redis as a bibliographic datastore, representing
        library's physical and digital material using both legacy formats 
@@ -86,11 +115,12 @@
    </div>
   </div>
   {# START About Course #}
-  <div class="col-md-8 well">
+  <div class="col-md-8">
+   <section class="well">
     <h2>Schedule<a name="schedule"></a> </h2>
     <h3>Day 1</h3>
     <ul class="lead">
-    {% for key in ['introducing-redis', 'basic-setup-and-admin', 'operating-a-redis-system', 'redis-data-types'] %}
+    {% for key in ['introducing-redis', 'basic-setup-and-admin', 'redis-data-types', 'operating-a-redis-system'] %}
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
     {% endfor %}
     </ul>
@@ -106,52 +136,107 @@
      <li><a href="{{ url_for('topic_view', topic=key) }}">{{ topics[key].get('title') }}</a></li>
      {% endfor %}
     </ul>
- 
+   </section>
+   <article>
+    <p class="lead">To keep track of your questions, comments, and notes; this
+     site uses <a href="https://hypothes.is/">https://hypothes.is/</a>. 
+    </p>
+   </article> 
   {# END About Course #}
   </div>
 </div>
+<h1>History of Redis</h1>
+<section class="row">
+  <article class="col-md-9 col-md-offset-1" id="history-of-redis">
+	<p>
+	In the mid-2000s, Salvatore Sanfilippo - Redis's principle developer and 
+	maintainer - together with a partner started a free web service called LLOOGG. LLOOGG 
+	displayed, in near real-time, visitors access and usage patterns on a website
+	for viewing by administrators and other interested individuals. 
+	 Sanfilippo and his startup
+	developed and released LLOOGG as a PHP application that parsed web server log 
+	files into a MySQL database back-end with a dynamically generated HTML view of the 
+	web server's activity. 
+	</p>
+        <img src="{{ url_for("static", filename="img/lloogg.png") }}" 
+          alt="LLOOGG Screenshot of Redis.io traffic" class="thumbnail pull-left">
+	{#<p>
+	Prior to developing LLOOGG, Sanfilippo worked as a system administrator in Italy 
+	where he began focusing on the computer security as part of his work.  Sanfilippo 
+	initially gained notice by inventing the *idle scan* network attack in 1998 along 
+	with developing the popular open-source TCP/IP packet assembler and analyzer tool called hping. 
+	In an *idle scan* attack, spoofed packets are sent to a target computer to find out 
+	what TCP ports are open through a third, "zombie" computer intermediary. 
+	</p>#}
+	<p>
+	In working on LLOOGG, Sanfilippo increasingly ran into scalability issues with 
+	MySQL as the database was being swamped by writes although performing fine with reading
+	tabular data, As Sanfilippo says in a 2013 interview, <blockquote>I started to realize that what I needed 
+	was an in-memory database with support for complex data structures</blockquote>. As he explored how 
+	to achieve better performance, the first inklings of a new type of key-value data storage that
+	would eventually would become the open-source project Redis officially started on April 
+	10th, 2009. 
+	</p>
+	<p>
+	Early in the development of Redis, Sanfilippo refactored LLOOGG by replacing its relational-data
+	model in MySQL for Redis. His intention for swapping out the data storage was to test the
+	capabilities of Redis with the traffic generated from a running instance of LLOOGG. 
+	LLOOGG's sizable web traffic helped in the testing of early, unstable versions of Redis. 
+	Although Sanfilippo claims that switching to Redis for the LLOOGG project did not result in the 
+	discovery of new bugs, this switch did allowed Sanfilippo to design and architect Redis, 
+	while other individuals started using and testing Redis with much larger 
+	datasets and at larger scales. This work was the beginnings of the lean, small, and fast code-base 
+	that is today's version of Redis.  
+	</p>
+	<p>
+	The first stable Redis 3.0.0 version was released for production use on April 1st, 2015, 
+	almost six years after the initial start of the Redis project. 
+	While the size, types of commands, and data-structures have increased in number over those
+	six years, the overall goals and performance expectations of Redis have not changed that
+	much from Sanfilippo initial ideas about replacing MySQL with Redis for the LLOOGG project. Redis
+	is still an in-memory database, although it now has more options for persisting that data
+	to disk, in addition to a number of powerful and sophisticated commands for the different data
+	structures that are now possible to store and manipulate data in Redis. The biggest change in 
+	Redis 3.0 is the inclusion of Redis Cluster, a mode of operating Redis with multiple 
+	instances where data is automatically sharded across those nodes.  
+	</p>
+  </article>
+</section>
 <hr>
-<h1>Lab Applications</h1>  
-<div class="row">
- <div class="col-md-6 col-md-offset-4">
-  <h2>Your choice &hellip;</h2>
-  <p class="lead">To make this Redis training more relevant, we will create a number of
-  user cases of how you might use Redis to address a professional or personal problem or issue. 
-  During each topic's lab session, you can either decide which of the use cases to explore or 
-  we can divide into small teams for exploring Redis in the context of the problem you're attempt
-  to solve. 
-  </p>
+<h1>Lab Applications &amp; Use Cases</h1>  
+<div class="row"> 
+ <section class="col-md-8 well well-sm">
+   <h2>About</h2>
+   <p class="lead">
+     After each topic, we will have a short break and then come back 
+     for a lab section where we'll either meet as a group or in smaller
+     groups to discuss and experiment with the topics from our Redis
+     training.  
+   </p>
+ </section>
+ <div class="col-md-4">
+  <h3>Your choice &hellip;</h3>
+  <p class="lead">To make this Redis training more relevant, 
+    we can focus on your own problem or use case that 
+   interested in solving with Redis during the lab application time.
+   At least for the first three-to-four topics, it may be easier to use
+   my own use cases but we'll just see how the course flows over
+   the three days.</p> 
  </div>
 </div>
-<div class="row">
- <div class="col-md-9 panel panel-default">
-  <div class="panel-body">
-   <h2>Use Case: <small>Library Consortium Catalog</small></h2>
-   <p class="lead">In my 2013 article, <a href="http://journal.code4lib.org/articles/7349">
-   Building a Library App Portfolio with Redis and Django</a>, I sketched out a design for a 
-   shared bibliographic Redis datastore among different types of libraries. 
-   </p>
-   <span class="pull-right">
-   <img src="http://journal.code4lib.org/media/issue19/nelson/consortium-bibframe-datastores-500.png"><br>
-   (Source <a href="http://journal.code4lib.org/articles/7349">Code4Lib</a>)
-   </span>
-   <p class="lead">
-    I'll be using this design as an illustrative use case in the Topic examples through-out this course. 
-    Two Linked Data vocabularies will be used; <a href="http://schema.org/">Schema.org</a>, a joint effort
-    of Google, Microsoft, Yahoo, and Yandex for structuring data on the web, and 
-    <a href="http://bibframe.org">BIBFRAME</a>, from the Library of Congress for representing physical and
-    digital assets of a library.  
-   </p> 
-  </div>
- </div>
- 
+<h2>Current Use Case</h2>
+{% include 'snippets/ldfs-about.html' %}
+<hr>
+<h2>Past Use Cases</h2>
+{% include 'snippets/lib-consortium-catalog.html' %}
+ {#
  <div class="col-md-6 panel panel-default">
   <div class="panel-body">
   <h2>Santa's Workshop</h1>
   <img src="{{ url_for('static', filename='img/santa.png') }}" class="pull-right">
   <p class="lead">To help contextualizing the Redis topics being covered through-out this course,
    we're going to see how Redis can be put to work improving the operations of Santa Claus's 
-   workshop.  
+   workshop. At the beginning of the lab, examples   
   </p>
   <ul class="media-list">
    <li class="media">
@@ -159,9 +244,8 @@
       <img src="{{ url_for('static', filename='img/toy64.png') }}" alt="Elf Toy Design Catalog">
     </a>
     <div class="media-body">
-      <h4 class="media-heading">Elf Kanban 4 Toys</h4>
-      This application models a simple three-bin Kanban system for 
-      toy manufacturing in Santa's workshop.  Designs
+      <h4 class="media-heading">Elf Toy Design Catalog</h4>
+      This application organizes all of the different toy designs used in the workshop. Designs
       will be modeled as Redis datatypes using a key schema from 
       <a href="http://schema.org/">schema.org</a>
       Redis topics: <a href="{{ url_for('topic_view', topic='redis-data-types') }}">Redis Datatypes</a>,
@@ -170,17 +254,13 @@
    </li>
    <li class="media">
     <a class="media-left" href="#">
-      <img src="{{ url_for('static', filename='img/list64.png') }}" alt="Santa Sleigh's Dashboard">
+      <img src="{{ url_for('static', filename='img/sleigh64.png') }}" alt="Santa Sleigh's Dashboard">
     </a>
     <div class="media-body">
-      <h4 class="media-heading"> Santa Naughty or Nice List</h4>
-      <p>To assist Santa in picking toys for all the boys and girls in the world and as the primary
-      source of demand for the new Elves Kanban 4 toys manufacturing project, Santa's venerable 
-      "naught-or-nice" list will be updated to a new web-based dashboard app.</p>
-             
-    </li> 
+      <h4 class="media-heading"> Santa Sleigh's Dashboard</h4>
+   </li> 
   </ul>
  </div>
-</div>
+ #}
 </div>
 {% endblock %}
