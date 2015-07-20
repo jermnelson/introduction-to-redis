@@ -9,6 +9,7 @@
     <a href="http://www.bpl.org/">Boston Public Library</a>, and 
     <a href=https://www.coloradocollege.edu">Colorado College</a> came together and organized 
     what eventually is a Python-based implementation of an open-source 
+    <img src="{{ url_for('static', filename='img/ldfs-mockup.png') }}" class="img-thumbnail">
     <a href=https://github.com/jermnelson/linked-data-fragments">Linked Data Fragments server</a>  
     using the new Python 3.4 asyncio module for building a fast, lightweight network server 
     that uses Redis, a NoSQL datastore technology, for caching results. 
@@ -19,5 +20,24 @@
  </article>
  <section class="col-md-5 panel">
   <h3>Linked Data Fragments and SPARQL</h3>
+  <h3>Problem</h3>
+  <ul>
+    <li>Using RDF vocabularies for metadata creation and enhancement 
+       often relies on availability and performance of external services</li>
+    <li>These services, unfortunately, are not always reliable (e.g. SPARQL endpoints)</li>
+    <li>Any implementation should be reusable across applications and ideally software 
+    independent</li>
+  </ul>
+  <h3>Linked Data Fragments</h3>
+  <ul>
+    <li>Implement a mechanism that allows you to use
+     selector patterns to specify subsection of triples 
+     you care about, e.g. skos:prefLabel for LCSH</li>
+    <li>Provide a configurable cache layer for remote resources 
+    to speed up lookups on often-requested subjects</li>
+    <li>Linked Data Fragments (<a href="http://linkeddatafragments.org/">
+    http://linkeddatafragments.org/</a>)</li>
+    <li>Simple standardized requests that are easily cacheable (less unique than SPARQL queries) with most query processing done client side</li>
+  </ul>
  </section>
 </div>
