@@ -119,7 +119,12 @@ string
 (integer) 0
 127.0.0.1:6379> TYPE testkey
 none
-127.0.0.1:6379> SCAN "test*"
+127.0.0.1:6379> SCAN 0
+1) "0"
+2) 1) "testkey"
+127.0.0.1:6379> SCAN 0 MATCH "hell*"
+1) "0"
+2) (empty list or set)
      </pre>
     </div>
    </div>
