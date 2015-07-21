@@ -72,7 +72,7 @@ def latest_redis(s):
     info = {}
     info['url'] = "https://github.com/antirez/redis/archive/3.0.0-rc4.tar.gz"
     info['filename'] = "3.0.0-rc4.tar.gz"
-    info['name'] = "redis-3.0.0-rc4"  
+    info['name'] = "redis-3.0.2"  
     info['win'] = {"url": "https://github.com/MSOpenTech/redis/releases/download/win-2.8.19/redis-2.8.19.zip",
                    "filename": "redis-2.8.19.zip"}
     info['win']['name'] = name_re.search(info['win']['filename']).groups()[0]

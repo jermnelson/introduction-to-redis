@@ -117,7 +117,7 @@ slaveof <masterip> <masterport>
        <strong>Facts about Master-Slave Replication</strong>
        <ul>
         <li>Master and Slaves use asynchronous replication</li> 
-        <li>Master can multiple slaves</li>
+        <li>Masters can multiple slaves</li> 
         <li>Slaves can accept connections from other slaves (i.e. a slave could have as it's master a Redis instance that is slave to a master instance)</li>  
         <li>Replication is non-blocking on both master and slave instances; a master can continue to respond to queries while slaves are 
         synchronizing, a slave can be configured to respond to queries with old data while synchronizing with the master</li>
@@ -129,7 +129,10 @@ slaveof <masterip> <masterport>
        <strong><a href="http://redis.io/commands/slaveof">SLAVEOF</a> <em>server</em> <em>port</em></strong>
       </li>
       <li class="list-group-item">
-       <strong>TYPE <em>key</em></strong>
+       <strong><a href="http://redis.io/commands/type">TYPE</a> <em>key</em></strong>
+      </li>
+      <li class="list-group-item list-group-item-success">
+        <strong><a href="http://redis.io/commands/client-list">CLIENT LIST</a></strong>
       </li>
      </ul>
     </div>
@@ -181,6 +184,7 @@ slaveof <masterip> <masterport>
 >>> local_redis = redis.StrictRedis()
 >>> circ_consumer = local_redis.pubsub()
 >>> circ_consumer.subscribe("checkouts", "checkins")
+>>> circ_consumer.get_message()
        </pre>
     
       </div>
@@ -227,6 +231,8 @@ gets a toy of her or his choice' %}
     <li>From the redis.io website: topic on
      <a href="http://redis.io/topics/replication">Replication</a>
    </li>
+   <li>Topic on 
+     <a href="http://redis.io/topics/pubsub">*Pub/Sub</a>
   </ol>
 </div>
 {% endblock %}

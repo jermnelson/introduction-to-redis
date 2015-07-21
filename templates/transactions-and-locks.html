@@ -20,9 +20,9 @@
     <h4>Exercises</h4>
     <li><a href="#E1">Transactions with <em>redis-cli</em></a></li>
     <li><a href="#E2">Transactions with <em>python.py</em></a></li>
-    <h4>Labs</h3>
+    {#<h4>Labs</h3>
     <li><a href="#lab1">Santa's Naughty-or-Nice Dashboard</a></li>
-    <li><a href="#lab2">Elf Kanban 4 Toys</a></li>
+    <li><a href="#lab2">Elf Kanban 4 Toys</a></li>#}
     <h4><a href="#reference">References and Resources</a></h4>
    </div>
   </div>
@@ -33,13 +33,28 @@
 <div class="row">
  <div class='col-md-4 well well-sm'>
   <p class="lead">Redis supports <em>transactions</em>, defined as a 
-  single unit of work made up of one or more commands that are not 
-  affected by other Redis commands. Redis transactions are atomic meaning 
-  of the transaction's commands are treated as a single unit of work. Redis
-  transactions are isolated, transactions and external commands do not affect each 
-  other. Finally, Redis transactions are durable in that once the transaction is 
-  completed, all of the changes persist in the datastore.
+  single unit of work made up of one or more commands. Redis
+  transactions have the following properties:
   </p>
+  <ul class="lead">
+   <li>All commands in a transaction are serialized and executed in order they
+   were issue. During a transaction, Redis does NOT respond to other commands
+   issued by other clients, insuring that commands in the transaction are isolated.
+  </li> 
+  <li>Redis transactions are atomic in that all 
+  of the transaction's commands are treated as a single unit of work. Either all of
+  commands get executed or none of them do.</li>
+  <li>If a command causes an error, the Redis server will return an error instead of 
+    QUEUED reply and will return an error when the transaction is executed with the
+    EXEC command. This typically occurs when the wrong syntax for a command is used</li>
+  <li><strong>HOWEVER</strong>, if all of the commands were successfully queued on 
+    the Redis server and an error occurs in the execution of one command, all the 
+    other commands are still executed. Redis will return a bulk reply with the 
+    result of executing each command.</li>
+   <li>Redis transactions do not support rollbacks as implemented by 
+    most relational databases</li> 
+  </ul>
+    
    <h3>Commands for <em>Transactions</em></h3>
    <ul class="list-group">
     <li class="list-group-item list-group-item-success">
@@ -52,11 +67,13 @@
      <strong><a href="http://redis.io/commands/discard">DISCARD</a></strong>
     </li>
     <li class="list-group-item">
-     <strong><a href="http://redis.io/commands/exec">WATCH</a>
+     <strong><a href="http://redis.io/commands/watch">WATCH</a>
      <em>key</em> [<em>key</em> &hellip;]
      </strong>
     </li>
-
+    <li class="list-group-item list-group-item-success">
+     <strong><a href="http://redis.io/commands/unwatch">UNWATCH</a>
+     </strong>
    </ul>
  </div>
  <div class="col-md-8">
@@ -82,7 +99,7 @@
 OK
 127.0.0.1:6379> HSET Movie:345 copyrightYear 2013
 QUEUED
-127.0.0.1:6379> INCR Move:345:Likes
+127.0.0.1:6379> INCR Movie:345:Likes
 QUEUED
     </pre>
     <p>
@@ -92,7 +109,49 @@ QUEUED
 127.0.0.1:6379> EXEC
 1) (integer) 1
 2) (integer) 201
-     </rep>
+     </pre>
+     <p>
+      The <span class="label label-success">DISCARD</span> command will abort the transaction 
+      if issued before the <span class="label label-success">EXEC</span> command.
+     </p>
+     <pre>
+127.0.0.1:6379> MULTI
+OK
+127.0.0.1:6379> HSET Movie:345 copyrightYear 2013
+QUEUED
+127.0.0.1:6379> DISCARD
+OK
+127.0.0.1:6379> EXEC
+(error) ERR EXEC without MULTI
+     </pre>
+     <p>
+      Redis transactions can implement a form an optimistic locking using the check-and-set
+      behavior of the <span class="label label-success">WATCH</span> command. Watched keys are monitored
+      during a transaction and if the value of a <span class="label label-success">WATCH</span>
+      changes during the execution of the transaction, the transaction is aborted. The 
+       <span class="label label-success">UNWATCH</span> clears out all watched keys.
+     </p>
+     <p>In the primary Redis-cli session:</p>
+     <pre>
+127.0.0.1:6379> WATCH Movie:345:Likes
+OK
+127.0.0.1:6379> MULTI
+OK
+127.0.0.1:6379> INCR Movie:345:Likes
+QUEUED
+     </pre>
+     <p>Now, in second terminal window, the <em>Movie:345:Likes</em> key is incremented by one:</p>
+     <pre>
+127.0.0.1:6379> INCR Movie:345:Likes
+(integer) 201
+     </pre>
+     <p>Going back to the terminal with the ongoing transaction, calling 
+     <span class="label label-success">EXEC</span> results in:
+     <pre>
+127.0.0.1:6379> EXEC
+(nil)
+     </pre>
+     </pre>
     </div>
   {# END EXERCISE #}
   </div>
@@ -130,12 +189,42 @@ StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
  algorithm, called Redlock, for a distributed lock manager (dlm) on the 
  <a href="http://redis.io/topics/distlock">Redis website</a>. 
 </p>
-<p>
- The redis.py module also has a lock object but may not be as effective as the
- Redlock. However there are a couple of Python modules that implement Redlock
- for Python including <strong>Redlock-py</strong>. 
-</p>
+<div class="row">
+  <article class="col-md-6">
+    <h3>Redlock Algorithm</h3>
+    <p>The basic steps that a Redis client will go through when using Redlock is
+    as follows</p>
+    <ol>
+      <li>Client gets the current time milliseconds</li>
+      <li>Client tries to acquire the lock in all N instances sequentially, using
+       the same key name and random value. When trying to set the lock for each
+       instance, a very small timeout value is set so that the client does not 
+       spend too much trying to connect to a Redis node but goes to the next
+       Redis instance</li>
+      <li>Client computes the elapsed time between the time to acquire the lock 
+       and the current timestamp. If and only if the client is able to acquire the 
+       lock from the majority of instances (minimum 3 instances) and the total elapsed
+       time is less than the lock validity time, the lock is considered acquired.</li>
+      <li>If the lock acquired, the validity time of the new lock is calculated as 
+      initial validity time minus the time elapsed as computed in the previous step</li>
+      <li>If the client fails to acquire the lock, the client will attempt to unlock 
+      all of the instances.</li>
+    </ol>
+  </article>
+  <section class="col-md-6">
+   <p>
+   The redis.py module also has a lock object but may not be as effective as the
+   Redlock. However there are a couple of Python modules that implement Redlock
+   for Python including <strong>Redlock-py</strong>. 
+   </p>
+   <pre>
+>>> from redlock import RedLock
+>>> dlm = RedLock([{"host": "localhost", "port": 6379, "db": 0}, {"host": "localhost", "port": 6380, "db": 0}])
+
+  </section>
+</div>
 <hr>
+{#
 {% import 'snippets/labs.html' as labs %}
 <h1>Lab Assignment</h1>
 <div class="row">
@@ -149,7 +238,7 @@ StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
    {% set kanban = 'How would you create a LRU all-keys cache for each toy line?' %}
   {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
   </div>
-</div>
+</div>#}
 <hr>
  <h2><a name="reference"></a>References and Resources</h2>
   <dl>

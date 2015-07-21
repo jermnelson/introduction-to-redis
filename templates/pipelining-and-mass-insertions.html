@@ -97,9 +97,12 @@ StrictPipeline<ConnectionPool<Connection<host=localhost,port=6379,db=0>>>
 (integer) 0
 127.0.0.1:6379> exit 
     </pre>
+    <p>Next, download the text file 
+    <a href="{{ url_for('static', filename='data/high-temp-2014.txt') }}">high-temp-2014.txt</a>,
+    that contains the daily high temperature in 2014 for San Jose. we 
+
     <pre>
-$ cd ~/introduction-to-redis/pipelining-and-mass-insertions
-$ (cat books.txt; sleep 10) | nc localhost 6379
+$ (cat high-temp-2014.txt; sleep 10) | nc localhost 6379
 +OK
 +OK
 .
@@ -113,14 +116,16 @@ $ (cat books.txt; sleep 10) | nc localhost 6379
     </p>
     <pre>
 127.0.0.1:6379> DBSIZE
-(integer) 9984
-127.0.0.1:6379> GET Book:1
-"Witchcraft in the Middle Ages."
-127.0.0.1:6379> GET Book:4567
-"Ephemeral vistas : the expositions universelles, great exhibitions, and world's fairs, 1851-1939 /"
-127.0.0.1:6379> GET Book:9000
-"Art since 1940 : strategies of being /"
-    </pre>
+(integer) 364
+127.0.0.1:6379> DBSIZE
+(integer) 364
+127.0.0.1:6379> GET 2014-1-1
+"62"
+127.0.0.1:6379> GET 2014-7-21
+"79"
+127.0.0.1:6379> GET 2014-12-31
+"55"
+   </pre>
    </div>
  {# END Exercise #}
   </div>
