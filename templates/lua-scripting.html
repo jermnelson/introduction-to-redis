@@ -19,10 +19,10 @@
      <h4>In this topic &hellip;</h4>
      <li><a href="#E1">Introducing Lua</a></li>
      <li><a href="#E2">First Lua Script</a></li>
-     <h4>Labs</h3>
+     {#<h4>Labs</h3>
      <li><a href="#lab1">Elf Kanban 4 Toys</a></li>
      <li><a href="#lab2">Santa Naughty-or-Nice Dashboard</a></li>
-     <h4><a href="#references"><strong>References</strong></a></h4>
+     <h4><a href="#references"><strong>References</strong></a></h4>#}
      </ul>
      </div>
     </div>
@@ -240,7 +240,7 @@ OK
    </div>
  </div>
 </div>
-{% import 'snippets/labs.html' as labs %}
+{# import 'snippets/labs.html' as labs %}
 <h1>Lab Assignment</h1>
 <div class="row">
   <div class="col-md-6 well well-sm"><a name="lab1"></a>
@@ -253,16 +253,18 @@ Naughty-or-Nice Dashboard:<ul><li>Adding child to the naughty or nice lists</li>
 <li>Moving a child from one list to another</li></ul>' %}
   {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
   </div>
-</div>
+</div>#}
 <hr>
 
 <hr>
 <div class="row">
- <h2><a name="References and Resources</h2>
+ <h2>References and Resources</h2>
   <ol>
     <li>From the redis.io website: topic on
-     <a href="http://redis.io/topics/"> </a>
+     <a href="http://redis.io/commands/eval">EVAL</a>
    </li>
+   <li>Lua Language 
+     <a href="http://www.lua.org/">homepage</a></li>
   </ol>
 </div>
 {% endblock %}

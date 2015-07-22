@@ -3,11 +3,16 @@
 {% block body %}
 <div class="row page-header">
  <div class="col-md-10 jumbotron">
-  <h1>Security</h1>
+  <h1>Security &amp; Coming Features</h1>
   <p class="lead">Redis security model assumes that clients accessing Redis are 
   running in a protected, trusted environment with no direct public access. However,
   Redis does provide minimal clear-text password protection along with other 
   techniques that can provide some minimal level of security.
+  </p>
+  <p class="lead">
+   As an active project, Redis is always adding new features and improvements. Here
+   we'll look at the coming geographic-based commands currently in the 
+   Redis <em>unstable</em> branch.
   </p>
   {% include 'snippets/topic-nav.html' %}
  </div>
@@ -15,15 +20,16 @@
     <div class="panel panel-danger">
      <div class="panel-body">
       <h4>In this topic &hellip;</h4>
-      <li><a href="#network">Network Security</a></li>
+      <li><a href="#network">Redis Security</a></li>
+      <li><a href="#coming-features">Coming Features</a></li>
       <h4>Exercises</h4>
-      <li><a href="#E1">Restricting access with a Firewall</a></li>
+      <li><a href="#E1">Connect to Redis Master with a Password</a></li>
      </div>
     </div>
  </div>
 </div>
 <hr>
-<h2><a name="network"></a>Network Security</h2>
+<h2><a name="network"></a>Redis Security</h2>
 <div class="row">
   <div class="col-md-4"> 
    <p>
@@ -60,6 +66,61 @@ OK
     </div>
    </div>
   </div>
+</div>
+<hr>
+<h2><a name="coming-features"></a>Coming Features</h2>
+<p class="lead">
+ Redis is a very active project and new features and improvements being
+ implemented all the time. Currently in the <em>unstable</em> branch, Redis is 
+ adding a number of Geographic commands to support GIS and other location-based
+ applications.
+</p>
+<div class="row">
+  <section class='col-md-9'>
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+     <h3 class="panel-title">Exercise: Downloading and Using Geo Commands<a name="E1"></a></h3>
+    </div>
+    <div class="panel-body">
+      <p>First, we'll need to download and make Redis using the unstable branch</p>
+      <pre>
+$ wget https://github.com/antirez/redis/archive/unstable.tar.gz
+$ tar xvf unstable.tar.gz
+$ cd redis-unstable
+$ make
+$ src/redis-server
+      </pre>
+      <p>Now that we have complied and have a running Redis instance, we'll open a
+       second terminal window and launch Redis-cli. We'll then add a couple of data
+      points to the BayArea key with the <span class="label label-success">GEOADD</span>
+      and then calculate the distance between San Francisco and San Jose with the
+      <span class="label label-success">GEODIST</span>
+      </p>
+      <pre>
+127.0.0.1:6379> GEOADD BayArea 121.8863 37.7833 "San Jose" 122.4167 37.7833 "San Francisco" 122.2708 37.8044 Oakland
+127.0.0.1:6379> GEODIST BayArea "San Francisco" "San Jose"
+"46624.876174299716"
+127.0.0.1:6379> GEODIST BayArea "San Francisco" "San Jose" km
+"46.624876174299715"
+127.0.0.1:6379> GEODIST BayArea "San Francisco" "San Jose" mi
+"28.971426904382987"
+      </pre>
+      <p>With the <span class="label label-success">GEORADIUS</span> and 
+       <span class="label label-success">GEORADIUSBYMEMBER</span> returns the
+      geospatial information that are within the borders of an area specified 
+      with a central location and a maximum distance from the center.</p>
+      <pre>
+127.0.0.1:6379> GEORADIUS BayArea 121.9692 37.3544 100 mi
+1) "San Jose"
+2) "Oakland"
+3) "San Francisco"
+127.0.0.1:6379> GEORADIUS BayArea 121.9692 37.3544 30 mi
+1) "San Jose"
+      </pre>
+    </div>
+  </div>
+  </section>
+
 </div>
 <hr>
 <div class="row">

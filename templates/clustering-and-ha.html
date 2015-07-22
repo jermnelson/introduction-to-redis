@@ -21,9 +21,9 @@
       <li><a href="#redis-cluster">Redis Cluster</a></li>
       <h4>Exercises</h4>
       <li><a href="#E3">Configuring and Running Redis Sentinel</a></li>
-      <h4>Labs</h3>
+      {#<h4>Labs</h3>
       <li><a href="#lab1">Santa's Naughty-or-Nice Dashboard</a></li>
-      <li><a href="#lab2">Elf Kanban 4 Toys</a></li>
+      <li><a href="#lab2">Elf Kanban 4 Toys</a></li>#}
       <h4><a href="#reference">References and Resources</a></h4>
      </div>
     </div>
@@ -32,9 +32,6 @@
 <hr>
 <h1>Redis Cluster <a name="redis-cluster"></a></h1>
 <div class="row">
- <p>
- Start by downloading Redis 3.0 and installing by doing the following:
- </p>
  <div class="col-md-8">
  {# START Exercise #}
   <div class="panel panel-warning">
@@ -42,19 +39,12 @@
     <h3 class="panel-title"><a name="E1"></a><strong>Exercise:</strong> Configuring and Running Redis Cluster</h3>
    </div>
    <div class="panel-body">
-    <p>Downloading and installing Redis 3.0</p>
-   <pre>
-$ wget https://github.com/antirez/redis/archive/3.0.0-rc1.tar.gz
-$ tar xvf redis-3.0.0-rc1.tar.gz 
-$ cd redis-3.0.0-rc1
-$ make
-   </pre>
    <p>
-    Next, we'll manually create a minimal cluster with three master nodes and three
+    We'll start by manually create a minimal cluster with three master nodes and three
     slaves.    
    </p>
    <pre>
-$ cd introduction-to-redis/10-clustering-and-ha/
+$ cd introduction-to-redis/clustering-and-ha/
 $ mkdir cluster-test
 $ cd cluster-test
 $ mkdir 7000 7001 7002 7003 7004 7005
@@ -63,7 +53,7 @@ $ vi 7000/redis.conf
 $ cp 7000/redis.conf 7001/.
 $ vi 7001/redis.conf
 ...
-$ cp ../../redis-3.0.0-rc1/src/redis-server .
+$ cp ~/redis-3.0.2/src/redis-server .
 $ cd 7000
 $ ../redis-server redis.conf
 # New terminal tab
@@ -77,7 +67,7 @@ $ ../redis-server redis.conf
    <pre>
 $ sudo gem install redis
 $ cd ../../
-$ ./redis-3.0.0-rc1/src/redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 \
+$ .~/redis-3.0.2/src/redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 \
 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
    </pre>
    </div>
@@ -95,8 +85,8 @@ $ ./redis-3.0.0-rc1/src/redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0
    <p>After successfully running <code>redis-trib.rb</code>, you can interact with the cluster
     using <strong>redis-cli</strong></p>
    <pre>
-$ redis-3.0.0-rc1/src/redis-cli -c -p 7000
-127.0.0.1:7000> SET Book:1 "Gone with the Wind"
+$ ~/redis-3.0.2/src/redis-cli -c -p 7000
+127.0.0.1:7000> SET Book:1 "Moby Dick"
 -> Redirected to slot [14335] located at 127.0.0.1:7002
 OK
 127.0.0.1:7002> SET Book:2 "Infinite Jest"
@@ -122,6 +112,19 @@ OK
   </div>
  </div>
 </row>
+<p class="lead">Redis Cluster has 16384 hash slots where incoming keys are assigned
+a slot by taking the CRC16 of the key and then calculating the key modulo 16384 to 
+determine the slot. For our example 3 node cluster the
+hash slots are broken down as:</p>
+<ul>
+   <li>Node A contains hash slots from 0 to 5500.</li>
+   <li>Node B contains hash slots from 5501 to 11000.</li>
+   <li>Node C contains hash slots from 11001 to 16384.</li>
+  <li>
+</ul>
+<p>
+Book:1 key would be assigned to Node C.
+</p>
 <hr>
 <h1>Redis Sentinel <a name="sentinel"></a></h1>
 <p class="lead">
