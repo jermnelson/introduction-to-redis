@@ -226,17 +226,26 @@ $ npm install swig --save
   <p>Second, change directory to the <code>node</code> example directory and 
      run the node.js application</p>
   <pre>
-$ cd introduction-to-redis/05-programming-redis
+$ cd introduction-to-redis/programming-redis
 $ node server.js
 Application Started on http://localhost:1337/
   </pre>
+    <p>To see an existing Node.js project that uses Redis, checkout Amir Rajan's
+     Todo Application at 
+     <a href="https://github.com/amirrajan/nodejs-todo">https://github.com/amirrajan/nodejs-todo</a>.
+     <pre>
+$ git clone https://github.com/amirrajan/nodejs-todo.git
+$ cd nodejs-todo
+$ npm install 
+     </pre>
+     </pre>
     </div>
    {# END Exercise #}
    </div>
   </div>
 </div>
 <hr>
-{% import 'snippets/labs.html' as labs %}
+{# import 'snippets/labs.html' as labs %}
 <h1>Lab Assignment</h1>
 <div class="row">
   <div class="col-md-6 well well-sm"><a name="lab1"></a>
@@ -253,7 +262,7 @@ Application Started on http://localhost:1337/
  <li>Create a <code>app.py</code> file in the root directory</li></ol>' %}
   {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
   </div>
-</div>
+</div>#}
 <hr>
  <h2><a name="reference"></a>References and Resources</h2>
   <dl>
