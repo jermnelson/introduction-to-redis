@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% set redis_url = "http://download.redis.io/releases/redis-3.0.7.tar.gz" %}
+{% set redis_file = "redis-3.0.7" %}
 
 {% block body %}
 <div class="row page-header">
@@ -30,16 +32,16 @@
    <h3>Downloading<a name="downloading"></a></h3> 
    <p class="lead">For Linux</p>
    <pre>
-$ wget http://download.redis.io/releases/redis-3.0.2.tar.gz 
+$ wget {{ redis_url }} 
    </pre>
    <p class="lead">For MacOS</p>
-   <p>Save <a href="">
- http://download.redis.io/releases/redis-3.0.2.tar.gz</a> to your Downloads
+   <p>Save <a href="{{ redis_url }}">
+		   {{ redis_url }}</a> to your Downloads
    directory. Open a terminal and copy the file to 
    <h3>Installing <a name="installing"></a></h3>
    <pre>
-$ tar xzf redis-3.0.2.tar.gz
-$ cd redis-3.0.2
+$ tar xzf {{ redis_file }}.tar.gz
+$ cd {{ redis_file }}
 $ make
    </pre>
    <p class="lead">For Microsoft Windows</p>
