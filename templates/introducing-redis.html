@@ -34,10 +34,10 @@
       </div>
       <div class="modal-body">
        <h3><em>Mastering Redis</em> coming in 2016</h3>
-       <img src="{{ url_for('static', filename='img/redis.png') }}" class="thumbnail pull-left">
-       <p>I am writing 
-          <em>Mastering Redis</em>, for Packt Publishing 
-            with a projected publication date of early 2016. 
+       <img src="{{ url_for('static', filename='img/mastering-redis-bk-cover.png') }}" class="thumbnail pull-left">
+       <p>My latest book,  
+          <em>Mastering Redis</em> from Packt Publishing 
+            has a projected publication date in 3rd Quarter 2016. 
        </p>
       </div>
       <div class="modal-footer">
@@ -234,38 +234,5 @@
 <hr>
 <h2>Past Use Cases</h2>
 {% include 'snippets/lib-consortium-catalog.html' %}
- {#
- <div class="col-md-6 panel panel-default">
-  <div class="panel-body">
-  <h2>Santa's Workshop</h1>
-  <img src="{{ url_for('static', filename='img/santa.png') }}" class="pull-right">
-  <p class="lead">To help contextualizing the Redis topics being covered through-out this course,
-   we're going to see how Redis can be put to work improving the operations of Santa Claus's 
-   workshop. At the beginning of the lab, examples   
-  </p>
-  <ul class="media-list">
-   <li class="media">
-    <a class="media-left" href="#">
-      <img src="{{ url_for('static', filename='img/toy64.png') }}" alt="Elf Toy Design Catalog">
-    </a>
-    <div class="media-body">
-      <h4 class="media-heading">Elf Toy Design Catalog</h4>
-      This application organizes all of the different toy designs used in the workshop. Designs
-      will be modeled as Redis datatypes using a key schema from 
-      <a href="http://schema.org/">schema.org</a>
-      Redis topics: <a href="{{ url_for('topic_view', topic='redis-data-types') }}">Redis Datatypes</a>,
-      <a href="{{ url_for('topic_view', topic='operating-a-redis-system') }}">Operating a Redis System</a>
-    </div>
-   </li>
-   <li class="media">
-    <a class="media-left" href="#">
-      <img src="{{ url_for('static', filename='img/sleigh64.png') }}" alt="Santa Sleigh's Dashboard">
-    </a>
-    <div class="media-body">
-      <h4 class="media-heading"> Santa Sleigh's Dashboard</h4>
-   </li> 
-  </ul>
- </div>
- #}
 </div>
 {% endblock %}
