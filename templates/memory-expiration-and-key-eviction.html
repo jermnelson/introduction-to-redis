@@ -133,22 +133,89 @@ OK
 
   </div>
  </div>
-{# END Setup #}
 </div>
-{# import 'snippets/labs.html' as labs %}
-<h1>Lab Assignment</h1>
 <div class="row">
-  <div class="col-md-6 well well-sm"><a name="lab1"></a>
-   {% set kanban = 'How would you create a LRU all-keys cache for each toy line?' %}
-  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
-  </div>
-  <div class="col-md-6 well well-sm"><a name="lab2"></a>
-   {% set dashboard = 'For each entry in the nice or naughty list, expire each key for Dec. 26th' %}
-  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
-  </div>
-
+  <section class="col-md-8">
+   <p>
+    The Redis LRU algorithm is not exact, as Redis does not automatically choose the 
+     best candidate key for eviction, the least used key, or the key with the earliest access date. 
+     Instead, Redis default behavior is take a sample of five keys and evict the least 
+     used of those five keys. If we want to increase the accuracy of our LRU algorithm, 
+     we can the change the maxmemory-samples directive in either redis.conf or during runtime 
+     with the CONFIG SET maxmemory-samples command. Increasing the sample size to 10 improves the 
+     performance of the Redis LRU so that it approaches a true LRU algorithm but with the side-effect 
+     of more CPU computation. Decreasing the sample size to 3 reduces the accuracy of Redis LRU 
+     but with a corresponding increase in processing speed. 
+   </p>
+   </section>
 </div>
-#}
+<hr>
+<div class="row">
+  <section class="col-md-4">
+
+   <p><strong>volatile LRU</strong> Policy Redis keys are evicted if the keys
+   have <strong>EXPIRE</strong> set, if there not any keys to be evicted when 
+   Redis reaches maxmemory an OOM error is returned to the client. Note: under
+   this policy when Redis reached maxmemory, it will start evicting keys that
+   have an expiration set even if the time limit on keys hasn't been reached
+   yet.</p>
+
+  </section>
+  <section class="col-md-8">
+    <h3>Testing volatile LRU</h3>
+    <pre>
+127.0.0.1:6379> FLUSHDB
+127.0.0.1:6379> CONFIG SET maxmemory-policy volatile-lru
+    </pre>	  
+    <p>Python function to add and set keys</p>
+    <pre>
+>>> def add_id_expire(redis_instance):
+	count = redis_instance.incr("global:uuid")
+        redis_key = "uuid:{}".format(count)
+        redis_instance.set(redis_key, uuid.uuid4())
+        if count <= 75:
+            redis_instance.expire(redis_key, 300)
+
+
+    </pre>
+  </section>
+</div>
+<div class="row">
+	<section class="col-md-4">
+         <p>The <strong>allkeys-lru</strong> evicts keys based on the ttl. The 
+	 allkeys-lru can delete ANY key in Redis and there is no way to restrict 
+	 which keys are to be deleted. If you application needs to persist some 
+	 Redis keys (say for configuration or reference look-up) DON’T use allkeys-lru policy!
+	 </p>
+	</section>
+	<section class="col-md-8">
+        <h3>Testing allkeys-lru</h3>
+        <pre>
+127.0.0.1:6379> FLUSHDB
+127.0.0.1:6379> CONFIG SET maxmemory-policy allkeys-lru
+    </pre>	
+         <
+	 Running the add_id function in an infinite while loop and a counter</p>
+	 <pre>
+>>> count = 1
+>>> while 1:
+	add_id(local_redis)
+	count += 1
+	 </pre> 
+	 <p>Using the <strong>INFO stats</strong> will show us the status of Redis cache.
+</div>
+<div class="row">
+  <section class="col-md-8">
+    <p class="lead">Redis offer two other types of non-LRU maxmemory policies, 
+    <strong>volatile-random</strong> and <strong>allkeys-random</strong> mirror the
+     previous polices but instead of calculating LRU of the keys, the keys are 
+     either randomly evicted based on the key's TTL in the case of the 
+     <strong>volatile-random</strong> or any random keys in the case of 
+     <strong>allkeys-random</strong>.
+  </section>
+</div>
+
+
 <hr>
  <h2><a name="reference"></a>References and Resources</h2>
   <dl>

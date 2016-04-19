@@ -105,7 +105,7 @@ $ ~/redis-3.0.2/src/redis-cli -p 6380
        <pre>
 # Master-Slave replication. Use slaveof to make a Redis instance a copy of
 # another Redis server.
-slaveof <masterip> <masterport>
+slaveof &lt;masterip&gt; &lt;masterport&gt;
        </pre>
       </div>
      {# END Exercise #}
@@ -135,9 +135,50 @@ slaveof <masterip> <masterport>
         <strong><a href="http://redis.io/commands/client-list">CLIENT LIST</a></strong>
       </li>
      </ul>
+    <h3>Caveats when using Replication</h3>
+   <p class="lead">If persistence is turned off on the master A and two slaves B,C
+    the following problem can occur:</p>
+   <ul class="lead">
+    <li>We have a setup with node A acting as master, with persistence turned down, and nodes B and C replicating from node A.</li>
+    <li>A crashes, however it has some auto-restart system, that restarts the process. However since persistence is turned off, the node restarts with an empty data set.</li>
+    <li>Nodes B and C will replicate from A, which is empty, so they'll effectively destroy their copy of the data.</li>
+   </ul>
     </div>
   </div>  
  </div>
+
+<h3>SYNC, Partial Resynchronization &amp; Diskless Replication</h3> 
+<div class="row">
+  <section class="col-md-4">
+  <p class="lead">
+   <h3>Redis Replication</h3>
+   Steps:
+   <ol>
+	<li>The master then starts background saving, and starts to buffer all new commands received that will modify the dataset.</li>
+        <li>When the background saving is complete, the master transfers the database file to the slave, which saves it on disk, and then loads it into memory.
+        <li> The master will then send to the slave all buffered commands. This is done as a stream of commands and is structured in the Redis.</li>
+   </ol>
+ 
+  </section>
+  <section class="col-md-4">
+   <h2>Partial Resynchronization</h2>
+  <p>
+Replication is non-blocking on both master and slave instances; a master can continue to respond to queries while slaves are 
+        synchronizing, a slave can be configured to respond to queries with old data while synchronizing with the master
+   </p>
+   <p>If the link between the master and slave goes down, the old behavior of Redis is to do a 
+   full synchronization with the slave when the connection is re-established. As of Redis 2.8
+   experimental support was added with <strong>PSYNC</strong> command that will only do a partial
+   synchronization with MASTER based on if a time threshold has been exceeded or not. If 
+   time has been exceeded, a full <strong>SYNC</strong> is triggered between the master and
+   slave.</p> 
+  </section>
+  <section class="col-md-4">
+   <h2>Diskless replication</h2>
+   <p>An experimental feature that sends the full RDB file to the slave without forking 
+    the master and using the disk as an intermediate storage.
+  </section>
+</div>
 </div>
 <hr>
 <h1>Pub/Sub (Publication/Subscription)<a name="pubsub"></a></h1>
@@ -206,6 +247,87 @@ slaveof <masterip> <masterport>
   </div>  
  </div>
 </div>
+<h2>Pub/Sub Message Syntax</h2>
+<div class="row">
+    <section class="col-md-4">
+        <p class="lead">
+        Redis Pub/Sub messages are defined as 3 or 4 part <a href="http://redis.io/topics/protocol">RESP</a> 
+        (REdis Serialization Protocol) array.
+        RESP is the communication protocol that Redis client communicate with Redis server and is 
+        used in other projects beside Redis. We see the raw RESP protocol if we use telnet and connect 
+        directly to Redis.
+	</p>
+    </section>
+    <section class="col-md-6">
+        <p>First, we will connect to a single Redis instance running at port 6379 with
+        telnet.         <pre>
+$ telnet localhost 6379
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+        </pre>
+        <p>Now, we will subscribe to a <strong>chat_room</strong> channel</p> and from a <code>redis-cli</code>
+        session, we will post a message to the channel. 
+
+        <pre>
+SUBSCRIBE chat_room
+*3
+$9
+subscribe
+$9
+chat_room
+:1
+*3
+$7
+message
+$9
+chat_room
+$18
+Anybody out there?
+        </pre>
+        <p
+    </section>
+</div>
+<h2><small>Pattern Matching with</small> PSUBSCRIBE &amp; 
+	PUNSUBSCRIBE</h2>
+<div class="row">
+    <section class="col-md-6">
+        <p class="lead">To subscribe to more than one channel, you can use the <strong>PSUBSCRIBE</strong>
+        that take a pattern to match to existing channels.</p>
+        <pre>
+PSUBSCRIBE chat_*
+*3
+$10
+psubscribe
+$6
+chat_*
+:1
+*4
+$8
+pmessage
+$6
+chat_*
+$9
+chat_room
+$18
+What is your name?
+        </pre>
+    </section>
+    <section class="col-md-6">
+        <p class="lead">To unsubscribe to multiple channels at once, you can use the <strong>PUNSUBSCRIBE</strong>
+        </p>
+    <pre>
+PUNSUBSCRIBE chat*
+*3
+$12
+punsubscribe
+$5
+chat*
+:1
+    </pre>
+    </section>
+</div>
+
 <hr>
 {% import 'snippets/labs.html' as labs %}
 {#

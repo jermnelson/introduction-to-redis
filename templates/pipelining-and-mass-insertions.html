@@ -142,11 +142,10 @@ $ (cat high-temp-2014.txt; sleep 10) | nc localhost 6379
 OK
 127.0.0.1:6379> exit 
     </pre>
-     <p>Launch a <code>virtualenv</code> environment and then run a python script that
+     <p>Run a python script that
     inserts inserts 10,000 strings into Redis.</p>
 {% set current_redis = " "|latest_redis %}
     <pre>
-$ source ~/redis-py-end/bin/activate
 $ cd ~/introduction-to-redis/pipelining-and-mass-insertions
 $ python protocol.py | ~/{{ current_redis.name }}/src/redis-cli --pipe
 All data transferred. Waiting for the last reply...
