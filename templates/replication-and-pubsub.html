@@ -5,7 +5,7 @@
  <div class="col-md-10 jumbotron">
   <h1>Replication and Pub/Sub</h1>
   <p class="lead">
-    Redis supports two models of distributed data processing. 
+    Redis supports two models of distributed computing. 
     Redis's master-slave replication
     is simple to use with horizontal scaling across multiple 
     slaves connecting asynchronous with a master Redis instance. 
@@ -117,7 +117,7 @@ slaveof &lt;masterip&gt; &lt;masterport&gt;
        <strong>Facts about Master-Slave Replication</strong>
        <ul>
         <li>Master and Slaves use asynchronous replication</li> 
-        <li>Masters can multiple slaves</li> 
+        <li>Masters can have multiple slaves</li> 
         <li>Slaves can accept connections from other slaves (i.e. a slave could have as it's master a Redis instance that is slave to a master instance)</li>  
         <li>Replication is non-blocking on both master and slave instances; a master can continue to respond to queries while slaves are 
         synchronizing, a slave can be configured to respond to queries with old data while synchronizing with the master</li>
@@ -136,10 +136,10 @@ slaveof &lt;masterip&gt; &lt;masterport&gt;
       </li>
      </ul>
     <h3>Caveats when using Replication</h3>
-   <p class="lead">If persistence is turned off on the master A and two slaves B,C
+   <p class="lead">If persistence is turned off on the master A and it has two slaves B, C
     the following problem can occur:</p>
    <ul class="lead">
-    <li>We have a setup with node A acting as master, with persistence turned down, and nodes B and C replicating from node A.</li>
+    <li>We have a setup with node A acting as master, with persistence turned off, and nodes B and C replicating from node A.</li>
     <li>A crashes, however it has some auto-restart system, that restarts the process. However since persistence is turned off, the node restarts with an empty data set.</li>
     <li>Nodes B and C will replicate from A, which is empty, so they'll effectively destroy their copy of the data.</li>
    </ul>

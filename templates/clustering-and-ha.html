@@ -21,9 +21,6 @@
       <li><a href="#redis-cluster">Redis Cluster</a></li>
       <h4>Exercises</h4>
       <li><a href="#E3">Configuring and Running Redis Sentinel</a></li>
-      {#<h4>Labs</h3>
-      <li><a href="#lab1">Santa's Naughty-or-Nice Dashboard</a></li>
-      <li><a href="#lab2">Elf Kanban 4 Toys</a></li>#}
       <h4><a href="#reference">References and Resources</a></h4>
      </div>
     </div>
@@ -31,6 +28,91 @@
 </div>
 <hr>
 <h1>Redis Cluster <a name="redis-cluster"></a></h1>
+<p class="lead">
+Redis Cluster provides one method of running Redis where data is 
+sharded across multiple Redis instances while providing a degree 
+of availability for continuing operations in the event of a node failing
+or a communication issue. 
+</p>
+<p class="lead">
+  Nodes in the Redis Cluster use the Redis cluster protocol to connect with 
+  every other node in the Redis cluster for a mesh network topology. 
+  Nodes communicate using a TCP gossip protocol and along with a configuration 
+  update mechanism in order to reduce the number of messages being exchanged between nodes. 
+</p>
+<div class="row">
+    <section class="col-md-6">
+        <div class="panel">
+            <div class="panel-body">
+                <h4 class='card-title'>Composite Partitioning</h4>
+                 <p class="card-text">Redis cluster uses a form of composite 
+                 partitioning called consistent hashing that calculates what 
+                 Redis instance any particular key is assigned called 
+                 a <strong>hash slot</strong>.
+                </p>
+                <p class="card-text">The hash slot is the CRC16 hash 
+                algorithm applied to the key and then the computation of a modulo using 16384. 
+                The specific algorithm used by Redis cluster to calculate the hash slot for a key:
+                <ol>
+                    <li>The cyclic redundancy check (CRC) using a polynomial length of 17-bits or CRC16 
+                     is calculated on the Redis key </li>
+                    <li>The modulo 16384 of the value is then calculated to get the 
+                      <strong>hash slot</strong> for the key.</li>
+                </ol>
+                <p >
+                Each master node is assigned a sub-range of hash slots and the key and value 
+                will reside on that Redis instance.
+               </p>
+            </div>
+        </div>    
+         </section>
+    <section class="col-md-6">
+     When a Redis cluster is running, each node has two TCP sockets open:
+     <ul>
+         <li>First is the standard Redis protocol for connecting clients
+         (default port 6379 for the first node)</li>
+         <li>Second port is calculated from the sum of the first port 
+         plus 10000 (16379 for the default port) and binary protocol for 
+         node-to-node communication.</li>
+     </ul>
+
+Clients should never need to connect directly with the cluster bus port but with the lower, standard port. 
+    </section>
+</div>
+
+<h2 class="text-xs-center">Six-Node Redis Cluster</h2>
+<div class="row">
+    <section class="col-md-7">
+       <img src="{{ url_for('static', filename='img/six-node-redis-cluster.png') }}">
+    </section> 
+    <section class="col-md-5">
+        <p>To illustrate all of the features of Redis Cluster, the minimum recommended
+        Redis cluster setup is to have a 3 Master Redis nodes with each master node replicated with a 
+        single Redis slave instance node. Each Master Node hash slots are broken down as</p> 
+        <div class="alert alert-danger">
+            <strong>Master One (M1)</strong> - allocated hash slots 0-5460
+        </div>
+        <div class="alert alert-info">
+            <strong>Slave One (S1)</strong> replicates Master One, is promoted if a quorum of 
+            nodes cannot reach Master One.
+        </div>
+        <div class="alert alert-danger">
+            <strong>Master Two (M2)</strong> - allocated hash slots 5461-10922
+        </div>
+        <div class="alert alert-info">
+            <strong>Slave Two (S2)</strong> replicates Master Two, is promoted if a quorum of 
+            nodes cannot reach Master Two.
+        </div>
+        <div class="alert alert-danger">
+            <strong>Master Three (M3)</strong> - allocated hash slots 10923-16383
+        </div>
+        <div class="alert alert-info">
+            <strong>Slave Three (S3)</strong> replicates Master Three, is promoted if a quorum of 
+            nodes cannot reach Master Three.
+        </div>
+
+    </section> 
+</div>
 <div class="row">
  <div class="col-md-8">
  {# START Exercise #}
@@ -74,6 +156,24 @@ $ .~/redis-3.0.2/src/redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:
   {# END example #}
   </div>
  </div>
+ <section class="col-md-4">
+     <div class="well well-sm">
+       <h4>Sample <strong style="color: red; font-size: 1.1em">redis.conf</strong></h4>
+                <p class="card-text">Here is the example <code>redis.conf</code> we are
+                using for each of Redis cluster nodes</p>
+                <pre>
+port 7000
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
+appendonly yes
+                </pre>
+                <p class="card-text">We need to change the port number to the correct value for the node, i.e.
+                for node 7002, we need specify the correct port number for that node's <code>redis.conf</code>
+                configuration file.</p>
+            </div>
+
+ </section>
  </div>
  {# START Exercise #}
   <div class="panel panel-warning">
@@ -111,22 +211,105 @@ OK
   </div>
   </div>
  </div>
-</row>
-<p class="lead">Redis Cluster has 16384 hash slots where incoming keys are assigned
-a slot by taking the CRC16 of the key and then calculating the key modulo 16384 to 
-determine the slot. For our example 3 node cluster the
-hash slots are broken down as:</p>
-<ul>
-   <li>Node A contains hash slots from 0 to 5500.</li>
-   <li>Node B contains hash slots from 5501 to 11000.</li>
-   <li>Node C contains hash slots from 11001 to 16384.</li>
- 
-</ul>
-<p>
-Book:1 key would be assigned to Node C.
-</p>
+</div>
+<h2>Easier Redis Cluster with <em>create-cluster</em> script</h2>
+<div class="row">
+    <section class="col-md-4">
+        <p class="lead">Instead of manually setting up and running a Redis 
+        cluster, you can instead use the <em>create-cluster</em> located in the 
+        <code>redis/utils/create-cluster</code>.
+        </p>
+    </section>
+    <section class="col-md-8">
+    <p>Starting in the <em>create-cluster</em> directory, follow these
+    steps to get a 6-node Redis Cluster with 3 masters and 3 slaves.</p>
+    <ol class="lead">
+        <li>Create a <code>config.sh</code> script:
+        <pre>
+#!/bin/bash
+PORT=7000
+TIMEOUT=2000
+NODES=6
+REPLICAS=1
+        </pre></li>    
+        <li>Start Redis Cluster:
+        <pre>
+~/redis/utils/create-cluster$ ./create-cluster start
+Starting 7001
+Starting 7002
+Starting 7003
+Starting 7004
+Starting 7005
+Starting 7006
+        </pre></li>
+        <li>Link and create the Redis Cluster</li>
+        <pre>
+>>> Creating cluster
+>>> Performing hash slots allocation on 6 nodes...
+Using 3 masters:
+127.0.0.1:7001
+127.0.0.1:7002
+127.0.0.1:7003
+Adding replica 127.0.0.1:7004 to 127.0.0.1:7001
+Adding replica 127.0.0.1:7005 to 127.0.0.1:7002
+Adding replica 127.0.0.1:7006 to 127.0.0.1:7003
+M: 1379949e7d8eaa27a0634285e521079eccc0cc1f 127.0.0.1:7001
+   slots:0-5460 (5461 slots) master
+M: 470bf4397e0002f211df09dadcd5ec12b458e9c3 127.0.0.1:7002
+   slots:5461-10922 (5462 slots) master
+M: 7e343391d165ccee34e0f1cf43590270130a9d5b 127.0.0.1:7003
+   slots:10923-16383 (5461 slots) master
+S: 3d8c532367f0846f292b538d09b7cafdc6b3c6b9 127.0.0.1:7004
+   replicates 1379949e7d8eaa27a0634285e521079eccc0cc1f
+S: 491abeb14973c0c9495f1b045b4e5d3f0729bcc8 127.0.0.1:7005
+   replicates 470bf4397e0002f211df09dadcd5ec12b458e9c3
+S: 933258e1d5ed8752c7e4ff7ce377dfd63543977f 127.0.0.1:7006
+   replicates 7e343391d165ccee34e0f1cf43590270130a9d5b
+Can I set the above configuration? (type 'yes' to accept): yes
+>>> Nodes configuration updated
+>>> Assign a different config epoch to each node
+>>> Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join..
+>>> Performing Cluster Check (using node 127.0.0.1:7001)
+M: 1379949e7d8eaa27a0634285e521079eccc0cc1f 127.0.0.1:7001
+   slots:0-5460 (5461 slots) master
+M: 470bf4397e0002f211df09dadcd5ec12b458e9c3 127.0.0.1:7002
+   slots:5461-10922 (5462 slots) master
+M: 7e343391d165ccee34e0f1cf43590270130a9d5b 127.0.0.1:7003
+   slots:10923-16383 (5461 slots) master
+M: 3d8c532367f0846f292b538d09b7cafdc6b3c6b9 127.0.0.1:7004
+   slots: (0 slots) master
+   replicates 1379949e7d8eaa27a0634285e521079eccc0cc1f
+M: 491abeb14973c0c9495f1b045b4e5d3f0729bcc8 127.0.0.1:7005
+   slots: (0 slots) master
+   replicates 470bf4397e0002f211df09dadcd5ec12b458e9c3
+M: 933258e1d5ed8752c7e4ff7ce377dfd63543977f 127.0.0.1:7006
+   slots: (0 slots) master
+   replicates 7e343391d165ccee34e0f1cf43590270130a9d5b
+[OK] All nodes agree about slots configuration.
+>>> Check for open slots...
+>>> Check slots coverage...
+[OK] All 16384 slots covered.
+        </pre></li>
+        <li>Stopping Redis Cluster
+        <pre>
+$ ./create-cluster stop
+Stopping 7001
+Stopping 7002
+Stopping 7003
+Stopping 7004
+Stopping 7005
+Stopping 7006
+        </pre></li>
+    </ol>
+    </section>
+</div>
+
+
 <hr>
 <h1>Redis Sentinel <a name="sentinel"></a></h1>
+<div class="row">
+<section class="col-md-4">
 <p class="lead">
  Redis Sentinel manages Redis instances through four main ways:
 </p>
@@ -138,6 +321,10 @@ Book:1 key would be assigned to Node C.
   <li><strong>Configuration provider</strong> for clients to connect and discover the address for a given
    Redis master.</li> 
  </ul>
+</section>
+<section class="col-md-6">
+  <img src="{{ url_for("static", filename="img/sentinel.png") }}">
+</section>
 <div class="row">
  <div class="col-md-8">
   {# START Exercise #}
@@ -184,18 +371,6 @@ PONG
 </div>
 <hr>
 {% import 'snippets/labs.html' as labs %}
-<h1>Lab Assignment</h1>
-<div class="row">
-  <div class="col-md-6 well well-sm"><a name="lab1"></a>
-   {% set dashboard = 'Create a Redis sentinel instance that monitors all Redis master/slaves for the dashboard' %}
-  {{ labs.lab("Santa's Naughty-or-Nice Dashboard", 'img/list64.png', dashboard) }} 
-  </div>
-  <div class="col-md-6 well well-sm"><a name="lab2"></a>
-   {% set kanban = 'Create a Redis Cluster for the Kanban 4 Toys process' %}
-  {{ labs.lab('Elf Kanban 4 Toys', 'img/toy64.png', kanban) }}  
-  </div>
-</div>
-<hr>
 <div class="row">
  <h2><a name="reference"></a>References and Resources</h2>
   <ol>
